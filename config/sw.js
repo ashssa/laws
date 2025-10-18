@@ -1,20 +1,20 @@
 // 將 CACHE_NAME 設為一個佔位符，讓自動化腳本替換
-const CACHE_NAME = 'my-pwa-cache-v-bf97c6c'; // 注意這裡的 bf97c6c
+const CACHE_NAME = 'my-pwa-cache-v-5ede715'; // 注意這裡的 5ede715
 const urlsToCache = [
-'../Ashs-Student-Association-Laws/',
-'../Ashs-Student-Association-Laws/index.html',
-'../Ashs-Student-Association-Laws/styles.css',
-'../Ashs-Student-Association-Laws/script.js',
-'../Ashs-Student-Association-Laws/act01.html',
-'../Ashs-Student-Association-Laws/act02.html',
-'../Ashs-Student-Association-Laws/act03.html',
-'../Ashs-Student-Association-Laws/act04.html',
-'../Ashs-Student-Association-Laws/act05.html',
-'../Ashs-Student-Association-Laws/act06.html',
-'../Ashs-Student-Association-Laws/act07.html',
-'../Ashs-Student-Association-Laws/act08.html',
-'../Ashs-Student-Association-Laws/directions01.html',
-'../Ashs-Student-Association-Laws/overview.html',
+'../laws/',
+'../laws/index.html',
+'../laws/css/styles.css',
+'../laws/js/script.js',
+'../laws/act/act01.html',
+'../laws/act/act02.html',
+'../laws/act/act03.html',
+'../laws/act/act04.html',
+'../laws/act/act05.html',
+'../laws/act/act06.html',
+'../laws/act/act07.html',
+'../laws/act/act08.html',
+'../laws/direction/direction01.html',
+'../laws/direction/direction02.html',
 ];
 
 // 安裝 Service Worker
@@ -42,7 +42,7 @@ event.respondWith(
 });
 
 // 清理舊的緩存
-self.addEventListener('activate', (event) => {
+self.addEventListener('act/activate', (event) => {
 const cacheWhitelist = [CACHE_NAME];
 event.waitUntil(
     caches.keys().then((cacheNames) => {
