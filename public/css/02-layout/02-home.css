@@ -1,0 +1,32 @@
+/* 02-home；首頁樣式 */
+
+/* --- 首頁：法規選單樣式 --- */
+.law-list {
+    @apply bg-base-100 rounded-box shadow-md mb-6
+}
+.law-list > li {
+    @apply items-center
+}
+.law-list > .law-list-title {
+    @apply  p-4 pb-0 text-sm opacity-65 tracking-wide
+}
+.law-list > li  > .no {
+    /* font-family: "SourceSans", "Noto Sans TC", sans-serif; */
+    @apply text-4xl font-thin opacity-30 tabular-nums;
+    /* font-weight: 100; */
+}
+.law-list > li  > .law-name {
+    @apply text-lg/8 text-base-content/85 font-medium tracking-wide line-clamp-1 /* 棄用：opacity-60 */
+}
+/* .law-list > .list-row > a {
+    @apply transition-colors duration-550 decoration-accent/0
+} */
+.law-list > .list-row > a, .law-list > .list-row > a:hover{
+    @apply transition-colors duration-300/* 這邊的值是有底線 → 無底線的時間 */ underline underline-offset-[-0.5rem] decoration-accent/0  decoration-wavy decoration-4
+}
+.law-list > .list-row > a:hover {
+    @apply decoration-accent/25 duration-550/* 這邊的值是「無」底線 → 有底線的時間 */
+}
+/* .law-list > li  > svg {
+    @apply size-[1.2em]
+} */
