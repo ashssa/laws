@@ -48,7 +48,7 @@
 ## 檔案架構
 
 ```
-/Ashs-Student-Association-Laws
+/laws
 ├── public
 │   ├── act                             # 各法規
 │   │   ├── act01.html                  # 組織章程
@@ -59,8 +59,8 @@
 │   │   ├── act06.html                  # 學生會經費法
 │   │   ├── act07.html                  # 自治法規標準法
 │   │   ├── act08.html                  # 學生政黨法
-│   │   ├── oldAct01.html               # 【已廢止】學生會組織辦法
-│   │   └── oldAct02.html               # 【已廢止】學生議員選罷法
+│   │   ├── old-act01.html               # 【已廢止】學生會組織辦法
+│   │   └── old-act02.html               # 【已廢止】學生議員選罷法
 │   ├── assets
 │   │   ├── XX ___法 附件X ___.pdf      # 各法規附件
 │   │   ├── index.html                  # 附件導覽 
@@ -106,12 +106,12 @@
 │   ├── contact_us.html
 │   ├── index.html
 │   ├── script.js
+│   ├── 404.html
+│   ├── googlee4a1512e361cec00.html
+│   ├── package-lock.json
+│   ├── package.json
 │   ├── test.html
 │   └── testlocal.html
-├── 404.html
-├── googlee4a1512e361cec00.html
-├── package-lock.json
-├── package.json
 └── README.md
 ```
 
