@@ -12,6 +12,7 @@
 * 本網站節選部分本校校務章則，實際內容請依[本校官網「校務章則」](https://sites.google.com/tea.nknush.kh.edu.tw/fagui/)或學生手冊查詢為準。
 * 本網站之內容不定期更新，最新公告施行法規，將於完成法規整編作業後更新上線。如需查詢最新法規，請至[本會學生議會網站](https://sites.google.com/a/stu.nknush.kh.edu.tw/ashs_sp/laws/法規彙編)查詢。
 * 本網站自治法規資料，係由本會學生議會提供之電子檔或書面文字登打製作。若與會長令或學生議會之公布文字有所不同，仍以該法規之會長令或學生議會之公布資料為準。</li>
+* __**⚠️⚠️本專案 2025.10.18（含）之前的更新歷程，請參考 [這個 REPO](https://github.com/ashssa/Ashs-Student-Association-Laws)。**__
 
 ## 網站設計原則
 
