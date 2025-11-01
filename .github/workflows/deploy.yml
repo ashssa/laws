@@ -1,13 +1,9 @@
 name: Deploy to GitHub Pages
 
-# --- 觸發條件 ---
 on:
   push:
     branches:
-      - main
-    # 只要 blog-src 下任何檔案有變動就觸發
-    paths:
-      - 'blog-src/**'
+      - main # 主要分支
 
 jobs:
   build-and-deploy:
@@ -18,27 +14,11 @@ jobs:
       id-token: write
 
     steps:
-      # --- 1. 檢出程式碼 ---
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # --- 2. 建置子部落格 blog-src (Astro) ---
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: blog-src/package-lock.json
+      # --- 開始新增 Service Worker 相關步驟 ---
 
-      - name: Install blog-src dependencies
-        working-directory: blog-src
-        run: npm ci
-
-      - name: Build Astro blog
-        working-directory: blog-src
-        run: npm run build
-
-      # --- 3. Service Worker 版本更新 ---
       - name: Generate Service Worker cache version
         id: generate_sw_version
         run: |
@@ -53,21 +33,21 @@ jobs:
           sed -i "s/%%VERSION%%/${{ env.SW_VERSION }}/g" ./public/config/sw.js
           echo "Updated sw.js with cache version ${{ env.SW_VERSION }}"
 
-      # --- 4. 更新 footer 日期 ---
+      # --- 結束新增 Service Worker 相關步驟 ---
+
       - name: Get current date (UTC+8)
         id: date
         env:
           TZ: Asia/Taipei
-        run: echo "DATE=$(date +'%Y年%m月%d日 %H:%M:%S') (UTC+8)" >> $GITHUB_OUTPUT
+        run: echo "DATE=$(date +'%Y年%m月%d日 %H:%M:%S') (UTC+8)" >> $GITHUB_OUTPUT 
 
       - name: Update date in HTML
         run: |
           sed -i "s|<span id=\"last-updated-date\">.*</span>|<span id=\"last-updated-date\">${{ steps.date.outputs.DATE }}</span>|g" ./public/components/footer.html
 
-      # --- 5. Deploy to GitHub Pages ---
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./public # 改成從 public 資料夾部署
