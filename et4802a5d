@@ -1,0 +1,30 @@
+[33mc2580ff[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33mc2580ff[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{1}: reset: moving to HEAD~8
+[33m6336eb0[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{2}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33m1a6df8b[m HEAD@{3}: commit: 更新workflow
+[33md915bcc[m HEAD@{4}: commit: 建置子部落格 -2
+[33m4589793[m HEAD@{5}: commit: 建置子部落格
+[33md5f584f[m HEAD@{6}: commit: 調整子部落格部署問題
+[33mcff1e28[m HEAD@{7}: commit: 新增子部落格
+[33m15ec6b4[m HEAD@{8}: commit: 新增Blog頁面
+[33m4802a5d[m HEAD@{9}: commit: 不是哥們，邊框修掉怎麼動畫也沒啦！沒事兒，我已修正！
+[33mc2580ff[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{10}: commit: 調整回上方按鈕於半透明樣式中無邊框
+[33m8953fe0[m HEAD@{11}: commit: 改善回上方按鈕顯示/隱藏動畫
+[33m7b44abe[m HEAD@{12}: commit: 更新回上方按鈕於小螢幕的透明度（改為半透明）
+[33m4287cce[m HEAD@{13}: commit: 調整回上方按鈕class
+[33mfd5b3cf[m HEAD@{14}: commit: 調整回上方按鈕class
+[33m2231a1b[m HEAD@{15}: commit: 補足擱置導覽列logo描述
+[33me20a8ca[m HEAD@{16}: commit: 擱置導覽列新增logo
+[33m275cbe3[m HEAD@{17}: commit: TODO: 新增logo
+[33m52c60fb[m HEAD@{18}: commit: 上傳icon-2.svg
+[33m3364208[m HEAD@{19}: commit: 修正PWA路徑
+[33mb685620[m HEAD@{20}: commit: 更新聲明
+[33m84fc4c3[m HEAD@{21}: commit: 更新sitemap
+[33m5c7e8e1[m HEAD@{22}: commit: 更新package.json路徑
+[33m162574b[m HEAD@{23}: commit: 修正已廢止法規路徑
+[33m2fbb8af[m HEAD@{24}: commit: 新增路徑重新導向設定
+[33me530936[m HEAD@{25}: commit: 修正lg螢幕下導覽列透明度問題
+[33m5ede715[m HEAD@{26}: commit: 修正緩存路徑
+[33mbf97c6c[m HEAD@{27}: commit: 修正路徑
+[33m8f510f9[m HEAD@{28}: commit: 修正檔案架構
+[33m1ccfc89[m HEAD@{29}: commit (initial): 移轉至新網址
