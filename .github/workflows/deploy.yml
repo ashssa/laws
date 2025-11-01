@@ -5,21 +5,22 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # 主要分支
+      - main # 只有當推送到 main 分支時觸發部署
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # 設定必要的權限
     permissions:
-      contents: write
+      contents: write 
       pages: write
       id-token: write
 
     steps:
-      - name: Checkout code
+      - name: ☁️ Checkout code
         uses: actions/checkout@v4
 
-      # --- 📦 安裝 Node.js 和 pnpm (從 CI workflow 複製) ---
+      # --- 📦 設定環境與安裝依賴 (針對整個 monorepo) ---
 
       - name: "📦 Install pnpm"
         uses: pnpm/action-setup@v4
@@ -31,37 +32,38 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
-          # 由於 pnpm 鎖定在 Astro 專案目錄下安裝，這裡的 cache-dependency-path 不需要設定
 
-      # --- 🚀 建置 Astro 專案 (新增步驟) ---
+      # 假設主專案根目錄下有 package.json，也需要安裝主專案的依賴
+      # ⚠️ 如果主專案根目錄沒有 package.json，請刪除此步驟
+      - name: "📦 Install Root dependencies"
+        run: pnpm install
+
+      # --- 🚀 建置 Astro 專案 (重點) ---
       
       # 進入 Astro 專案目錄安裝依賴
       - name: "📦 Install Astro dependencies"
+        # 由於 Astro 專案有自己的 package.json，我們在該目錄下重新安裝
         run: pnpm install
-        working-directory: ./blog-src # 確保在 ./blog-src 路徑下執行 pnpm install
+        working-directory: ./blog-src 
 
       # 建置 Astro 專案
       - name: "🚀 Build the Astro project"
-        # 執行 build script。由於您已在 astro.config.mjs 中設定 outDir: '../public/blog' 
-        # 且 base: '/blog'，所以建置結果會正確輸出到主專案的 ./public/blog
+        # 執行 build script。它會根據 astro.config.mjs 將檔案輸出到 ../public/blog
         run: pnpm run build
-        working-directory: ./blog-src # 確保在 ./blog-src 路徑下執行 pnpm run build
+        working-directory: ./blog-src 
 
       # --- 📝 執行原本的 Service Worker 和 HTML 處理 ---
-
+      # 這些步驟將對主專案的 ./public 目錄下的檔案進行操作
+      
       - name: Generate Service Worker cache version
         id: generate_sw_version
         run: |
-          # 使用提交的短 SHA 作為 Service Worker 版本號
           SW_VERSION=$(git rev-parse --short HEAD)
-          echo "Generated Service Worker cache version: $SW_VERSION"
           echo "SW_VERSION=$SW_VERSION" >> $GITHUB_ENV
 
       - name: Update Service Worker cache name
-        run: |
-          # 替換 public/config/sw.js 中的佔位符
-          sed -i "s/%%VERSION%%/${{ env.SW_VERSION }}/g" ./public/config/sw.js
-          echo "Updated sw.js with cache version ${{ env.SW_VERSION }}"
+        # 替換主專案 public/config/sw.js 中的佔位符
+        run: sed -i "s/%%VERSION%%/${{ env.SW_VERSION }}/g" ./public/config/sw.js
 
       - name: Get current date (UTC+8)
         id: date
@@ -70,9 +72,8 @@ jobs:
         run: echo "DATE=$(date +'%Y年%m月%d日 %H:%M:%S') (UTC+8)" >> $GITHUB_OUTPUT 
 
       - name: Update date in HTML
+        # 修改主專案 public/components/footer.html
         run: |
-          # 由於您的 Astro 專案已在 './public/blog' 中生成，這個步驟應該是要修改
-          # 專案根目錄下的 public/components/footer.html (如果它不是 Astro 的一部分)
           sed -i "s|<span id=\"last-updated-date\">.*</span>|<span id=\"last-updated-date\">${{ steps.date.outputs.DATE }}</span>|g" ./public/components/footer.html
           
       # --- 部署到 GitHub Pages ---
@@ -82,4 +83,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public # 從 public 資料夾部署，其中包含了 Astro 生成的 blog
+          # 關鍵：從 ./public 資料夾部署
+          # 此時 public/ 目錄包含：
+          # 1. 主專案原有的檔案 (e.g. index.html, public/config/sw.js)
+          # 2. Astro 專案建置後輸出的檔案 (public/blog/...)
+          publish_dir: ./public
