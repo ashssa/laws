@@ -3,7 +3,7 @@
 /* --- 01. 回到最上方按鈕 --- */
 #scrollToTopBtn {
     /* @apply btn-circle btn-neutral print:hidden; */
-    @apply bg-base-100/50 md:bg-neutral dark:bg-neutral btn-xl btn-circle text-base-content/70 md:text-neutral-content dark:text-neutral-content shadow-sm backdrop-blur-sm print:hidden;
+    @apply bg-base-100/50 border-none md:bg-neutral dark:bg-neutral btn-xl btn-circle text-base-content/70 md:text-neutral-content dark:text-neutral-content shadow-sm backdrop-blur-sm print:hidden;
     @apply transition-all transition-discrete hover:scale-105 duration-300 md:duration-150 ease-in-out ; /* 棄用：motion-reduce:transition-none motion-reduce:hover:transform-none  */
     /* display: none; 預設隱藏按鈕 */
     position: fixed; /* 固定位置 */
@@ -15,7 +15,7 @@
     font-weight: 900;
     /* width: 50px; 按鈕寬度 */
     /* height: 50px; 按鈕高度 */
-    border: none; 無邊框
+    /* border: none; 無邊框 */
     /* border-radius: 50%; 圓形按鈕 */
     /* opacity: 0.75; 調整不透明度 */
     /* outline: none; 移除點擊時的外框 */
