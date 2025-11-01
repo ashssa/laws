@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          # cache-dependency-path: blog-src/package-lock.json
+          cache-dependency-path: blog-src/package-lock.json
 
       - name: Install blog-src dependencies
         working-directory: blog-src
@@ -47,17 +47,18 @@ jobs:
           sed -i "s/%%VERSION%%/${{ env.SW_VERSION }}/g" ./public/config/sw.js
           echo "Updated sw.js with cache version ${{ env.SW_VERSION }}"
 
-      # --- 結束新增 Service Worker 相關步驟 ---
+      # --- 更新 footer 日期 ---
       - name: Get current date (UTC+8)
         id: date
         env:
           TZ: Asia/Taipei
-        run: echo "DATE=$(date +'%Y年%m月%d日 %H:%M:%S') (UTC+8)" >> $GITHUB_OUTPUT 
+        run: echo "DATE=$(date +'%Y年%m月%d日 %H:%M:%S') (UTC+8)" >> $GITHUB_OUTPUT
 
       - name: Update date in HTML
         run: |
           sed -i "s|<span id=\"last-updated-date\">.*</span>|<span id=\"last-updated-date\">${{ steps.date.outputs.DATE }}</span>|g" ./public/components/footer.html
 
+      # --- Deploy to GitHub Pages ---
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'
