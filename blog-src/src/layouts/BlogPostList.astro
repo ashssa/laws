@@ -1,0 +1,22 @@
+---
+// src/layouts/BlogPostList.astro
+const { posts, title } = Astro.props;
+---
+
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/blog/styles.css" />
+  </head>
+  <body class="max-w-3xl mx-auto px-4 py-8 font-sans">
+    <h1 class="text-3xl font-bold mb-4">{title}</h1>
+    <ul class="space-y-3">
+      {posts.map(p => (
+        <li>
+          <a href={`/blog/posts/${p.slug}/`} class="text-blue-600 hover:underline">{p.title}</a>
+        </li>
+      ))}
+    </ul>
+  </body>
+</html>

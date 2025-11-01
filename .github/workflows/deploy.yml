@@ -33,11 +33,6 @@ jobs:
         working-directory: blog-src
         run: npm run build
 
-      - name: Move blog build output into /public/blog
-        run: |
-          mkdir -p public/blog
-          cp -r blog-src/dist/* public/blog/
-
       # --- 開始新增 Service Worker 相關步驟 ---
       - name: Generate Service Worker cache version
         id: generate_sw_version

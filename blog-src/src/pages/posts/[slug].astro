@@ -1,10 +1,32 @@
 ---
 import BlogPost from "../../layouts/BlogPost.astro";
+
+// 動態路由必須 export getStaticPaths
+export async function getStaticPaths() {
+  // 使用 import.meta.glob 將所有 Markdown 檔案列出
+  const allPosts = import.meta.glob('../../content/blog/*.md', { eager: true });
+
+  return Object.keys(allPosts).map(filePath => {
+    const slug = filePath.split('/').pop().replace('.md', '');
+    return { params: { slug } };
+  });
+}
+
+// 取得目前 slug 對應的文章
 const { slug } = Astro.params;
-const post = await Astro.glob("../../content/blog/*.md").then(list =>
-  list.find(p => p.file.split("/").pop().replace(".md", "") === slug)
+
+// 找到對應的 Markdown 檔案
+const allPosts = import.meta.glob('../../content/blog/*.md', { eager: true });
+const postFile = Object.entries(allPosts).find(
+  ([filePath]) => filePath.split('/').pop().replace('.md', '') === slug
 );
+
+if (!postFile) {
+  throw new Error(`文章 "${slug}" 不存在`);
+}
+
+const post = postFile[1];
 ---
 <BlogPost {...post.frontmatter}>
-  <post.Content />
+  <post.default />
 </BlogPost>
