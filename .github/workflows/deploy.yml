@@ -17,6 +17,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # --- 建置子部落格 blog-src (Astro) ---
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: blog-src/package-lock.json
+
+      - name: Install blog-src dependencies
+        working-directory: blog-src
+        run: npm ci
+
+      - name: Build Astro blog
+        working-directory: blog-src
+        run: npm run build
+
+      - name: Move blog build output into /public/blog
+        run: |
+          mkdir -p public/blog
+          cp -r blog-src/dist/* public/blog/
+
       # --- 開始新增 Service Worker 相關步驟 ---
 
       - name: Generate Service Worker cache version

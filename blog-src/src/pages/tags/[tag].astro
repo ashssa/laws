@@ -1,0 +1,22 @@
+---
+const { tag } = Astro.params;
+const posts = await Astro.glob("../../content/blog/*.md");
+const filtered = posts.filter(p => p.frontmatter.tags?.includes(tag));
+---
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <title>標籤：{tag}</title>
+    <link rel="stylesheet" href="/blog/styles.css" />
+  </head>
+  <body class="max-w-3xl mx-auto px-4 py-8 font-sans">
+    <h1 class="text-3xl font-bold mb-4">標籤：#{tag}</h1>
+    <ul class="space-y-3">
+      {filtered.map(p => (
+        <li>
+          <a href={`/blog/posts/${p.slug}/`} class="text-blue-600 hover:underline">{p.frontmatter.title}</a>
+        </li>
+      ))}
+    </ul>
+  </body>
+</html>

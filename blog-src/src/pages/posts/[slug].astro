@@ -1,0 +1,10 @@
+---
+import BlogPost from "../../layouts/BlogPost.astro";
+const { slug } = Astro.params;
+const post = await Astro.glob("../../content/blog/*.md").then(list =>
+  list.find(p => p.file.split("/").pop().replace(".md", "") === slug)
+);
+---
+<BlogPost {...post.frontmatter}>
+  <post.Content />
+</BlogPost>
