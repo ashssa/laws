@@ -3230,6 +3230,8 @@ mjx-container > svg {
   padding-inline: calc(0.25rem * 0);
   width: var(--size);
   height: var(--size);
+  --tw-border-style: none;
+  border-style: none;
   background-color: var(--color-base-100);
   @supports (color: color-mix(in lab, red, red)) {
     background-color: color-mix(in oklab, var(--color-base-100) 50%, transparent);
@@ -3288,8 +3290,7 @@ mjx-container > svg {
   font-size: 1.5rem;
   font-family: "Noto Sans", "Noto Sans TC", sans-serif;
   font-weight: 900;
-  border: none;
-  無邊框       opacity: 0;
+  opacity: 0;
   visibility: hidden;
 }
 #scrollToTopBtn.show {
