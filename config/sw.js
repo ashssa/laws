@@ -1,5 +1,5 @@
 // 將 CACHE_NAME 設為一個佔位符，讓自動化腳本替換
-const CACHE_NAME = 'my-pwa-cache-v-2231a1b'; // 注意這裡的 2231a1b
+const CACHE_NAME = 'my-pwa-cache-v-8953fe0'; // 注意這裡的 8953fe0
 const urlsToCache = [
 '../laws/',
 '../laws/index.html',

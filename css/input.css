@@ -1,5 +1,6 @@
 /* input.css：最主要的 CSS */
 
+/* import 字體 from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5,500;1,62.5,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5,700;1,62.5,700&display=swap');
 /*@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,slnt,GRAD@8..144,0,150&display=swap');*/
@@ -15,8 +16,9 @@
 @source "../assets/*.{html,js}";
 @source "../assets/*.{html,js}";
 @plugin "daisyui" {
-    themes: corporate --default, dracula --prefersdark, retro, cyberpunk, valentine, aqua, lemonade, abyss, all;
+    themes: corporate --default, dracula --prefersdark, retro, cyberpunk, valentine, aqua, lemonade, abyss;
 }
+@custom-variant dark (&:where([data-theme=dracula], [data-theme=dracula] *, [data-theme=aqua], [data-theme=aqua] *, [data-theme=abyss], [data-theme=abyss] *));
 
 /* 01. 載入基本樣式 */
 @import "./01-base/01-base.css";
