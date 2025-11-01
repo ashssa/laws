@@ -291,9 +291,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function scrollFunction() {
             if (document.body.scrollTop > 250 || document.documentElement.scrollTop > 250) {
-                scrollToTopBtn.style.display = "block";
+                // scrollToTopBtn.style.display = "block";
+                scrollToTopBtn.classList.add("show");
             } else {
-                scrollToTopBtn.style.display = "none";
+                // scrollToTopBtn.style.display = "none";
+                scrollToTopBtn.classList.remove("show");
             }
         }
 
