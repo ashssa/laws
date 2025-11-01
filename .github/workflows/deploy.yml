@@ -1,9 +1,13 @@
 name: Deploy to GitHub Pages
 
+# --- 觸發條件 ---
 on:
   push:
     branches:
       - main
+    # 只要 blog-src 下任何檔案有變動就觸發
+    paths:
+      - 'blog-src/**'
 
 jobs:
   build-and-deploy:
@@ -14,10 +18,11 @@ jobs:
       id-token: write
 
     steps:
+      # --- 1. 檢出程式碼 ---
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # --- 建置子部落格 blog-src (Astro) ---
+      # --- 2. 建置子部落格 blog-src (Astro) ---
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -33,7 +38,7 @@ jobs:
         working-directory: blog-src
         run: npm run build
 
-      # --- 開始新增 Service Worker 相關步驟 ---
+      # --- 3. Service Worker 版本更新 ---
       - name: Generate Service Worker cache version
         id: generate_sw_version
         run: |
@@ -44,10 +49,11 @@ jobs:
 
       - name: Update Service Worker cache name
         run: |
+          # 替換 public/config/sw.js 中的佔位符
           sed -i "s/%%VERSION%%/${{ env.SW_VERSION }}/g" ./public/config/sw.js
           echo "Updated sw.js with cache version ${{ env.SW_VERSION }}"
 
-      # --- 更新 footer 日期 ---
+      # --- 4. 更新 footer 日期 ---
       - name: Get current date (UTC+8)
         id: date
         env:
@@ -58,7 +64,7 @@ jobs:
         run: |
           sed -i "s|<span id=\"last-updated-date\">.*</span>|<span id=\"last-updated-date\">${{ steps.date.outputs.DATE }}</span>|g" ./public/components/footer.html
 
-      # --- Deploy to GitHub Pages ---
+      # --- 5. Deploy to GitHub Pages ---
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'
