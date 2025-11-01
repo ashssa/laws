@@ -1,0 +1,26 @@
+---
+const { title, date, tags } = Astro.props;
+---
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/blog/styles.css" />
+  </head>
+  <body class="max-w-3xl mx-auto px-4 py-8 font-sans">
+    <header class="mb-6">
+      <h1 class="text-3xl font-bold mb-1">{title}</h1>
+      <p class="text-gray-500">{date}</p>
+      {tags && (
+        <ul class="flex gap-2 mt-2">
+          {tags.map(tag => (
+            <li><a href={`/blog/tags/${tag}/`} class="text-blue-600 hover:underline">#{tag}</a></li>
+          ))}
+        </ul>
+      )}
+    </header>
+    <article class="prose prose-slate">
+      <slot />
+    </article>
+  </body>
+</html>
