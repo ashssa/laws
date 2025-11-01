@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # 主要分支
+      - main
 
 jobs:
   build-and-deploy:
@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: blog-src/package-lock.json
+          # cache-dependency-path: blog-src/package-lock.json
 
       - name: Install blog-src dependencies
         working-directory: blog-src
@@ -39,7 +39,6 @@ jobs:
           cp -r blog-src/dist/* public/blog/
 
       # --- 開始新增 Service Worker 相關步驟 ---
-
       - name: Generate Service Worker cache version
         id: generate_sw_version
         run: |
@@ -50,12 +49,10 @@ jobs:
 
       - name: Update Service Worker cache name
         run: |
-          # 替換 public/config/sw.js 中的佔位符
           sed -i "s/%%VERSION%%/${{ env.SW_VERSION }}/g" ./public/config/sw.js
           echo "Updated sw.js with cache version ${{ env.SW_VERSION }}"
 
       # --- 結束新增 Service Worker 相關步驟 ---
-
       - name: Get current date (UTC+8)
         id: date
         env:
@@ -71,4 +68,4 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public # 改成從 public 資料夾部署
+          publish_dir: ./public
