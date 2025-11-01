@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ashssa.github.io/laws/sitemap-index.xml
