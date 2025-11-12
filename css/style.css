@@ -4,6 +4,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
 @layer properties;
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 20;
+  font-size: inherit;
+  line-height: inherit;
+  vertical-align: middle;
+  font-size-adjust: cap-height 1.1;
+  translate: "no";
+}
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -1897,6 +1905,9 @@
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
+  .ml-4 {
+    margin-left: calc(var(--spacing) * 4);
+  }
   .status {
     display: inline-block;
     aspect-ratio: 1 / 1;
@@ -2296,6 +2307,16 @@
       grid-template-columns: auto minmax(auto, 1fr);
     }
   }
+  .alert-vertical {
+    justify-content: center;
+    justify-items: center;
+    grid-auto-flow: row;
+    grid-template-columns: auto;
+    text-align: center;
+    &:has(:nth-child(2)) {
+      grid-template-columns: auto;
+    }
+  }
   .flex-col {
     flex-direction: column;
   }
@@ -2406,6 +2427,9 @@
   .stroke-current {
     stroke: currentcolor;
   }
+  .stroke-info {
+    stroke: var(--color-info);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -2437,6 +2461,9 @@
   }
   .py-0 {
     padding-block: calc(var(--spacing) * 0);
+  }
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
   }
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
@@ -2665,6 +2692,18 @@
   .min-\[397px\]\:grid-flow-col {
     @media (width >= 397px) {
       grid-auto-flow: column;
+    }
+  }
+  .sm\:alert-horizontal {
+    @media (width >= 40rem) {
+      justify-content: start;
+      justify-items: start;
+      grid-auto-flow: column;
+      grid-template-columns: auto;
+      text-align: start;
+      &:has(:nth-child(2)) {
+        grid-template-columns: auto minmax(auto, 1fr);
+      }
     }
   }
   .sm\:footer-horizontal {
