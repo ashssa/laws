@@ -14,6 +14,9 @@ html {
 }
 
 /* 導覽列上的 LOGO */
+.logo-sa-law {
+    @apply hidden min-[369px]:flex ;
+}
 /* 
 .logo-icon {
     aspect-ratio: 1 / 1;
