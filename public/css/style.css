@@ -1897,6 +1897,9 @@
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
+  .ml-4 {
+    margin-left: calc(var(--spacing) * 4);
+  }
   .status {
     display: inline-block;
     aspect-ratio: 1 / 1;
@@ -2296,6 +2299,16 @@
       grid-template-columns: auto minmax(auto, 1fr);
     }
   }
+  .alert-vertical {
+    justify-content: center;
+    justify-items: center;
+    grid-auto-flow: row;
+    grid-template-columns: auto;
+    text-align: center;
+    &:has(:nth-child(2)) {
+      grid-template-columns: auto;
+    }
+  }
   .flex-col {
     flex-direction: column;
   }
@@ -2406,6 +2419,9 @@
   .stroke-current {
     stroke: currentcolor;
   }
+  .stroke-info {
+    stroke: var(--color-info);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -2437,6 +2453,9 @@
   }
   .py-0 {
     padding-block: calc(var(--spacing) * 0);
+  }
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
   }
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
@@ -2665,6 +2684,18 @@
   .min-\[397px\]\:grid-flow-col {
     @media (width >= 397px) {
       grid-auto-flow: column;
+    }
+  }
+  .sm\:alert-horizontal {
+    @media (width >= 40rem) {
+      justify-content: start;
+      justify-items: start;
+      grid-auto-flow: column;
+      grid-template-columns: auto;
+      text-align: start;
+      &:has(:nth-child(2)) {
+        grid-template-columns: auto minmax(auto, 1fr);
+      }
     }
   }
   .sm\:footer-horizontal {
