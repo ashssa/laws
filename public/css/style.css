@@ -3574,6 +3574,12 @@ html {
   scroll-padding-top: 100px;
   scroll-behavior: smooth;
 }
+.logo-sa-law {
+  display: none;
+  @media (width >= 369px) {
+    display: flex;
+  }
+}
 @media (max-width: 768px) {
   .main-content {
     width: 95%;
