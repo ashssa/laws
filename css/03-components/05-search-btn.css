@@ -3,16 +3,15 @@
     color: var(--color-warning-content);
     padding: 2px 0;
     border-radius: var(--radius-selector);
-    opacity: 0.8;
 }
 .current-match {
     background-color: var(--color-error); /* 選中目標高亮顏色 */
     color: var(--color-error-content);
     /* border: 2px solid var(--color-primary-content); */
-    border-radius: var(--radius-selector);
+    opacity: 1;
 }
 .highlight, .current-match {
-    @apply mx-0.5 px-0.5 transition duration-200 ease-in-out;
+    @apply  px-0.5 transition duration-200 ease-in-out;
 }
 #toggleSearchBtn {
     @apply btn btn-sm btn-soft ml-auto text-neutral;
