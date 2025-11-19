@@ -1,0 +1,33 @@
+.highlight {
+    background-color: var(--color-warning); /* 高亮顏色 */
+    color: var(--color-warning-content);
+    padding: 2px 0;
+    border-radius: var(--radius-selector);
+    opacity: 0.8;
+}
+.current-match {
+    background-color: var(--color-error); /* 選中目標高亮顏色 */
+    color: var(--color-error-content);
+    /* border: 2px solid var(--color-primary-content); */
+    border-radius: var(--radius-selector);
+}
+.highlight, .current-match {
+    @apply mx-0.5 px-0.5 transition duration-200 ease-in-out;
+}
+#toggleSearchBtn {
+    @apply btn btn-sm btn-soft ml-auto text-neutral;
+    @apply bg-base-100/50 border-none md:bg-neutral dark:bg-neutral text-base-content/70 md:text-neutral-content dark:text-neutral-content shadow-sm backdrop-blur-sm print:hidden;
+    @apply transition-all transition-discrete hover:scale-105 duration-300 md:duration-150 ease-in-out ; /* 棄用：motion-reduce:transition-none motion-reduce:hover:transform-none  */
+    /* 棄用：btn-circle */
+}
+#searchFieldsetContainer {
+    @apply fixed top-24 right-4 z-50 flex flex-col items-end;
+    @apply transition-all transition-discrete duration-300 md:duration-150 ease-in-out ; /* 棄用：motion-reduce:transition-none motion-reduce:hover:transform-none  */
+}
+#searchFieldsetContainer.show {
+    opacity: 1; 
+    visibility: visible; 
+}
+.search-container-span {
+    @apply mt-1
+}
