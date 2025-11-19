@@ -27,6 +27,6 @@ p {
 }
 /* --- 選中文字反白顏色調整 --- */
 /*.main-content*/ ::selection {
-    background-color: var(--color-accent);
-    color: var(--color-accent-content);
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-content);
 }

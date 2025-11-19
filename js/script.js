@@ -13,12 +13,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const CURRENT_YEAR_SPAN_ID = 'current-year'; // 頁尾年份 span ID
     const LAST_UPDATED_SPAN_ID = 'last-updated'; // 頁尾更新日期 span ID
     const SCROLL_TO_TOP_BTN_ID = 'scrollToTopBtn'; // 返回頂部按鈕的 ID 常數
-
+    // --- 搜尋功能相關常數 ---
+    const REGULATION_CONTENT_SELECTOR = 'article.regulation-content'; // 內容容器選擇器
+    const SEARCH_TEXT_ID = 'searchText'; // 搜尋輸入框 ID
+    const SEARCH_BTN_ID = 'searchButton'; // 搜尋按鈕 ID
+    const SEARCH_COUNT_ID = 'searchCount'; // 搜尋結果計數 ID
+    const NEXT_MATCH_BTN_ID = 'nextMatchBtn'; // 下一個按鈕 ID
+    const PREV_MATCH_BTN_ID = 'prevMatchBtn'; // 上一個按鈕 ID
+    const HIGHLIGHT_CLASS = 'highlight'; // 高亮 CSS 類別
+    const CURRENT_MATCH_CLASS = 'current-match'; // 當前匹配項 CSS 類別
+    const SEARCH_CONTAINER_ID = 'searchContainer'; // 搜尋面板 ID
+    const TOGGLE_SEARCH_BTN_ID = 'toggleSearchBtn'; // 切換搜尋面板顯示的按鈕 ID
+    let originalContent = ''; // 用於儲存未被高亮包裹的原始內容
+    let matchNodes = []; // 儲存所有匹配項的 Node 列表
+    let currentMatchIndex = -1; // 當前聚焦的匹配項索引
     // --- 取得元素 ---
     const headerPlaceholder = document.getElementById(HEADER_PLACEHOLDER_ID);
     const footerPlaceholder = document.getElementById(FOOTER_PLACEHOLDER_ID);
     const buttonsPlaceholder = document.getElementById(BUTTONS_PLACEHOLDER_ID); // **取得功能列表佔位符**
     const scrollToTopBtn = document.getElementById(SCROLL_TO_TOP_BTN_ID); // 獲取返回頂部按鈕元素**
+    const regulationContent = document.querySelector(REGULATION_CONTENT_SELECTOR); // 內容容器
 
     // --- 函數：載入 HTML 片段 ---
     /**
@@ -131,6 +145,207 @@ document.addEventListener('DOMContentLoaded', function() {
     console.groupEnd(`開始執行 addAnchorAndLinkToArtSpans 函數`);
 }
 
+// 在 article.regulation-content 之後插入搜尋按鈕區塊
+(async () => {
+    // 1. 常數定義 (為避免與主程式碼衝突，在這裡重新定義)
+    const SEARCH_BUTTONS_FILE = '../components/seach-btn.html'; 
+    const SEARCH_BUTTONS_PLACEHOLDER_SELECTOR = 'article.regulation-content'; 
+    const PLACEHOLDER_NAME = '搜尋按鈕功能區塊';
+
+    // 2. 尋找目標元素
+    const targetElement = document.querySelector(SEARCH_BUTTONS_PLACEHOLDER_SELECTOR);
+    
+    if (!targetElement) {
+        console.warn(`[${PLACEHOLDER_NAME}] 找不到指定的目標元素來插入 (${SEARCH_BUTTONS_PLACEHOLDER_SELECTOR})。`);
+        return; 
+    }
+
+    // 3. 核心載入及插入邏輯
+    try {
+        const response = await fetch(SEARCH_BUTTONS_FILE);
+        
+        if (!response.ok) {
+            throw new Error(`網路回應錯誤: ${response.status} ${response.statusText}`);
+        }
+        
+        const html = await response.text();
+        
+        // 創建一個臨時的 div 來解析 HTML 字串
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+
+        // 將臨時 div 裡的所有子節點插入到目標元素之後 (使用 insertBefore 和 nextSibling)
+        while (tempDiv.firstChild) {
+            targetElement.parentNode.insertBefore(tempDiv.firstChild, targetElement.nextSibling);
+        }
+
+        console.log(`[${PLACEHOLDER_NAME}] (${SEARCH_BUTTONS_FILE}) 已成功載入並插入到目標元素之後。`);
+        
+    } catch (error) {
+        console.error(`[${PLACEHOLDER_NAME}] 無法載入 (${SEARCH_BUTTONS_FILE}):`, error);
+        // 如果您的 toastr 在此處已經初始化，可以加上錯誤提示
+        // toastr.error(`${PLACEHOLDER_NAME} 載入失敗！`); 
+    }
+})();
+
+
+    // --- 函數：移除所有高亮標記 ---
+    function removeHighlights() {
+        if (!regulationContent) return;
+
+        // 1. 清除目前的匹配索引和 Node 列表
+        currentMatchIndex = -1;
+        matchNodes = [];
+        const searchCountSpan = document.getElementById(SEARCH_COUNT_ID);
+        if (searchCountSpan) searchCountSpan.textContent = '';
+        
+        // 隱藏導航按鈕
+        const nextBtn = document.getElementById(NEXT_MATCH_BTN_ID);
+        const prevBtn = document.getElementById(PREV_MATCH_BTN_ID);
+        // if (nextBtn) nextBtn.style.display = 'none';
+        // if (prevBtn) prevBtn.style.display = 'none';
+
+        // 2. 將內容恢復到原始狀態 (移除 <mark> 標籤)
+        if (originalContent) {
+            regulationContent.innerHTML = originalContent;
+            originalContent = ''; // 清除原始內容，表示目前沒有高亮
+            console.log('高亮標記已移除，內容已恢復。');
+        }
+    }
+
+    // --- 函數：切換搜尋面板顯示狀態 ---
+    function toggleSearchVisibility() {
+    const searchContainer = document.getElementById(SEARCH_CONTAINER_ID);
+    if (!searchContainer) {
+        console.error(`找不到 ID 為 "${SEARCH_CONTAINER_ID}" 的搜尋容器。`);
+        return;
+    }
+
+    // if (searchContainer.style.display === 'none' || searchContainer.style.display === '') {
+    if (searchContainer.classList.contains('hidden')) {
+        // 顯示容器
+        // searchContainer.style.display = 'flex'; // 或 'block'，取決於您的 CSS 佈局
+        searchContainer.classList.remove("hidden");
+        searchContainer.classList.add("show");
+        // toastr.info('搜尋功能已開啟。');
+    } else {
+        // 隱藏容器
+        // searchContainer.style.display = 'none';
+        searchContainer.classList.remove("show");
+        searchContainer.classList.add("hidden");
+        
+        // 【重要】當關閉搜尋容器時，同時移除所有高亮標記
+        removeHighlights(); 
+        
+        // 清空輸入框
+        const searchInput = document.getElementById(SEARCH_TEXT_ID);
+        if (searchInput) searchInput.value = '';
+
+        // toastr.info('搜尋功能已關閉並清除標記。');
+    }
+}
+
+    // --- 函數：執行搜尋並高亮 ---
+    /**
+     * 搜尋並高亮特定文字，並初始化匹配項導航。
+     * @param {string} searchText - 要搜尋的文字。
+     */
+    function performSearch(searchText) {
+        if (!regulationContent || !searchText) {
+            removeHighlights();
+            toastr.info('請輸入要搜尋的關鍵字。');
+            return;
+        }
+
+        // 1. 移除先前的高亮
+        removeHighlights();
+
+        // 2. 儲存原始內容
+        originalContent = regulationContent.innerHTML;
+
+        // 3. 執行高亮替換
+        const regex = new RegExp(`(${searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        // 使用 <mark> 標籤進行替換，並加上高亮類別
+        const highlightedHtml = originalContent.replace(regex, `<mark class="${HIGHLIGHT_CLASS}">$1</mark>`);
+
+        // 4. 插入高亮後的 HTML
+        regulationContent.innerHTML = highlightedHtml;
+
+        // 5. 獲取所有匹配項並更新狀態
+        matchNodes = Array.from(regulationContent.querySelectorAll(`mark.${HIGHLIGHT_CLASS}`));
+        const matchCount = matchNodes.length;
+        const searchCountSpan = document.getElementById(SEARCH_COUNT_ID);
+
+        if (searchCountSpan) {
+            searchCountSpan.textContent = matchCount > 0 ? `找到 ${matchCount} 個結果` : '找不到結果';
+        }
+
+        if (matchCount > 0) {
+            // 顯示導航按鈕
+            const nextBtn = document.getElementById(NEXT_MATCH_BTN_ID);
+            const prevBtn = document.getElementById(PREV_MATCH_BTN_ID);
+            if (nextBtn) nextBtn.style.display = 'inline-block';
+            if (prevBtn) prevBtn.style.display = 'inline-block';
+            
+            // 定位到第一個匹配項
+            currentMatchIndex = -1; // 確保從第一個開始
+            toastr.success(`找到 ${matchCount} 個結果。`);
+            scrollToMatch(0);
+        } else {
+            toastr.info('找不到結果。');
+        }
+    }
+
+    // --- 函數：捲動到特定匹配項並標記 ---
+    /**
+     * 捲動到指定索引的匹配項並加上 `current-match` 標記。
+     * @param {number} index - 要捲動到的匹配項索引。
+     */
+    function scrollToMatch(index) {
+        if (matchNodes.length === 0) return;
+
+        // 1. 清除舊的 current-match 標記
+        if (currentMatchIndex >= 0 && currentMatchIndex < matchNodes.length) {
+            matchNodes[currentMatchIndex].classList.remove(CURRENT_MATCH_CLASS);
+        }
+
+        // 2. 處理索引循環 (確保 index 在 [0, length-1] 範圍內)
+        currentMatchIndex = (index % matchNodes.length + matchNodes.length) % matchNodes.length;
+
+        // 3. 標記新的 current-match
+        const targetNode = matchNodes[currentMatchIndex];
+        targetNode.classList.add(CURRENT_MATCH_CLASS);
+
+        // 4. 更新計數顯示 (可選)
+        const searchCountSpan = document.getElementById(SEARCH_COUNT_ID);
+        if (searchCountSpan) {
+            searchCountSpan.textContent = `第（${currentMatchIndex + 1}/${matchNodes.length}）個結果`;
+        }
+
+        // 5. 平滑捲動到目標節點
+        targetNode.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center' // 捲動到中間會更易於查看
+        });
+    }
+
+    // --- 函數：處理搜尋按鈕點擊 ---
+    function handleSearchClick() {
+        const searchInput = document.getElementById(SEARCH_TEXT_ID);
+        if (searchInput) {
+            const searchText = searchInput.value.trim();
+            performSearch(searchText);
+        }
+    }
+
+    // --- 函數：處理導航按鈕點擊 ---
+    function handleNavigation(direction) {
+        if (matchNodes.length === 0) return;
+
+        let nextIndex = currentMatchIndex + direction;
+        scrollToMatch(nextIndex);
+    }
+
     // --- 執行載入 ---
     Promise.allSettled([
         loadHtmlFragment(HEADER_FILE, headerPlaceholder, '頁首'),
@@ -160,6 +375,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.warn(`找不到 ID 為 ${hash} 的元素。`);
             }
         }
+
+// --- 函數：初始化搜尋功能 ---
+        function initializeSearch() {
+            console.log('initializeSearch 函數開始執行。');
+
+            // 取得切換按鈕
+            const toggleSearchBtn = document.getElementById(TOGGLE_SEARCH_BTN_ID);
+            
+            // 1. 綁定搜尋切換按鈕事件
+            if (toggleSearchBtn) {
+                toggleSearchBtn.addEventListener('click', toggleSearchVisibility);
+                console.log('搜尋切換按鈕事件已綁定。');
+            } else {
+                console.warn('找不到搜尋切換按鈕元素 (ID: toggleSearchBtn)！');
+            }
+
+            // 2. 綁定搜尋、導航事件
+            const searchBtn = document.getElementById(SEARCH_BTN_ID);
+            const searchInput = document.getElementById(SEARCH_TEXT_ID);
+            const nextMatchBtn = document.getElementById(NEXT_MATCH_BTN_ID);
+            const prevMatchBtn = document.getElementById(PREV_MATCH_BTN_ID);
+            
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', handleSearchClick);
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        handleSearchClick();
+                        e.preventDefault(); 
+                    }
+                });
+                searchInput.addEventListener('input', function() {
+                    if (searchInput.value.trim() === '' && originalContent) {
+                        removeHighlights();
+                    }
+                });
+                console.log('搜尋按鈕與輸入框事件已綁定。');
+            } else {
+                console.warn('找不到搜尋按鈕或輸入框元素！');
+            }
+
+            if (nextMatchBtn) {
+                nextMatchBtn.addEventListener('click', () => handleNavigation(1));
+            }
+            
+            if (prevMatchBtn) {
+                prevMatchBtn.addEventListener('click', () => handleNavigation(-1));
+            }
+        }
+    
+        initializeSearch();
+        // --- 搜尋功能初始化結束 ---
 
     const backBtn = document.getElementById('backBtn');
     console.log('即將啟動myBtn（回上頁按鈕）');
