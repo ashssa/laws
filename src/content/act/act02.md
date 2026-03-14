@@ -147,7 +147,7 @@ url: https://drive.google.com/drive/folders/1dLnSiUy6dEjEAUtmF4_ztQg4FQqZRa9i
 第28條 （施行日期）
 本法自公布日施行。
 第29條 （法律保留原則）
-本法未盡事宜，悉依本校相關規定辦理。。
+本法未盡事宜，悉依本校相關規定辦理。
 
 ## 本法附件
 

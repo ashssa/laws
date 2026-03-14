@@ -7,6 +7,7 @@ url: https://drive.google.com/drive/folders/1yDKfKzalxR36okyYRL2_QIbYyDbaGjV7
 ## 修法歷程
 
 107.01.08 自治幹部會議制定
+109.06.15 學生議會修正通過
 111.06.14 學生議會修正通過
 112.05.18 學生議會修正通過
 113.06.14 學生議會修正通過
