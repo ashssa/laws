@@ -1,7 +1,7 @@
 ---
 // src/pages/404.astro
 import BaseHead from '../components/BaseHead.astro';
-import MainLayout from '../layouts/MainLayout.astro';
+// import MainLayout from '../layouts/MainLayout.astro';
 const title  = "找不到頁面 | 404";
 const description = "彙編高師大附中學生會所有自治法規的展示網站。";
 ---
@@ -36,6 +36,6 @@ const description = "彙編高師大附中學生會所有自治法規的展示�
 <script>
     // 使用 setTimeout 延遲重新導向，給使用者一點時間看到 "找不到頁面" 的訊息
     setTimeout(function() {
-        window.location.href = "/concentric-law";
+        window.location.href = "/laws";
     }, 1800); // 延遲 1.3 秒 (1300 毫秒)
 </script>
