@@ -1,6 +1,7 @@
 ---
 // src/components/BaseHead.astro
 import '../styles/global.css'; // 確保您的全域 CSS 在這裡引入
+import { pwaInfo } from 'virtual:pwa-info'; // 引入PWA資訊
 
 interface Props {
   title: string;
@@ -36,8 +37,8 @@ const fullTitle = title === siteName ? title : `${title} - ${siteName}`; // 邏�
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-<link rel="shortcut icon" href="/laws/img/icon.ico" type="image/x-icon" />
-<link rel="manifest" href="/laws/config/manifest.json" />
+<link rel="shortcut icon" href={`${import.meta.env.BASE_URL}img/icon.ico`} type="image/x-icon" />
+{ pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,4 +54,18 @@ const fullTitle = title === siteName ? title : `${title} - ${siteName}`; // 邏�
     }
 </style>
 
-<!-- katex CDN 以顯示公式 -->
+<!-- PWA 註冊-->
+<script>
+  // 網頁載入後，自動註冊離線快取服務器 (Service Worker)
+  window.addEventListener('load', async () => {
+    if ('serviceWorker' in navigator) {
+      try {
+        const { registerSW } = await import('virtual:pwa-register');
+        registerSW({ immediate: true });
+        console.log('[PWA] Service Worker 註冊成功');
+      } catch (err) {
+        console.error('[PWA] Service Worker 註冊失敗:', err);
+      }
+    }
+  });
+</script>
