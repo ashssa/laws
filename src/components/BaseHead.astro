@@ -1,0 +1,56 @@
+---
+// src/components/BaseHead.astro
+import '../styles/global.css'; // 確保您的全域 CSS 在這裡引入
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { 
+  title, 
+  description = "高師大附中自治法規共用系統，彙編高師大附中學生會所有自治法規的展示網站。", 
+  image = "/laws/img/Preview 3.png" 
+} = Astro.props;
+
+const siteName = "高師大附中學生會自治法規共用系統";
+const fullTitle = title === siteName ? title : `${title} - ${siteName}`; // 邏輯：如果是首頁標題就不用重複
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} />
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={fullTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<link rel="shortcut icon" href="/laws/img/icon.ico" type="image/x-icon" />
+<link rel="manifest" href="/laws/config/manifest.json" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+<style>
+    /* Material Icons 的全域設定 */
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 20;
+        font-size: inherit;
+    }
+</style>
+
+<!-- katex CDN 以顯示公式 -->

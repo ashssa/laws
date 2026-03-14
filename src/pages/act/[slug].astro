@@ -1,0 +1,172 @@
+---
+import { getCollection } from 'astro:content';
+import LawLayout from '../../layouts/LawLayout.astro';
+import { parseLawMarkdown } from '../../utils/lawParser';
+import ActionButtons from '../../components/ActionButtons.astro';
+import 'katex/dist/katex.min.css';
+
+
+// 1. 生成靜態路徑
+export async function getStaticPaths() {
+  const act = await getCollection('act');
+  return act.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+// 2. 獲取內容並解析
+const { entry } = Astro.props;
+// entry.body 包含原始 Markdown 文字
+const lawData = parseLawMarkdown(entry.body);
+// 抓取 base URL
+const baseUrl = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL;
+// 邏輯：如果有設定 abbr 就用 abbr，否則回退使用 title
+const browserTitle = entry.data.abbr || entry.data.title;
+---
+
+<LawLayout 
+  title={browserTitle}
+  url={entry.data.url}
+>
+    
+  <h2 class="page-title" id="page-title">{entry.data.title}</h2>
+
+  {lawData.history.length > 0 && (
+    <section class="amendment-history">
+      <h3 id="amendment-history">修法歷程</h3>
+      <ul class="list-disc pl-5">
+        {lawData.history.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <ActionButtons url={entry.data.url} />
+
+  <article class="regulation-content">
+    {lawData.articles.map((item) => {
+      // 渲染章 (h3)
+      if (item.type === 'chapter') {
+        return <h3 id={item.text}>{item.text}</h3>;
+      }
+      // 渲染節 (h4)
+      if (item.type === 'section') {
+        return <h4 id={item.text}>{item.text}</h4>;
+      }
+      // 渲染條文 (Row) 
+      if (item.type === 'article') {
+        // 1. 動態計算錨點 ID：如果有 subNumber 就加上「-Y」，否則只有主條號
+        const anchorId = item.subNumber 
+          ? `article-${item.number}-${item.subNumber}` 
+          : `article-${item.number}`;
+
+        return (
+          // 2. 將計算好的 ID 賦予給 row，這樣點擊連結時網頁才會跳到這裡
+          <div class="row" id={anchorId}>
+            {/* 條號 */}
+            <span class="art">
+              {/* 3. 加入錨點連結 */}
+              <a href={`#${anchorId}`} class="law-btn-anchor">＃</a>
+              <p>
+                第{item.number}條{item.subNumber ? `之${item.subNumber}` : ''}
+              </p>
+            </span>
+            
+            {/* 條文內容區塊 */}
+            <div class="art-data flex-1">
+              {/* 備註 (如果有) */}
+              {item.note && <p class="art-note">（{item.note}）</p>}
+              
+              {/* 內文段落邏輯開始 */}
+              {item.paragraphs.map((par) => {
+                const text = par.trim();
+                let pClass = "par";
+                let marker = ""; // 用來存編號
+                let content = text; // 用來存內文
+
+                // 1. 判斷並提取 (1) 或 （1）
+                const itemMatch = text.match(/^([（(]\d+[）)])\s*(.*)/);
+                if (itemMatch) {
+                  pClass = "item";
+                  marker = itemMatch[1];
+                  content = itemMatch[2].trim();
+                } 
+                // 2. 判斷並提取 1 或 1.
+                else {
+                  // 這裡同時支援 "1" 或 "1." 兩種寫法，視您的 Markdown 習慣而定
+                  const subMatch = text.match(/^(\d+\.?)\s*(.*)/);
+                  if (subMatch) {
+                    pClass = "sub";
+                    marker = subMatch[1];
+                    content = subMatch[2].trim();
+                  }
+                }
+
+              return (
+                <div class={pClass}>
+                  {/* 如果有編號，顯示編號 span；沒有則不顯示 */}
+                  {marker && <span class="num-marker">{marker}</span>}
+                  {/* 使用 Fragment 與 set:html 來告訴 Astro 這是一段安全的 HTML */}
+                  <Fragment set:html={content.trim()} />
+                </div>
+              );
+              })}
+              {/* 內文段落邏輯結束 */}
+            </div>
+          </div>
+        );
+      }
+    })}
+  </article>
+
+  {lawData.attachments.length > 0 && (
+    <section class="attachments-list">
+      <h3 >本法附件</h3>
+      <ul class="attachments">
+        {lawData.attachments.map((att) => (
+          <li>
+            <a href={att.url.startsWith('/') ? `${baseUrl}${att.url}` : att.url} target="_blank" class="transition">
+              <span class="att-no">{att.no}</span>
+              <span class="att-title">{att.title}</span>
+              {/* 您可以加上 PDF 圖示 */}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+</LawLayout>
+
+<!-- katex 公式載入 -->
+<script>
+  // 透過 ES Module 載入自動渲染工具，Astro 會處理打包
+  import renderMathInElement from 'katex/dist/contrib/auto-render.mjs';
+
+  function initKaTeX() {
+      console.log("[KaTeX NPM] 開始掃描與渲染公式...");
+      
+      // 只掃描法規內容區塊，提升效能
+      const article = document.querySelector('.regulation-content');
+      
+      if (article) {
+          renderMathInElement(article, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},  // 獨立區塊公式
+                  {left: '$', right: '$', display: false}    // 行內公式
+              ],
+              throwOnError: false // 語法錯誤時顯示原碼，不崩潰
+          });
+          console.log("[KaTeX NPM] 渲染成功！");
+      } else {
+          console.warn("[KaTeX NPM] 找不到 .regulation-content 區塊");
+      }
+  }
+
+  // 確保 DOM 樹建立後才執行
+  document.addEventListener('DOMContentLoaded', initKaTeX);
+  // 若未來有啟用 View Transitions 換頁，確保切換回來時公式不失效
+  document.addEventListener('astro:page-load', initKaTeX);
+</script>

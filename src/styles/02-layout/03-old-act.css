@@ -1,0 +1,12 @@
+.legacy-law-content .row {
+    @apply flex mb-2;
+}
+.legacy-law-content .old-art {
+    @apply font-bold mr-2;
+}
+.legacy-law-content .old-art-data {
+    @apply ml-4 flex-1;
+}
+.legacy-law-content .old-par {
+    @apply block mb-1;
+}

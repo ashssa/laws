@@ -1,0 +1,38 @@
+---
+import '../styles/global.css'; // 引入原本的 CSS 檔案
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ScrollToTop from '../components/ScrollToTop.astro'; // 暫時測試一下 ScrollToTop
+import BaseHead from '../components/BaseHead.astro';
+
+const { title } = Astro.props;
+const siteName = "高師大附中學生會自治法規共用系統";
+const description = "彙編高師大附中學生會所有自治法規的展示網站。";
+---
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <BaseHead title={title} description={description} />
+</head>
+<body>
+
+    <Navbar />
+
+    <main class="main-content">
+        <slot /> </main>
+
+    <ScrollToTop />
+    <Footer />
+
+    <script is:inline src="../scripts//main.js"></script>
+    
+</body>
+<style>
+    /* 覆蓋各法規頁面為了目次而新增的邊距 */
+    .main-content {
+        margin: 2rem auto; 
+        padding-left: 1.5rem;
+    }
+</style>
+</html>

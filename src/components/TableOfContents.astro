@@ -1,0 +1,215 @@
+---
+// src/components/TableOfContents.astro
+---
+
+<div 
+    id="toc-overlay" 
+    class="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 hidden lg:hidden opacity-0 transition-opacity duration-300"
+></div>
+
+<button 
+    id="mobile-toc-btn" 
+    class="lg:hidden btn btn-secondary btn-sm fixed bottom-24 left-0 rounded-l-none z-50 shadow-md bg-accent/65 border-none backdrop-blur transition-transform duration-300 translate-x-0"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+    目次
+</button>
+
+<aside 
+    id="toc-sidebar" 
+    class="fixed top-0 lg:top-19 left-0 h-full lg:h-[calc(100vh-4rem)] w-64 bg-base-100/95 backdrop-blur shadow-lg border-r border-base-200 z-40 lg:z-25 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col"
+>
+    <div class="flex justify-between items-center p-4 border-b border-base-200">
+        <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            法規目次
+        </h3>
+        <button id="close-toc-btn" class="btn btn-ghost btn-xs btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+    </div>
+    <ul id="toc-list" class="menu p-4 flex-nowrap overflow-y-auto overscroll-contain flex-1 text-sm gap-1 pb-20">
+        </ul>
+</aside>
+
+<button 
+    id="desktop-toc-open-btn" 
+    class="hidden btn btn-square btn-ghost fixed top-24 left-0 z-30 shadow-sm bg-base-100 border border-base-200 rounded-l-none transition-all"
+    title="打開目次"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+</button>
+
+<script>
+    function initTOC() {
+        const sidebar = document.getElementById('toc-sidebar');
+        const mobileBtn = document.getElementById('mobile-toc-btn');
+        const desktopOpenBtn = document.getElementById('desktop-toc-open-btn');
+        const closeBtn = document.getElementById('close-toc-btn');
+        const tocList = document.getElementById('toc-list');
+        const tocOverlay = document.getElementById('toc-overlay');
+        const mainContent = document.getElementById('law-main-content'); 
+        
+        const headings = Array.from(document.querySelectorAll('main h2, main h3, main h4'));
+
+        if (!sidebar || !tocList || headings.length === 0) return;
+
+        let isSidebarOpen = false;
+
+        // === 封裝手機版按鈕的顯示/隱藏函數，解決 Class 衝突 ===
+        function hideMobileBtn() {
+            if (!mobileBtn) return;
+            mobileBtn.classList.remove('translate-x-0');
+            mobileBtn.classList.add('-translate-x-full');
+        }
+
+        function showMobileBtn() {
+            if (!mobileBtn) return;
+            mobileBtn.classList.remove('-translate-x-full');
+            mobileBtn.classList.add('translate-x-0');
+        }
+
+        // === 1. 自動生成目次 ===
+        tocList.innerHTML = ''; 
+        headings.forEach((heading, index) => {
+            if (!heading.id) heading.id = 'heading-' + index;
+
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `#${heading.id}`;
+            a.textContent = heading.textContent.trim();
+            a.className = "toc-link transition-all duration-200 block w-full"; 
+            
+            const tagName = heading.tagName.toLowerCase();
+            if (tagName === 'h3') li.classList.add('ml-4', 'mt-1');
+            if (tagName === 'h4') li.classList.add('ml-8', 'opacity-80', 'text-xs');
+            if (tagName === 'h2') a.classList.add('font-bold', 'text-base');
+
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.pushState(null, '', `#${heading.id}`); 
+                
+                // 手機版點擊標題後自動收合
+                if (window.innerWidth < 1024) closeSidebar();
+            });
+
+            li.appendChild(a);
+            tocList.appendChild(li);
+        });
+
+        // === 2. 開關邏輯 ===
+        function openSidebar() {
+            isSidebarOpen = true;
+            sidebar?.classList.remove('-translate-x-full');
+            sidebar?.classList.add('translate-x-0', 'lg:translate-x-0');
+            
+            if (window.innerWidth >= 1024) {
+                mainContent?.classList.add('lg:pl-64');
+                desktopOpenBtn?.classList.remove('lg:flex');
+            } else {
+                // 手機版：叫出選單時，必須隱藏觸發按鈕
+                hideMobileBtn();
+                tocOverlay?.classList.remove('hidden');
+                setTimeout(() => tocOverlay?.classList.remove('opacity-0'), 10);
+            }
+        }
+
+        function closeSidebar() {
+            isSidebarOpen = false;
+            sidebar?.classList.remove('translate-x-0', 'lg:translate-x-0');
+            sidebar?.classList.add('-translate-x-full');
+            
+            if (window.innerWidth >= 1024) {
+                mainContent?.classList.remove('lg:pl-64');
+                desktopOpenBtn?.classList.add('lg:flex');
+            } else {
+                tocOverlay?.classList.add('opacity-0');
+                setTimeout(() => tocOverlay?.classList.add('hidden'), 300);
+                
+                // 收合選單後，因為仍在畫面上，應該要能看到觸發按鈕
+                showMobileBtn(); 
+            }
+        }
+
+        // 綁定點擊事件
+        if (mobileBtn) mobileBtn.onclick = openSidebar;
+        if (desktopOpenBtn) desktopOpenBtn.onclick = openSidebar;
+        if (closeBtn) closeBtn.onclick = closeSidebar;
+        if (tocOverlay) tocOverlay.onclick = closeSidebar; // 點擊遮罩空白處收合
+
+        // === 3. Scrollspy 與 防彈級 Headroom 邏輯 ===
+        let lastScrollTop = 0;
+        const delta = 10; // 滑動距離必須大於 10px 才算數 (防手抖與 iOS 回彈)
+        
+        function handleScroll() {
+            // -- Scrollspy (目前閱讀位置追蹤) --
+            let currentId = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) currentId = heading.id;
+            });
+
+            if (!currentId && headings.length > 0) currentId = headings[0].id;
+
+            const tocLinks = document.querySelectorAll('a.toc-link');
+            tocLinks.forEach(link => {
+                link.classList.remove('bg-primary/10', 'text-primary', 'font-bold', 'border-l-4', 'border-primary');
+                if (link.getAttribute('href') === `#${currentId}`) {
+                    link.classList.add('bg-primary/10', 'text-primary', 'font-bold', 'border-l-4', 'border-primary');
+                }
+            });
+
+            // -- Headroom (往下滑隱藏、往上滑顯示) --
+            if (window.innerWidth < 1024) {
+                // 如果側邊欄打開中，絕對不顯示按鈕
+                if (isSidebarOpen) {
+                    hideMobileBtn();
+                    return;
+                }
+
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const isAtTop = scrollTop < 50;
+                // 判斷是否滑到底部 (-50 是緩衝值)
+                const isAtBottom = (window.innerHeight + scrollTop) >= document.documentElement.scrollHeight - 50;
+
+                // 忽略非常微小的滑動或是因回彈產生的負數 scroll
+                if (Math.abs(lastScrollTop - scrollTop) <= delta && !isAtTop && !isAtBottom) {
+                    return; 
+                }
+
+                const isScrollingUp = scrollTop < lastScrollTop;
+
+                // 核心邏輯：在頂端、在底端、或是明顯往上滑動時顯示
+                if (isAtTop || isAtBottom || isScrollingUp) {
+                    showMobileBtn();
+                } else {
+                    // 明顯往下滑動時隱藏
+                    hideMobileBtn();
+                }
+
+                // 更新最後的捲動位置，並防範 iOS 的負數回彈 (overscroll bounce)
+                lastScrollTop = Math.max(0, scrollTop);
+            }
+        }
+
+        // 為了支援 Astro 切換頁面，確保舊的監聽器被移除再重新綁定
+        if (window._tocScrollHandler) {
+            window.removeEventListener('scroll', window._tocScrollHandler);
+        }
+        window._tocScrollHandler = handleScroll;
+        window.addEventListener('scroll', window._tocScrollHandler, { passive: true });
+        
+        handleScroll(); // 初次載入先執行一次
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTOC);
+    } else {
+        initTOC();
+    }
+    
+    document.addEventListener('astro:page-load', () => {
+        if (document.readyState !== 'loading') initTOC();
+    });
+</script>

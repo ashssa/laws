@@ -1,0 +1,21 @@
+---
+const { title, items } = Astro.props;
+---
+
+<ul class="law-list list">
+    <li class="law-list-title">
+        {title}
+    </li>
+
+    {items.map((item, index) => (
+        <li class="list-row">
+            <div class="no">
+                {(index + 1).toString().padStart(2, '0')}
+            </div>
+            
+            <a class="law-name" href={item.path}>
+                {item.name}
+            </a>
+        </li>
+    ))}
+</ul>

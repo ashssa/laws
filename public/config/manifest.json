@@ -23,7 +23,7 @@
       "name": "組織章程",
       "short_name": "組織章程",
       "description": "閱讀本會組織章程",
-      "url": "/laws/act01.html",
+      "url": "/laws/act/act01",
       "icons": [{ "src": "/laws/img/shortcuts01-512.png", "sizes": "512x512" }]
     },
     {

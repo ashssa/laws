@@ -1,53 +1,44 @@
+# .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 
 on:
+  # 觸發條件：當推送到 main 分支時
   push:
-    branches:
-      - main # 主要分支
+    branches: [ main ]
+  # 允許手動從 Actions 頁籤觸發
+  workflow_dispatch:
+
+# 權限設定
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時只能執行一個部署任務
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
     steps:
-      - name: Checkout code
+      - name: Checkout your repository using git
         uses: actions/checkout@v4
+      
+      # 自動偵測並安裝依賴 (npm, pnpm, yarn)
+      - name: Install, build, and upload your site
+        uses: withastro/action@v2
+        # 注意：如果您沒有使用 pnpm，Astro 會自動改用 npm
+        # 若您希望強制使用特定套件管理器，可查閱 withastro/action 文件
 
-      # --- 開始新增 Service Worker 相關步驟 ---
-
-      - name: Generate Service Worker cache version
-        id: generate_sw_version
-        run: |
-          # 使用提交的短 SHA 作為 Service Worker 版本號
-          SW_VERSION=$(git rev-parse --short HEAD)
-          echo "Generated Service Worker cache version: $SW_VERSION"
-          echo "SW_VERSION=$SW_VERSION" >> $GITHUB_ENV
-
-      - name: Update Service Worker cache name
-        run: |
-          # 替換 public/config/sw.js 中的佔位符
-          sed -i "s/%%VERSION%%/${{ env.SW_VERSION }}/g" ./public/config/sw.js
-          echo "Updated sw.js with cache version ${{ env.SW_VERSION }}"
-
-      # --- 結束新增 Service Worker 相關步驟 ---
-
-      - name: Get current date (UTC+8)
-        id: date
-        env:
-          TZ: Asia/Taipei
-        run: echo "DATE=$(date +'%Y年%m月%d日 %H:%M:%S') (UTC+8)" >> $GITHUB_OUTPUT 
-
-      - name: Update date in HTML
-        run: |
-          sed -i "s|<span id=\"last-updated-date\">.*</span>|<span id=\"last-updated-date\">${{ steps.date.outputs.DATE }}</span>|g" ./public/components/footer.html
-
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public # 改成從 public 資料夾部署
+        id: deployment
+        uses: actions/deploy-pages@v4
