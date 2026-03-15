@@ -36,16 +36,16 @@ const finalUrl = url || defaultUrl;
                 // 執行複製網址 (包含錨點 #article-xx 也會一併複製)
                 await navigator.clipboard.writeText(window.location.href);
                 
-                // 超讚的 UI 視覺回饋：把按鈕變綠色，並改變文字
+                // UI 視覺回饋：把按鈕固定為以活化（actived）
                 const originalText = copyBtn.innerText;
                 copyBtn.innerText = '已複製網址　';
                 copyBtn.classList.remove('btn-neutral');
-                copyBtn.classList.add('btn-active', 'text-success-content'); // DaisyUI 的綠色成功狀態
+                copyBtn.classList.add('btn-active', 'text-content'); // DaisyUI 的綠色成功狀態
 
-                // 2 秒後恢復原狀
+                // 0.9 秒後恢復原狀
                 setTimeout(() => {
                     copyBtn.innerText = originalText;
-                    copyBtn.classList.remove('btn-active', 'text-success-content');
+                    copyBtn.classList.remove('btn-active', 'text-content');
                     copyBtn.classList.add('btn-neutral');
                 }, 900);
 
