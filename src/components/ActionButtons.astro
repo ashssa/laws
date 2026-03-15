@@ -8,25 +8,29 @@ const defaultUrl = "https://sites.google.com/a/stu.nknush.kh.edu.tw/ashs_sp/laws
 
 // 決定最終使用的網址：如果有傳入就用傳入的，沒有就用預設的
 const finalUrl = url || defaultUrl;
+
+// 取得網站根目錄 (對接 astro.config.mjs 的 base 設定)
+const baseUrl = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_URL;
 ---
 <nav class="grid grid-flow-col-3 min-[397px]:grid-flow-col gap-5 md:mx-2 print:hidden my-4">
-  <button class="btn btn-neutral" id="backBtn">回上頁</button>
+  <!-- <button class="btn btn-neutral" id="backBtn">回上頁</button> -->
+  <a href={baseUrl} class="btn btn-neutral" id="backBtn">回法規目錄</a>
   <a href={finalUrl} target="_blank" class="btn btn-neutral">
     法規沿革
   </a>
-  <button class="btn btn-neutral  " id="copyLinkBtn">複製本頁網址</button>
+  <button class="btn btn-neutral " id="copyLinkBtn">複製本頁網址</button>
 </nav>
 
 <script>
   function initActionButtons() {
-    // 處理回上頁
-    const backBtn = document.getElementById('backBtn');
-    if (backBtn) {
-        // 使用 onclick 避免重複綁定
-        backBtn.onclick = () => {
-            history.back();
-        };
-    }
+    // // 處理回上頁
+    // const backBtn = document.getElementById('backBtn');
+    // if (backBtn) {
+    //     // 使用 onclick 避免重複綁定
+    //     backBtn.onclick = () => {
+    //         history.back();
+    //     };
+    // }
 
     // 處理複製連結
     const copyBtn = document.getElementById('copyLinkBtn');
