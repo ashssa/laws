@@ -80,8 +80,8 @@
                 <input type="text" id="searchText" placeholder="關鍵字..." class="grow h-auto" />
             </label>
             <div id="matchBtnContainer" class="join-item mr-1 gap-0 hidden">
-                <button id="nextMatchBtn" class="btn btn-sm w-8 ml-1">↓</button>
                 <button id="prevMatchBtn" class="btn btn-sm w-8 ml-1">↑</button>
+                <button id="nextMatchBtn" class="btn btn-sm w-8 ml-1">↓</button>
             </div>
             <button id="searchButton" class="btn btn-sm btn-neutral join-item">Go</button>
         </div>
@@ -137,7 +137,7 @@
 
             textNodes.forEach(textNode => {
                 const span = document.createElement('span');
-                span.innerHTML = textNode.nodeValue?.replace(regex, '<mark class="search-mark bg-warning text-warning-content rounded px-1">$1</mark>') || '';
+                span.innerHTML = textNode.nodeValue?.replace(regex, '<mark class="search-mark bg-warning/50 text-warning-content rounded px-1">$1</mark>') || '';
                 while (span.firstChild) {
                     textNode.parentNode?.insertBefore(span.firstChild, textNode);
                 }

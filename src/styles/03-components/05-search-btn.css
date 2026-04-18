@@ -32,5 +32,6 @@
 }
 /* 新版 */
 .search-highlight {
-    @apply ring-4 ring-error scale-110 transition-all ;
+    /* @apply ring-4 ring-error/70 scale-110 transition-all ; */
+    @apply bg-orange-500/50 scale-110 transition-all ;
 }
