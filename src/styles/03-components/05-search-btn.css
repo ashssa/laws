@@ -1,3 +1,4 @@
+/* --- 舊版 --- */
 .highlight {
     background-color: var(--color-warning); /* 高亮顏色 */
     color: var(--color-warning-content);
@@ -13,6 +14,8 @@
 .highlight, .current-match {
     @apply  px-0.5 transition duration-200 ease-in-out;
 }
+
+/* --- 共通 --- */
 #toggleSearchBtn {
     @apply btn btn-sm btn-soft ml-auto text-neutral;
     @apply bg-base-100/50 border-none md:bg-neutral dark:bg-neutral text-base-content/70 md:text-neutral-content dark:text-neutral-content shadow-sm backdrop-blur-sm print:hidden;
@@ -30,11 +33,17 @@
 .search-container-span {
     @apply mt-1
 }
-/* 新版 */
+
+/* --- 新版 --- */
 .search-mark{
     @apply bg-yellow-300/50 dark:bg-yellow-200/40 text-base-content px-0.5
 }
 .search-highlight {
     /* @apply ring-4 ring-error/70 scale-110 transition-all ; */
     @apply bg-orange-400/60 dark:bg-orange-400/50 scale-110 transition-all ;
+}
+#searchContainer {
+    /* 以 md 為斷點，進行 backdrop-blur 設計 */
+    @apply bg-base-100/80 border-none backdrop-blur-sm rounded-box w-72 p-4 shadow-xl flex-col gap-2 transition-all transition-discrete ;
+    @apply md:bg-base-200 md:border md:border-base-300 
 }
