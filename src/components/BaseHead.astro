@@ -75,7 +75,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 <!-- End Google tag (gtag.js) -->
 
-
 <!-- PWA 註冊-->
 <script>
   // 網頁載入後，自動註冊離線快取服務器 (Service Worker)
@@ -91,3 +90,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
   });
 </script>
+
+<!-- 主題切換邏輯 -->
+<!-- <script is:inline>
+  // 核心初始化函數
+  (function() {
+    const storageKey = 'theme'; // 您的 LocalStorage Key
+    const defaultLight = 'corporate';
+    const defaultDark = 'dracula'; // 對應您 global.css 的 --prefersdark
+
+    // 1. 檢查 LocalStorage 是否有使用者先前的選擇
+    const savedTheme = localStorage.getItem(storageKey);
+
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+      // 2. 如果沒有手動設定，檢查系統是否為黑暗模式
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const themeToApply = systemPrefersDark ? defaultDark : defaultLight;
+      
+      document.documentElement.setAttribute('data-theme', themeToApply);
+    }
+  })();
+</script> -->
