@@ -2,11 +2,31 @@
 // src/components/TableOfContents.astro
 ---
 
+<!-- 行動版擋住背景用的遮罩 -->
 <div 
     id="toc-overlay" 
     class="fixed inset-0 bg-black/20 backdrop-blur-sm z-101 hidden lg:hidden opacity-0 transition-opacity duration-300"
 ></div>
 
+<!-- 側邊欄 -->
+<aside 
+    id="toc-sidebar" 
+    class="fixed top-0 lg:top-19 left-0 h-full lg:h-[calc(100vh-4rem)] w-64 bg-base-100/95 backdrop-blur shadow-lg border-r border-base-200 z-250 lg:z-25 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col"
+>
+    <div class="flex justify-between items-center p-4 border-b border-base-200">
+        <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            <!-- 法規 -->目次
+        </h3>
+        <button id="close-toc-btn" class="btn btn-ghost btn-xs btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+    </div>
+    <ul id="toc-list" class="menu p-4 flex-nowrap overflow-y-auto overscroll-contain flex-1 text-sm gap-1 pb-20">
+        </ul>
+</aside>
+
+<!-- 行動版打開目次按鈕 -->
 <button 
     id="mobile-toc-btn" 
     class="lg:hidden btn btn-secondary btn-sm fixed bottom-24 left-0 rounded-l-none z-255 shadow-md bg-accent/65 dark:bg-neutral/65 border-none backdrop-blur transition-transform duration-300 translate-x-0"
@@ -17,23 +37,7 @@
     </span>
 </button>
 
-<aside 
-    id="toc-sidebar" 
-    class="fixed top-0 lg:top-19 left-0 h-full lg:h-[calc(100vh-4rem)] w-64 bg-base-100/95 backdrop-blur shadow-lg border-r border-base-200 z-250 lg:z-25 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col"
->
-    <div class="flex justify-between items-center p-4 border-b border-base-200">
-        <h3 class="font-bold text-lg text-primary flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-            法規目次
-        </h3>
-        <button id="close-toc-btn" class="btn btn-ghost btn-xs btn-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-        </button>
-    </div>
-    <ul id="toc-list" class="menu p-4 flex-nowrap overflow-y-auto overscroll-contain flex-1 text-sm gap-1 pb-20">
-        </ul>
-</aside>
-
+<!-- 電腦版打開目次按鈕 -->
 <button 
     id="desktop-toc-open-btn" 
     class="hidden btn btn-square btn-ghost fixed top-24 left-0 z-30 shadow-sm bg-base-100 border border-base-200 rounded-l-none transition-all"
