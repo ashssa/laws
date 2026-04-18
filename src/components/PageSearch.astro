@@ -77,13 +77,12 @@
 
         <div class="join w-full"> 
             <label class="input input-bordered input-sm join-item flex items-center gap-2 flex-1">
-                <input type="text" id="searchText" placeholder="關鍵字..." class="grow" />
-                                        <div class="join join-horizontal my-auto -mx-0 lg:-mx-2 opacity-50">
-                            <button id="prevMatchBtn" class="btn btn-ghost btn-xs join-item">↑</button>
-                            <button id="nextMatchBtn" class="btn btn-ghost btn-xs join-item">↓</button>
-                        </div>
-
+                <input type="text" id="searchText" placeholder="關鍵字..." class="grow h-auto" />
             </label>
+            <div id="matchBtnContainer" class="join-item mr-1 gap-0 hidden">
+                <button id="nextMatchBtn" class="btn btn-sm w-8 ml-1">↓</button>
+                <button id="prevMatchBtn" class="btn btn-sm w-8 ml-1">↑</button>
+            </div>
             <button id="searchButton" class="btn btn-sm btn-neutral join-item">Go</button>
         </div>
         
@@ -102,6 +101,7 @@
         const searchBtn = document.getElementById('searchButton');
         const prevBtn = document.getElementById('prevMatchBtn');
         const nextBtn = document.getElementById('nextMatchBtn');
+        const matchBtnContainer = document.getElementById('matchBtnContainer');
         const searchCount = document.getElementById('searchCount');
         const contentArea = document.querySelector('.law-content');
         const swapLabel = document.getElementById('swapLabel');
@@ -113,6 +113,8 @@
         toggleBtn?.addEventListener('click', () => {
             container?.classList.toggle('hidden');
             swapLabel?.classList.toggle('swap-active');
+            matchBtnContainer?.classList.add('hidden');
+            matchBtnContainer?.classList.remove('flex');
             if (!container?.classList.contains('hidden')) searchInput?.focus();
             else clearSearch();
         });
@@ -145,6 +147,8 @@
             matches = Array.from(contentArea.querySelectorAll('.search-mark'));
             if (matches.length > 0) {
                 if(searchCount) searchCount.textContent = `共 ${matches.length} 筆`;
+                matchBtnContainer?.classList.remove('hidden');
+                matchBtnContainer?.classList.add('flex');
                 navigateToMatch(0);
             } else {
                 if(searchCount) searchCount.textContent = '無結果';
