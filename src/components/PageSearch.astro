@@ -2,8 +2,9 @@
 // src/components/PageSearch.astro
 ---
 <div id="searchFieldsetContainer" class="fixed right-4 bottom-24 z-50 print:hidden">
+    <!-- 搜尋功能開關 -->
     <div id="function-toggles" class="text-right mb-2">
-        <button id="toggleSearchBtn" class="btn btn-circle btn-primary shadow-lg">
+        <!-- <button id="toggleSearchBtn" class="btn btn-circle btn-primary shadow-lg">
             <svg class="h-[1em] opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g
                     stroke-linejoin="round"
@@ -16,10 +17,58 @@
                     <path d="m21 21-4.3-4.3"></path>
                 </g>
             </svg>
+             -->
+        <button id="toggleSearchBtn" class="btn btn-circle btn-primary shadow-lg">
+            <!-- <svg class="h-[1em] opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                </g>
+            </svg> -->
+            
+            <label id="swapLabel" class="swap swap-rotate">
+                <!-- search icon from Lucide -->
+                <svg
+                    class="h-[1em] swap-off fill-current"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24">
+                    <g
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2.5"
+                        fill="none"
+                        stroke="currentColor"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </g>
+                </svg>
 
+                <!-- close icon from Lucide -->
+                <svg 
+                    class="h-[1em] swap-on fill-curren scale-130"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M18 6 6 18"/>
+                    <path d="m6 6 12 12"/>
+                </svg>
+
+            </label>
         </button>
     </div>
 
+    <!-- 搜尋面板 -->
     <fieldset id="searchContainer" class="fieldset bg-base-200 border border-base-300 rounded-box w-72 p-4 shadow-xl flex-col gap-2 hidden transition-all transition-discrete">
         <div class="flex justify-between items-center mb-1">
             <span class="text-sm font-medium">搜尋本頁</span>
@@ -55,6 +104,7 @@
         const nextBtn = document.getElementById('nextMatchBtn');
         const searchCount = document.getElementById('searchCount');
         const contentArea = document.querySelector('.law-content');
+        const swapLabel = document.getElementById('swapLabel');
 
         let matches = [];
         let currentIndex = -1;
@@ -62,6 +112,7 @@
         // UI 開關
         toggleBtn?.addEventListener('click', () => {
             container?.classList.toggle('hidden');
+            swapLabel?.classList.toggle('swap-active');
             if (!container?.classList.contains('hidden')) searchInput?.focus();
             else clearSearch();
         });
