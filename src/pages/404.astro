@@ -1,41 +1,61 @@
 ---
 // src/pages/404.astro
-import BaseHead from '../components/BaseHead.astro';
-// import MainLayout from '../layouts/MainLayout.astro';
-const title  = "找不到頁面 | 404";
-const description = "彙編高師大附中學生會所有自治法規的展示網站。";
+import MainLayout from '../layouts/MainLayout.astro';
+import { lawSections } from '../laws.js';
+
+const title = "找不到頁面 | 404";
 ---
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <BaseHead title={title} description={description} />
-</head>
-<body>
-<div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content text-center">
-        <div class="max-w-md">
-            <h1 class="text-[10rem]/34 font-bold font--(Noto_Sans) italic pb-2" style="font-family:Noto Sans">404</h1><!-- 本來有：pb-8 underline decoration-primary decoration-wavy -->
-            <h2 class="text-5xl font-bold text-base-content/90">找不到頁面</h2>
-            <progress class="progress w-58"></progress>
-            <p class="py-6">
-                不好意思，你好像闖進了時空裂縫！<br>正在努力將你傳送回網站首頁—— <!-- 您試圖存取的頁面錯誤或不存在，將在 1 秒後自動重新導向首頁…… -->
-            </p>
+
+<MainLayout title={title}>
+    <div class="hero bg-base-100 py-20">
+        <div class="hero-content text-center">
+            <div class="max-w-2xl">
+                <h1 class="text-9xl font-bold text-primary italic">404</h1>
+                <h2 class="text-4xl font-bold mt-4 mb-6">不好意思！你好像闖進了時空裂縫</h2>
+                <p class="text-lg pb-6">所尋找的頁面可能已被移動或不存在。</p>
+                
+                <div id="suggestion-box" class="hidden alert mb-8 text-left flex flex-col items-start">
+                    <div class="flex items-center gap-2 font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>您是不是在找：</span>
+                        <span id="suggestion-link" class=""></span>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <a href="/laws" class="btn btn-primary text-white">回首頁</a>
+                    <button class="btn btn-outline" onclick="history.back()">回上一頁</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</body>
-</html>
-<!-- <MainLayout title="找不到頁面 | 404"> -->
-<!-- <div class="flex flex-col items-center justify-center py-20 text-center">
-    <h1 class="text-8xl font-bold text-primary mb-4">404</h1>
-    <p class="text-2xl font-bold mb-6">找不到頁面</p>
-    <p class="text-base-content/70 mb-8">您尋找的頁面可能已被移除、重新命名或暫時無法使用。</p>
-    <button class="btn btn-primary" onclick="history.back()">回上一頁</button>
-</div> -->
-<!-- </MainLayout> -->
-<script>
-    // 使用 setTimeout 延遲重新導向，給使用者一點時間看到 "找不到頁面" 的訊息
-    setTimeout(function() {
-        window.location.href = "/laws";
-    }, 1800); // 延遲 1.3 秒 (1300 毫秒)
-</script>
+
+    <script define:vars={{ lawSections }}>
+        // 從目前的 URL 獲取關鍵字 (例如: act01)
+        const currentPath = window.location.pathname;
+        const match = currentPath.match(/(act|direction|old-act)\d+/i);
+
+        if (match) {
+            const targetId = match[0].toLowerCase();
+            let foundLaw = null;
+
+            // 在法規資料庫中搜尋匹配項
+            for (const section of lawSections) {
+                foundLaw = section.items.find(item => item.path.includes(targetId));
+                if (foundLaw) break;
+            }
+
+            if (foundLaw) {
+                const box = document.getElementById('suggestion-box');
+                const linkContainer = document.getElementById('suggestion-link');
+                
+                box.classList.remove('hidden');
+                linkContainer.innerHTML = `
+                    <a href="${foundLaw.path}" class="link link-hover text-lg font-semibold">
+                        ${foundLaw.name}
+                    </a>
+                `;
+            }
+        }
+    </script>
+</MainLayout>
