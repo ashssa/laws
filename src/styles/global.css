@@ -21,6 +21,9 @@
 
 /* 01. 載入 tailwindcss */
 @import "tailwindcss" ;
+@theme {
+    --breakpoint-toc: 1372px;
+}
 
 /* 02. 載入基本樣式 */
 @import "./01-base/01-base.css";
