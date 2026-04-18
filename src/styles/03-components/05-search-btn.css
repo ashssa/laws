@@ -31,7 +31,10 @@
     @apply mt-1
 }
 /* 新版 */
+.search-mark{
+    @apply bg-yellow-300/50 dark:bg-yellow-200/40 text-base-content px-0.5
+}
 .search-highlight {
     /* @apply ring-4 ring-error/70 scale-110 transition-all ; */
-    @apply bg-orange-500/50 scale-110 transition-all ;
+    @apply bg-orange-400/60 dark:bg-orange-400/50 scale-110 transition-all ;
 }

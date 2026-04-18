@@ -103,7 +103,7 @@
         const nextBtn = document.getElementById('nextMatchBtn');
         const matchBtnContainer = document.getElementById('matchBtnContainer');
         const searchCount = document.getElementById('searchCount');
-        const contentArea = document.querySelector('.law-content');
+        const contentArea = document.querySelector('.regulation-content');
         const swapLabel = document.getElementById('swapLabel');
 
         let matches = [];
@@ -137,7 +137,7 @@
 
             textNodes.forEach(textNode => {
                 const span = document.createElement('span');
-                span.innerHTML = textNode.nodeValue?.replace(regex, '<mark class="search-mark bg-warning/50 text-warning-content px-1/2">$1</mark>') || '';
+                span.innerHTML = textNode.nodeValue?.replace(regex, '<mark class="search-mark">$1</mark>') || '';
                 while (span.firstChild) {
                     textNode.parentNode?.insertBefore(span.firstChild, textNode);
                 }
@@ -190,156 +190,3 @@
     document.addEventListener('astro:page-load', initSearch);
     document.addEventListener('DOMContentLoaded', initSearch);
 </script>
-<!-- 舊版搜尋功能 -->
-<!-- ---
-// src/components/PageSearch.astro
---- -->
-<div class="hidden">
-    <!-- 搜尋功能收合鍵 -->
-    <div id="function-toggles">
-        <button id="toggleSearchBtn" class="">
-            <svg class="h-[1em] opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g
-                    stroke-linejoin="round"
-                    stroke-linecap="round"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.3-4.3"></path>
-                </g>
-            </svg>
-            <!-- 🔍 搜尋/關閉 -->
-        </button>
-    </div>
-    <!-- 搜尋面板 -->
-    <fieldset id="searchContainer" class="fieldset bg-base-200 border-base-300 rounded-box w-xs p-4 mt-4 shadow flex flex-col-reverse hidden"> <!-- hidden 用來給 js 操作，不可移除 -->
-        <div class="search-container-span"><p><span id="searchCount" class="text-sm"></span></p></div>
-        <!-- <legend class="fieldset-legend">查詢本頁</legend> -->
-        <div class="join"> <!-- 輸文字那一條 -->
-            <div>
-                <label class="input join-item">
-                    <input type="text" id="searchText" placeholder="關鍵字" />
-                    <div>    
-                        <div class="join join-horizontal my-auto -mx-0 lg:-mx-2 opacity-35">
-                            <button id="prevMatchBtn" class="btn btn-ghost btn-xs join-item">↑</button>
-                            <button id="nextMatchBtn" class="btn btn-ghost btn-xs join-item">↓</button>
-                        </div>
-                    </div>
-                </label>
-            </div>
-            <!-- 搜尋按鈕 -->
-            <button id="searchButton" class="btn btn-neutral join-item">
-                <!-- <span class="text-emoji">🔍</span> -->
-                <svg class="h-[1em] opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g
-                        stroke-linejoin="round"
-                        stroke-linecap="round"
-                        stroke-width="2.5"
-                        fill="none"
-                        stroke="currentColor"
-                    >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                    </g>
-                </svg>
-            </button>
-        </div>
-    </fieldset>
-</div>
-<!-- 舊版邏輯 -->
-<!-- <script>
-    // --- 函數：執行搜尋並高亮 ---
-    /**
-     * 搜尋並高亮特定文字，並初始化匹配項導航。
-     * @param {string} searchText - 要搜尋的文字。
-     */
-    function performSearch(searchText) {
-        if (!regulationContent || !searchText) {
-            removeHighlights();
-            toastr.info('請輸入要搜尋的關鍵字。');
-            return;
-        }
-
-        // 1. 移除先前的高亮
-        removeHighlights();
-
-        // 2. 儲存原始內容
-        originalContent = regulationContent.innerHTML;
-
-        // 3. 執行高亮替換
-        const regex = new RegExp(`(${searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        // 使用 <mark> 標籤進行替換，並加上高亮類別
-        const highlightedHtml = originalContent.replace(regex, `<mark class="${HIGHLIGHT_CLASS}">$1</mark>`);
-
-        // 4. 插入高亮後的 HTML
-        regulationContent.innerHTML = highlightedHtml;
-
-        // 5. 獲取所有匹配項並更新狀態
-        matchNodes = Array.from(regulationContent.querySelectorAll(`mark.${HIGHLIGHT_CLASS}`));
-        const matchCount = matchNodes.length;
-        const searchCountSpan = document.getElementById(SEARCH_COUNT_ID);
-
-        if (searchCountSpan) {
-            searchCountSpan.textContent = matchCount > 0 ? `找到 ${matchCount} 個結果` : '找不到結果';
-        }
-
-        if (matchCount > 0) {
-            // 顯示導航按鈕
-            const nextBtn = document.getElementById(NEXT_MATCH_BTN_ID);
-            const prevBtn = document.getElementById(PREV_MATCH_BTN_ID);
-            if (nextBtn) nextBtn.style.display = 'inline-block';
-            if (prevBtn) prevBtn.style.display = 'inline-block';
-            
-            // 定位到第一個匹配項
-            currentMatchIndex = -1; // 確保從第一個開始
-            toastr.success(`找到 ${matchCount} 個結果。`);
-            scrollToMatch(0);
-        } else {
-            toastr.info('找不到結果。');
-        }
-    }
-
-    // --- 函數：捲動到特定匹配項並標記 ---
-    /**
-     * 捲動到指定索引的匹配項並加上 `current-match` 標記。
-     * @param {number} index - 要捲動到的匹配項索引。
-     */
-    function scrollToMatch(index) {
-        if (matchNodes.length === 0) return;
-
-        // 1. 清除舊的 current-match 標記
-        if (currentMatchIndex >= 0 && currentMatchIndex < matchNodes.length) {
-            matchNodes[currentMatchIndex].classList.remove(CURRENT_MATCH_CLASS);
-        }
-
-        // 2. 處理索引循環 (確保 index 在 [0, length-1] 範圍內)
-        currentMatchIndex = (index % matchNodes.length + matchNodes.length) % matchNodes.length;
-
-        // 3. 標記新的 current-match
-        const targetNode = matchNodes[currentMatchIndex];
-        targetNode.classList.add(CURRENT_MATCH_CLASS);
-
-        // 4. 更新計數顯示 (可選)
-        const searchCountSpan = document.getElementById(SEARCH_COUNT_ID);
-        if (searchCountSpan) {
-            searchCountSpan.textContent = `第（${currentMatchIndex + 1}/${matchNodes.length}）個結果`;
-        }
-
-        // 5. 平滑捲動到目標節點
-        targetNode.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center' // 捲動到中間會更易於查看
-        });
-    }
-
-    // --- 函數：處理搜尋按鈕點擊 ---
-    function handleSearchClick() {
-        const searchInput = document.getElementById(SEARCH_TEXT_ID);
-        if (searchInput) {
-            const searchText = searchInput.value.trim();
-            performSearch(searchText);
-        }
-    }
-</script> -->
