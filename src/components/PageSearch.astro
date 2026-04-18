@@ -137,7 +137,7 @@
 
             textNodes.forEach(textNode => {
                 const span = document.createElement('span');
-                span.innerHTML = textNode.nodeValue?.replace(regex, '<mark class="search-mark bg-warning/50 text-warning-content rounded px-1">$1</mark>') || '';
+                span.innerHTML = textNode.nodeValue?.replace(regex, '<mark class="search-mark bg-warning/50 text-warning-content px-1/2">$1</mark>') || '';
                 while (span.firstChild) {
                     textNode.parentNode?.insertBefore(span.firstChild, textNode);
                 }
