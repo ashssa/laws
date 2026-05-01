@@ -105,12 +105,13 @@ const browserTitle = entry.data.abbr || entry.data.title;
                 }
 
               return (
-                <div class={pClass}>
-                  {/* 如果有編號，顯示編號 span；沒有則不顯示 */}
-                  {marker && <span class="num-marker">{marker}</span>}
-                  {/* 使用 Fragment 與 set:html 來告訴 Astro 這是一段安全的 HTML */}
-                  <Fragment set:html={content.trim()} />
-                </div>
+                <div class={pClass}>{
+                  marker ? (
+                    <><span class="num-marker">{marker}</span><Fragment set:html={content.trim()} /></>
+                  ) : (
+                    <Fragment set:html={content.trim()} />
+                  )
+                }</div>
               );
               })}
               {/* 內文段落邏輯結束 */}
