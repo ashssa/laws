@@ -49,3 +49,7 @@
     themes: corporate --default, dracula --prefersdark, retro, cyberpunk, valentine, aqua, lemonade, abyss;
 }
 @custom-variant dark (&:where([data-theme=dracula], [data-theme=dracula] *, [data-theme=aqua], [data-theme=aqua] *, [data-theme=abyss], [data-theme=abyss] *));
+
+.amendments-div > p:first-child {
+    text-indent: 0;
+}

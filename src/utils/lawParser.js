@@ -115,8 +115,13 @@ export function parseAmendmentMarkdown(mdContent) {
   let currentField = 'globalDescription'; // 預設先抓總說明
 
   const getIndentClass = (text, isGlobal = false) => {
-    if (/^[一二三四五六七八九十]+、/.test(text)) return 'pl-[2em] -indent-[2em] font-medium';
+    // 樣式 : 一二三四五 ......
+    if (/^[一二三四五六七八九十]+、/.test(text)) return 'pl-[2em] -indent-[2em]';
+
+    // 樣式 : (一)(二)(三)(四) ......
     if (/^[(（][一二三四五六七八九十]+[)）]/.test(text)) return 'ml-[2em] pl-[2em] -indent-[2em] text-base-content/90';
+
+    // 樣式 : 1. 2. 3. 4. ......
     if (/^\d+[\s\.、]/.test(text)) return 'ml-[4em] pl-[1.5em] -indent-[1.5em] text-base-content/80';
     // 總說明一般段落：首行縮排 2 字
     return isGlobal ? 'indent-[2em]' : '';
