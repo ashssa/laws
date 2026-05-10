@@ -6,7 +6,8 @@ import MainLayout from '../../layouts/MainLayout.astro';
 const allAmendments = await getCollection('amendments');
 
 // 提取出有修法紀錄的獨特法規 ID (target_act)
-const uniqueActIds = [...new Set(allAmendments.map(amend => amend.data.target_act))];
+const uniqueActIds = [...new Set(allAmendments.map(amend => amend.data.target_act))]
+  .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
 // 查詢這些法規的詳細資料以供顯示
 const actsWithAmendments = await Promise.all(
