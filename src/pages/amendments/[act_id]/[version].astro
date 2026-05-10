@@ -4,14 +4,13 @@ import path from 'node:path';
 import { getCollection, getEntry } from 'astro:content'; 
 import MainLayout from '../../../layouts/MainLayout.astro';
 import { parseAmendmentMarkdown } from '../../../utils/lawParser.js';
+// 匯入 diff 庫 (記得執行 pnpm add diff)
+import { diffChars } from 'diff';
 
 export async function getStaticPaths() {
   const amendments = await getCollection('amendments');
   return amendments.map(entry => ({
-    params: { 
-      act_id: entry.data.target_act, 
-      version: entry.data.version 
-    },
+    params: { act_id: entry.data.target_act, version: entry.data.version },
     props: { entry },
   }));
 }
@@ -19,26 +18,103 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const targetAct = await getEntry('act', entry.data.target_act);
 
-// 關鍵：繞過 Astro 引擎，強制讀取原始檔案
 const filePath = path.join(process.cwd(), 'src/content/amendments', `${entry.id}.md`);
 const rawMarkdown = fs.readFileSync(filePath, 'utf-8');
 const parsedData = parseAmendmentMarkdown(rawMarkdown);
+
+/**
+ * 核心升級：HTML 安全的跨行差異比對器
+ * 確保標籤絕對不會跨越 <p> 段落，並完美對應原始陣列長度
+ */
+function getDiffHtml(proposedArr, currentArr) {
+  const proposedText = proposedArr.map(p => p.text).join('\n');
+  const currentText = currentArr.map(p => p.text).join('\n');
+  
+  const diff = diffChars(currentText, proposedText);
+  
+  let proposedLines = [''];
+  let currentLines = [''];
+
+  diff.forEach((part) => {
+    // 依據換行切割這個片段
+    const splitVals = part.value.split('\n');
+
+    splitVals.forEach((lineText, index) => {
+      // 遇到換行時，推入新的陣列元素 (對應下一段 <p>)
+      if (index > 0) {
+        if (part.added || !part.removed) proposedLines.push('');
+        if (part.removed || !part.added) currentLines.push('');
+      }
+
+      if (lineText) {
+        // 安全處理：轉義可能破壞 HTML 的字元
+        const safeText = lineText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        // 每行獨立開閉 <span> 標籤，絕對不跨行
+        if (part.added) {
+          proposedLines[proposedLines.length - 1] += `<span class="diff-added">${safeText}</span>`;
+        } else if (part.removed) {
+          currentLines[currentLines.length - 1] += `<span class="diff-removed">${safeText}</span>`;
+        } else {
+          proposedLines[proposedLines.length - 1] += safeText;
+          currentLines[currentLines.length - 1] += safeText;
+        }
+      }
+    });
+  });
+
+  return { proposed: proposedLines, current: currentLines };
+}
 ---
 
 <MainLayout title={entry.data.title} data-law-title={targetAct?.data.title}>
-    <header class="mb-8 pb-0 print:border-black">
+  <style is:global>
+    /* 自訂差異標記樣式：
+       使用原生 CSS 確保權重夠高，並套用粗體與底線效果
+    */
+    .diff-added {
+      font-weight: 800; /* 粗體 */
+      text-decoration: underline; /* 底線 */
+      text-underline-offset: 4px;
+      text-decoration-thickness: 2px;
+      color: oklch(var(--su)); /* 借用 DaisyUI 的 Success 顏色 */
+      background-color: oklch(var(--su) / 0.1);
+      padding: 0 2px;
+      border-radius: 4px;
+    }
 
+    .diff-removed {
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 2px;
+      color: oklch(var(--er)); /* 借用 DaisyUI 的 Error 顏色 */
+      background-color: oklch(var(--er) / 0.1);
+      padding: 0 2px;
+      border-radius: 4px;
+    }
+
+    /* 列印模式下自動移除背景色，節省墨水並維持正式感 */
+    @media print {
+      .diff-added, .diff-removed {
+        background-color: transparent !important;
+        color: black !important;
+      }
+    }
+  </style>
+
+  <header class="mb-8 pb-0 print:border-black">
       <div class="text-sm breadcrumbs mb-4 text-base-content/80">
         <ul>
           <li><a href="/laws/amendments">修正歷程</a></li>
           <li>
             <a href={`/laws/amendments/${entry.data.target_act}`}>
               {targetAct?.data.abbr || targetAct?.data.title}
+            </a>
           </li>
           <li>{entry.data.title}</li>
         </ul>
       </div>
-
 
       <h2 class="text-3xl font-bold mb-4">{entry.data.title}</h2>
       {entry.data.term && <span class="badge badge-lg badge-dash badge-primary">第 {entry.data.term} 屆</span>}
@@ -57,68 +133,71 @@ const parsedData = parseAmendmentMarkdown(rawMarkdown);
           </div>
         </div>
       )}
-    </header>
+  </header>
 
-    <div class="grid pb-8"><a class="btn btn-sm btn-outline btn-wide mx-auto" href=".">回上頁</a></div>
+  <div class="grid pb-8"><a class="btn btn-sm btn-outline btn-wide mx-auto" href=".">回上頁</a></div>
 
-<article class="regulation-amendment space-y-12">
-  {parsedData.amendments.map((amend) => (
-    <div class="card bg-base-100 overflow-hidden print:border-black">
-      {/* 條號標題區 */}
-      <h3 class="text-xl font-black text-base-content/80 print:text-black">
-        {amend.title}
-      </h3>
+  <article class="regulation-amendment space-y-12">
+    {parsedData.amendments.map((amend) => {
+      // 判斷是否需要比對：如果其中一方是「無」或「刪除」，就跳過比對，維持純文字
+      const isPlaceholder = amend.proposed[0]?.isPlaceholder || amend.current[0]?.isPlaceholder;
+      const diffResult = isPlaceholder ? null : getDiffHtml(amend.proposed, amend.current);
 
-      {/* 三欄對照網格 */}
-      <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-base-200/80 print:table print:border-collapse">
-        
-        {/* 修正條文 */}
-        <div class="p-6 bg-base-100 print:table-cell">
-          <div class="flex items-center gap-2 mb-2">
-             <span class="badge badge-success badge-outline">修正條文</span>
-          </div>
-          <div class="space-y-2 amendments-div">
-            {amend.proposed.map(p => (
-              <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}>
-                {p.text}
-              </p>
-            ))}
+      return (
+        <div class="card bg-base-100 overflow-hidden print:border-black">
+          <h3 class="text-xl font-black text-base-content/80 print:text-black">
+            {amend.title}
+          </h3>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-base-200/80 print:table print:border-collapse">
+            
+            {/* 修正條文 */}
+            <div class="p-6 bg-base-100 print:table-cell">
+              <div class="flex items-center gap-2 mb-2">
+                 <span class="badge badge-success badge-outline">修正條文</span>
+              </div>
+              <div class="space-y-2 amendments-div">
+                {amend.proposed.map((p, idx) => (
+                  <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}
+                     set:html={diffResult ? diffResult.proposed[idx] : (p.text === '（刪除）' ? p.text : p.text.replace(/</g, '&lt;'))}>
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            {/* 現行條文 */}
+            <div class="p-6 bg-base-100 print:table-cell">
+              <div class="flex items-center gap-2 mb-2">
+                 <span class="badge badge-error badge-outline text-nowrap">現行條文</span>
+              </div>
+              <div class="space-y-2 amendments-div">
+                {amend.current.map((p, idx) => (
+                  <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}
+                     set:html={diffResult ? diffResult.current[idx] : (p.text === '（無）' ? p.text : p.text.replace(/</g, '&lt;'))}>
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            {/* 說明 (保持原樣不比對) */}
+            <div class="p-6 bg-base-100 print:table-cell print:border-black">
+              <div class="flex items-center gap-2 mb-2">
+                 <span class="badge badge-outline text-nowrap">說明</span>
+              </div>
+              <div class="space-y-2 text-base-content/90">
+                {amend.reason.map(p => (
+                  <p class={`text-sm leading-relaxed ${p.indentClass}`}>
+                    {p.text}
+                  </p>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
+      );
+    })}
+  </article>
 
-        {/* 現行條文 */}
-        <div class="p-6 bg-base-100 print:table-cell">
-          <div class="flex items-center gap-2 mb-2">
-             <span class="badge badge-error badge-outline text-nowrap">現行條文</span>
-          </div>
-          <div class="space-y-2 amendments-div">
-            {amend.current.map(p => (
-              <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}>
-                {p.text}
-              </p>
-            ))}
-          </div>
-        </div>
-
-        {/* 說明 */}
-        <div class="p-6 bg-base-100 print:table-cell print:border-black">
-          <div class="flex items-center gap-2 mb-2">
-             <span class="badge badge-outline text-nowrap">說明</span>
-          </div>
-          <div class="space-y-2 text-base-content/90">
-            {amend.reason.map(p => (
-              <p class={`text-sm leading-relaxed ${p.indentClass}`}>
-                {p.text}
-              </p>
-            ))}
-          </div>
-        </div>
-
-      </div>
-    </div>
-  ))}
-</article>
-
-<div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href=".">回上頁</a></div>
-
+  <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href=".">回上頁</a></div>
 </MainLayout>
