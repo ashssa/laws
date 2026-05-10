@@ -24,15 +24,15 @@ const relatedAmendments = allAmendments
   .filter(a => a.data.target_act === act_id)
   .sort((a, b) => {
      // 假設 date 格式為 "114.03.10"，字串反向比較即可達到日期遞減效果
-     return b.data.date.localeCompare(a.data.date);
+    return b.data.date.localeCompare(a.data.date);
   });
 ---
 
 <MainLayout title={`${actTitle} - 歷次修正紀錄`}>
-  <div class="max-w-4xl mx-auto px-4 py-8">
-    <header class="mb-8 border-b-2 border-base-300 pb-6">
-      
-      <div class="text-sm breadcrumbs mb-4 text-base-content/60">
+  <div class="max-w-4xl mx-auto px-0 py-8">
+
+    <header class="mb-8 pb-0"><!-- border-b-2 border-base-300  -->
+      <div class="text-sm breadcrumbs mb-4 text-base-content/80">
         <ul>
           <li><a href="/laws/amendments">修正歷程</a></li>
           <li>{targetAct?.data.abbr || actTitle}</li>
@@ -40,14 +40,15 @@ const relatedAmendments = allAmendments
       </div>
 
       <h2 class="text-3xl font-bold mb-2">{actTitle}</h2>
-      <p class="text-base-content/70">歷次修正草案對照與說明目錄</p>
+      <p class="text-base-content/70">修法沿革</p>
     </header>
+
 
     <div class="flex flex-col gap-3">
       {relatedAmendments.map((amend) => (
         <a 
           href={`/laws/amendments/${act_id}/${amend.data.version}`}
-          class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-base-100 border border-base-300 rounded-xl hover:border-primary hover:bg-base-200/50 transition"
+          class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-base-100 border border-base-200 rounded-2xl hover:border-neutral hover:bg-base-200/50 duration-300 transition"
         >
           <div class="flex-1">
             <h3 class="font-bold text-lg text-base-content mb-1">{amend.data.title}</h3>
@@ -64,5 +65,6 @@ const relatedAmendments = allAmendments
         </a>
       ))}
     </div>
+    <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href=".">回上頁</a></div>
   </div>
 </MainLayout>

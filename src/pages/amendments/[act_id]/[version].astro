@@ -1,7 +1,9 @@
 ---
-import { getCollection, getEntry, render } from 'astro:content'; 
+import fs from 'node:fs';
+import path from 'node:path';
+import { getCollection, getEntry } from 'astro:content'; 
 import MainLayout from '../../../layouts/MainLayout.astro';
-import 'katex/dist/katex.min.css';
+import { parseAmendmentMarkdown } from '../../../utils/lawParser.js';
 
 export async function getStaticPaths() {
   const amendments = await getCollection('amendments');
@@ -17,34 +19,98 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const targetAct = await getEntry('act', entry.data.target_act);
 
-// Astro 5 必須使用獨立的 render 函式
-const { Content } = await render(entry); 
+// 關鍵：繞過 Astro 引擎，強制讀取原始檔案
+const filePath = path.join(process.cwd(), 'src/content/amendments', `${entry.id}.md`);
+const rawMarkdown = fs.readFileSync(filePath, 'utf-8');
+const parsedData = parseAmendmentMarkdown(rawMarkdown);
 ---
 
 <MainLayout title={entry.data.title} data-law-title={targetAct?.data.title}>
-  <div class="max-w-6xl mx-auto px-4 py-8">
-    <header class="mb-10 border-b-2 border-primary pb-6 print:border-black">
-      <div class="flex items-center gap-3 text-sm text-base-content/60 mb-2 print:hidden">
-        <a href="/laws/amendments" class="hover:text-primary transition">修正歷程</a>
-        <span>/</span>
-        <a href={`/laws/amendments/${entry.data.target_act}`} class="hover:text-primary transition">
-           {targetAct?.data.abbr || targetAct?.data.title}
-        </a>
+    <header class="mb-8 pb-0 print:border-black">
+
+      <div class="text-sm breadcrumbs mb-4 text-base-content/80">
+        <ul>
+          <li><a href="/laws/amendments">修正歷程</a></li>
+          <li>
+            <a href={`/laws/amendments/${entry.data.target_act}`}>
+              {targetAct?.data.abbr || targetAct?.data.title}
+          </li>
+          <li>{entry.data.title}</li>
+        </ul>
       </div>
-      <h2 class="text-4xl font-bold mb-4">{entry.data.title}</h2>
-      <div class="badge badge-lg badge-primary">{entry.data.date} 通過</div>
+
+
+      <h2 class="text-3xl font-bold mb-4">{entry.data.title}</h2>
+      <div class="badge badge-lg badge-dash badge-primary">{entry.data.date} 通過</div>
       
       {entry.data.description && (
-        <div class="mt-6 p-6 bg-base-200 rounded-2xl italic text-lg leading-relaxed print:bg-white print:border print:border-black print:mt-4">
-          <span class="font-bold block mb-2 not-italic text-sm uppercase opacity-50 text-xs">修正案總說明</span>
-          {entry.data.description}
+        <div class="mt-6 p-6 bg-base-200 rounded-2xl text-lg leading-relaxed print:bg-white print:border print:border-black print:mt-4">
+          <span class="font-bold block mb-2 not-italic text-sm uppercase opacity-50">修正案總說明</span>
+          <p class="indent-8">{entry.data.description}</p>
         </div>
       )}
     </header>
 
-    <article class="regulation-amendment prose prose-slate max-w-none">
-      {/* 如果這裡還是空的，請檢查 astro.config.mjs 是否有成功註冊插件 */}
-      <Content />
-    </article>
-  </div>
+    <div class="grid pb-8"><a class="btn btn-sm btn-outline btn-wide mx-auto" href=".">回上頁</a></div>
+
+<article class="regulation-amendment space-y-12">
+  {parsedData.amendments.map((amend) => (
+    <div class="card bg-base-100 overflow-hidden print:border-black">
+      {/* 條號標題區 */}
+      <h3 class="text-xl font-black text-base-content/80 print:text-black">
+        {amend.title}
+      </h3>
+
+      {/* 三欄對照網格 */}
+      <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-base-200/80 print:table print:border-collapse">
+        
+        {/* 修正條文 */}
+        <div class="p-6 bg-base-100 print:table-cell">
+          <div class="flex items-center gap-2 mb-2">
+             <span class="badge badge-success badge-outline">修正條文</span>
+          </div>
+          <div class="space-y-2">
+            {amend.proposed.map(p => (
+              <p class={`text-sm leading-relaxed ${p.indentClass} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}>
+                {p.text}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        {/* 現行條文 */}
+        <div class="p-6 bg-base-100 print:table-cell">
+          <div class="flex items-center gap-2 mb-2">
+             <span class="badge badge-error badge-outline text-nowrap">現行條文</span>
+          </div>
+          <div class="space-y-2">
+            {amend.current.map(p => (
+              <p class={`text-sm leading-relaxed ${p.indentClass} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}>
+                {p.text}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        {/* 說明 */}
+        <div class="p-6 bg-base-100 print:table-cell print:border-black">
+          <div class="flex items-center gap-2 mb-2">
+             <span class="badge badge-outline text-nowrap">說明</span>
+          </div>
+          <div class="space-y-2 text-base-content/90">
+            {amend.reason.map(p => (
+              <p class={`text-sm leading-relaxed ${p.indentClass}`}>
+                {p.text}
+              </p>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  ))}
+</article>
+
+<div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href=".">回上頁</a></div>
+
 </MainLayout>

@@ -12,10 +12,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  markdown: {
-    // 註冊套件至 Markdown 編譯流程
-    remarkPlugins: [remarkAmendment],
-  },
+  // markdown: {
+  //   // 註冊套件至 Markdown 編譯流程
+  //   remarkPlugins: [remarkAmendment],
+  // },
   integrations: [
     AstroPWA({
       registerType: 'autoUpdate', // 當有新版本時自動更新快取

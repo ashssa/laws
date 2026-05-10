@@ -95,3 +95,60 @@ export function parseLawMarkdown(mdContent) {
   flushArticle(); // 迴圈結束，確保最後一條有存入
   return result;
 }
+
+export function parseAmendmentMarkdown(mdContent) {
+  // 1. 移除頂部的 Frontmatter (介於 --- 之間的設定值)
+  const contentWithoutFrontmatter = mdContent.replace(/^---[\s\S]+?---\n/, '');
+  const lines = contentWithoutFrontmatter.split('\n');
+
+  const result = { amendments: [] };
+  let currentAmendment = null;
+  let currentField = null;
+
+  for (let line of lines) {
+    const trimmedLine = line.trim();
+    if (!trimmedLine) continue; // 跳過空行
+
+    // 2. 偵測條文標題
+    if (trimmedLine.startsWith('### ')) {
+      currentAmendment = {
+        title: trimmedLine.replace('### ', '').trim(),
+        proposed: [],
+        current: [],
+        reason: []
+      };
+      result.amendments.push(currentAmendment);
+      currentField = null;
+      continue;
+    }
+
+    if (!currentAmendment) continue;
+
+    // 3. 偵測欄位切換標籤
+    if (trimmedLine.startsWith('【修正條文】')) { currentField = 'proposed'; continue; }
+    if (trimmedLine.startsWith('【現行條文】')) { currentField = 'current'; continue; }
+    if (trimmedLine.startsWith('【說明】')) { currentField = 'reason'; continue; }
+
+    // 4. 將內容寫入當前欄位 (完整保留原始文字與標點符號)
+    if (currentField) {
+      const isPlaceholder = trimmedLine === '（無）' || trimmedLine === '（刪除）';
+      let indentClass = '';
+      // TODO: 修改為「本條新增」
+
+      // 針對說明欄位處理法律縮排
+      if (currentField === 'reason' && !isPlaceholder) {
+        if (/^[一二三四五六七八九十]+、/.test(trimmedLine)) indentClass = 'pl-[2em] -indent-[2em] mt-1';
+        else if (/^[(（][一二三四五六七八九十]+[)）]/.test(trimmedLine)) indentClass = 'ml-[2em] pl-[2em] -indent-[2em] mt-1 text-base-content/80';
+        else if (/^\d+[\.、]/.test(trimmedLine)) indentClass = 'ml-[4em] pl-[1.5em] -indent-[1.5em] mt-1 text-base-content/70';
+      }
+
+      currentAmendment[currentField].push({ 
+        text: trimmedLine, 
+        isPlaceholder, 
+        indentClass 
+      });
+    }
+  }
+
+  return result;
+}
