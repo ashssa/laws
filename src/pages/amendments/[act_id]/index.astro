@@ -1,0 +1,68 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+
+// 動態生成所有擁有修法紀錄的法規路徑 (例如 /amendments/act01)
+export async function getStaticPaths() {
+  const allAmendments = await getCollection('amendments');
+  const uniqueActIds = [...new Set(allAmendments.map(a => a.data.target_act))];
+  
+  return uniqueActIds.map(act_id => ({
+    params: { act_id },
+  }));
+}
+
+const { act_id } = Astro.params;
+
+// 取得該法規的原始 metadata
+const targetAct = await getEntry('act', act_id);
+const actTitle = targetAct?.data.title || act_id;
+
+// 篩選出屬於該法規的所有修法紀錄，並依照日期「由新到舊」遞減排序
+const allAmendments = await getCollection('amendments');
+const relatedAmendments = allAmendments
+  .filter(a => a.data.target_act === act_id)
+  .sort((a, b) => {
+     // 假設 date 格式為 "114.03.10"，字串反向比較即可達到日期遞減效果
+     return b.data.date.localeCompare(a.data.date);
+  });
+---
+
+<MainLayout title={`${actTitle} - 歷次修正紀錄`}>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <header class="mb-8 border-b-2 border-base-300 pb-6">
+      
+      <div class="text-sm breadcrumbs mb-4 text-base-content/60">
+        <ul>
+          <li><a href="/laws/amendments">修正歷程</a></li>
+          <li>{targetAct?.data.abbr || actTitle}</li>
+        </ul>
+      </div>
+
+      <h2 class="text-3xl font-bold mb-2">{actTitle}</h2>
+      <p class="text-base-content/70">歷次修正草案對照與說明目錄</p>
+    </header>
+
+    <div class="flex flex-col gap-3">
+      {relatedAmendments.map((amend) => (
+        <a 
+          href={`/laws/amendments/${act_id}/${amend.data.version}`}
+          class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-base-100 border border-base-300 rounded-xl hover:border-primary hover:bg-base-200/50 transition"
+        >
+          <div class="flex-1">
+            <h3 class="font-bold text-lg text-base-content mb-1">{amend.data.title}</h3>
+            {amend.data.description && (
+              <p class="text-sm text-base-content/70 line-clamp-2 mt-2">
+                {amend.data.description}
+              </p>
+            )}
+          </div>
+          <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+            <span class="badge badge-lg">{amend.data.date} 通過</span>
+            <span class="icon-[tabler--chevron-right] ml-2 text-base-content/40 align-middle"></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</MainLayout>

@@ -18,5 +18,17 @@ const act = defineCollection({
   }),
 });
 
+// 定義 'amendments' （修法歷程）集合
+const amendments = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/amendments" }),
+  schema: z.object({
+    title: z.string(),
+    target_act: z.string(), // 對應 act 資料夾中的 ID，例如 "act01"
+    date: z.string(),
+    version: z.string(),    // 作為次級路由，例如 "v7"
+    description: z.string().optional(),
+  }),
+});
+
 // 匯出集合
-export const collections = { act };
+export const collections = { act, amendments };

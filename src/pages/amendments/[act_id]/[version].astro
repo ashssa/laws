@@ -1,0 +1,50 @@
+---
+import { getCollection, getEntry, render } from 'astro:content'; 
+import MainLayout from '../../../layouts/MainLayout.astro';
+import 'katex/dist/katex.min.css';
+
+export async function getStaticPaths() {
+  const amendments = await getCollection('amendments');
+  return amendments.map(entry => ({
+    params: { 
+      act_id: entry.data.target_act, 
+      version: entry.data.version 
+    },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const targetAct = await getEntry('act', entry.data.target_act);
+
+// Astro 5 必須使用獨立的 render 函式
+const { Content } = await render(entry); 
+---
+
+<MainLayout title={entry.data.title} data-law-title={targetAct?.data.title}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-10 border-b-2 border-primary pb-6 print:border-black">
+      <div class="flex items-center gap-3 text-sm text-base-content/60 mb-2 print:hidden">
+        <a href="/laws/amendments" class="hover:text-primary transition">修正歷程</a>
+        <span>/</span>
+        <a href={`/laws/amendments/${entry.data.target_act}`} class="hover:text-primary transition">
+           {targetAct?.data.abbr || targetAct?.data.title}
+        </a>
+      </div>
+      <h2 class="text-4xl font-bold mb-4">{entry.data.title}</h2>
+      <div class="badge badge-lg badge-primary">{entry.data.date} 通過</div>
+      
+      {entry.data.description && (
+        <div class="mt-6 p-6 bg-base-200 rounded-2xl italic text-lg leading-relaxed print:bg-white print:border print:border-black print:mt-4">
+          <span class="font-bold block mb-2 not-italic text-sm uppercase opacity-50 text-xs">修正案總說明</span>
+          {entry.data.description}
+        </div>
+      )}
+    </header>
+
+    <article class="regulation-amendment prose prose-slate max-w-none">
+      {/* 如果這裡還是空的，請檢查 astro.config.mjs 是否有成功註冊插件 */}
+      <Content />
+    </article>
+  </div>
+</MainLayout>

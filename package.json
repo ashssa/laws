@@ -14,7 +14,9 @@
     "astro": "^5.16.5",
     "daisyui": "^5.5.13",
     "katex": "^0.16.38",
+    "remark-directive": "^4.0.0",
     "tailwindcss": "^4.0.9",
+    "unist-util-visit": "^5.1.0",
     "workbox-window": "^7.4.0"
   },
   "packageManager": "pnpm@9.15.0"

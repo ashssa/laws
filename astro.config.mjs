@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import AstroPWA from '@vite-pwa/astro';
+import remarkAmendment from './src/plugins/remark-amendment.js';
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,6 +11,10 @@ export default defineConfig({
   base: '/laws',
   vite: {
     plugins: [tailwindcss()]
+  },
+  markdown: {
+    // 註冊套件至 Markdown 編譯流程
+    remarkPlugins: [remarkAmendment],
   },
   integrations: [
     AstroPWA({
