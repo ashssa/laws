@@ -43,10 +43,17 @@ const parsedData = parseAmendmentMarkdown(rawMarkdown);
       <h2 class="text-3xl font-bold mb-4">{entry.data.title}</h2>
       <div class="badge badge-lg badge-dash badge-primary">{entry.data.date} 通過</div>
       
-      {entry.data.description && (
-        <div class="mt-6 p-6 bg-base-200 rounded-2xl text-lg leading-relaxed print:bg-white print:border print:border-black print:mt-4">
-          <span class="font-bold block mb-2 not-italic text-sm uppercase opacity-50">修正案總說明</span>
-          <p class="indent-8">{entry.data.description}</p>
+      {parsedData.globalDescription.length > 0 && (
+        <div class="mt-6 p-6 sm:p-8 bg-base-200 rounded-3xl text-lg leading-relaxed print:bg-white print:border print:border-black print:mt-4 shadow-inner">
+          <div class="flex items-center gap-2 mb-4 opacity-70">
+            <span class="icon-[tabler--file-description] text-xl"></span>
+            <span class="font-bold text-sm uppercase tracking-widest">修正案總說明</span>
+          </div>
+          <div class="space-y-3 text-base-content/90">
+            {parsedData.globalDescription.map(p => (
+              <p class={`${p.indentClass}`}>{p.text}</p>
+            ))}
+          </div>
         </div>
       )}
     </header>
