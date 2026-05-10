@@ -1,7 +1,8 @@
 ---
 title: 國立高雄師範大學附屬高級中學學生會行政中心組織及運作法
 abbr: 行政中心組織運作法
-url: https://drive.google.com/drive/folders/1aysPEW99f31kt1jpVat_2cVZXhNGjLZ0
+# url: https://drive.google.com/drive/folders/1aysPEW99f31kt1jpVat_2cVZXhNGjLZ0
+url: ../amendments/act03
 ---
 
 ## 修法歷程

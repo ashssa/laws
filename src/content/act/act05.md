@@ -1,7 +1,8 @@
 ---
 title: 國立高雄師範大學附屬高級中學學生會選舉及罷免法
 abbr: 選舉及罷免法
-url: https://drive.google.com/drive/folders/1f__3GRlyUvhDD6L_D9k9BIPGjaGfa_Uk
+# url: https://drive.google.com/drive/folders/1f__3GRlyUvhDD6L_D9k9BIPGjaGfa_Uk
+url: ../amendments/act05
 ---
 
 ## 修法歷程

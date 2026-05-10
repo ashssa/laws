@@ -1,7 +1,8 @@
 ---
 title: 國立高雄師範大學附屬高級中學學生會學生政黨法
 abbr: 學生政黨法
-url: https://drive.google.com/drive/folders/1aM-AT0vyTBlCm6SCXbmFvPRSTaH0lvLv
+# url: https://drive.google.com/drive/folders/1aM-AT0vyTBlCm6SCXbmFvPRSTaH0lvLv
+url: ../amendments/act08
 ---
 
 ## 修法歷程

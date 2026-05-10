@@ -1,7 +1,8 @@
 ---
 title: 國立高雄師範大學附屬高級中學學生會經費法
 abbr: 經費法
-url: https://drive.google.com/drive/folders/1V1Nqv7V06gZzoiBKuORL-aky0MIpkaoL
+# url: https://drive.google.com/drive/folders/1V1Nqv7V06gZzoiBKuORL-aky0MIpkaoL
+url: ../amendments/act06
 ---
 
 ## 修法歷程

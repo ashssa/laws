@@ -1,7 +1,8 @@
 ---
 title: 國立高雄師範大學附屬高級中學學生會學生議會會議彈性運作臨時條例
 abbr: 議會會議彈性運作臨時條例
-url: https://drive.google.com/drive/folders/1kZJftdy4gfIRSfj-qp7Qw-HJDzo9x7MI
+# url: https://drive.google.com/drive/folders/1kZJftdy4gfIRSfj-qp7Qw-HJDzo9x7MI
+url: ../amendments/act09
 ---
 
 ## 修法歷程
