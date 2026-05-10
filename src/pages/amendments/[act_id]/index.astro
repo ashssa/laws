@@ -59,7 +59,10 @@ const relatedAmendments = allAmendments
             )}
           </div>
           <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
-            <span class="badge badge-lg">{amend.data.date} 通過</span>
+            {amend.data.term && (
+              <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
+            )}
+            <span class="badge badge-sm md:badge-md badge-dash">{amend.data.date} 通過</span>
             <span class="icon-[tabler--chevron-right] ml-2 text-base-content/40 align-middle"></span>
           </div>
         </a>

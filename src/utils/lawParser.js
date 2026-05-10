@@ -97,61 +97,49 @@ export function parseLawMarkdown(mdContent) {
 }
 
 export function parseAmendmentMarkdown(mdContent) {
-  // 1. 統一處理跨平台換行符號，並拆分成陣列
+  // 1. 徹底剃除 Frontmatter (確保不影響總說明)
   const lines = mdContent.split(/\r?\n/);
-
-  // 2. 徹底過濾 Frontmatter (由 --- 包夾的區塊)
   let startIndex = 0;
-  // 檢查第一行是否為 --- (使用 trim() 消除可能的隱藏空白或BOM影響)
-  if (lines[0].trim() === '---') {
-    // 尋找下一個 --- 的位置
+  if (lines[0]?.trim() === '---') {
     for (let i = 1; i < lines.length; i++) {
       if (lines[i].trim() === '---') {
-        startIndex = i + 1; // 從第二個 --- 的「下一行」開始正式讀取
+        startIndex = i + 1;
         break;
       }
     }
   }
-
-  // 只截取 Frontmatter 之後的實際內容進行解析
   const actualLines = lines.slice(startIndex);
 
   const result = { globalDescription: [], amendments: [] };
   let currentAmendment = null;
-  let currentField = 'globalDescription';
+  let currentField = 'globalDescription'; // 預設先抓總說明
 
-  // 縮排判斷邏輯
   const getIndentClass = (text, isGlobal = false) => {
     if (/^[一二三四五六七八九十]+、/.test(text)) return 'pl-[2em] -indent-[2em] font-medium';
     if (/^[(（][一二三四五六七八九十]+[)）]/.test(text)) return 'ml-[2em] pl-[2em] -indent-[2em] text-base-content/90';
     if (/^\d+[\s\.、]/.test(text)) return 'ml-[4em] pl-[1.5em] -indent-[1.5em] text-base-content/80';
-    
-    if (isGlobal) return 'indent-[2em]'; // 總說明一般段落首行縮排
-    return '';
+    // 總說明一般段落：首行縮排 2 字
+    return isGlobal ? 'indent-[2em]' : '';
   };
 
-  // 3. 遍歷實際內容
   for (let line of actualLines) {
     const trimmedLine = line.trim();
-    if (!trimmedLine) continue; 
+    if (!trimmedLine) continue;
 
     // 偵測條文標題
     if (trimmedLine.startsWith('### ')) {
       currentAmendment = {
         title: trimmedLine.replace('### ', '').trim(),
-        proposed: [],
-        current: [],
-        reason: []
+        proposed: [], current: [], reason: []
       };
       result.amendments.push(currentAmendment);
-      currentField = null; 
+      currentField = null;
       continue;
     }
 
-    // 處理總說明區塊
+    // 處理總說明 (位於第一個 ### 之前)
     if (currentField === 'globalDescription') {
-      if (trimmedLine.startsWith('#')) continue; // 忽略誤打的 Markdown 標題標籤
-      
+      if (trimmedLine.startsWith('#')) continue;
       result.globalDescription.push({
         text: trimmedLine,
         indentClass: getIndentClass(trimmedLine, true)
@@ -159,25 +147,20 @@ export function parseAmendmentMarkdown(mdContent) {
       continue;
     }
 
+    // 處理對照表內容
     if (!currentAmendment) continue;
-
-    // 偵測欄位切換
     if (trimmedLine.startsWith('【修正條文】')) { currentField = 'proposed'; continue; }
     if (trimmedLine.startsWith('【現行條文】')) { currentField = 'current'; continue; }
     if (trimmedLine.startsWith('【說明】')) { currentField = 'reason'; continue; }
 
-    // 處理條文內容
-    if (currentField && currentField !== 'globalDescription') {
+    if (currentField) {
       const isPlaceholder = trimmedLine === '（無）' || trimmedLine === '（刪除）';
-      let indentClass = !isPlaceholder ? getIndentClass(trimmedLine, false) : '';
-      
-      currentAmendment[currentField].push({ 
-        text: trimmedLine, 
-        isPlaceholder, 
-        indentClass 
+      currentAmendment[currentField].push({
+        text: trimmedLine,
+        isPlaceholder,
+        indentClass: !isPlaceholder ? getIndentClass(trimmedLine) : ''
       });
     }
   }
-
   return result;
 }

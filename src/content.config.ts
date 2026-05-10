@@ -26,6 +26,7 @@ const amendments = defineCollection({
     target_act: z.string(), // 對應 act 資料夾中的 ID，例如 "act01"
     date: z.string(),
     version: z.string(),    // 作為次級路由，例如 "v7"
+    term: z.number().optional(),
     description: z.string().optional(),
   }),
 });
