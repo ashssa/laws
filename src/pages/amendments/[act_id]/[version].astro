@@ -100,14 +100,16 @@ function getDiffHtml(proposedArr, currentArr) {
         text-decoration-color: black !important;
       }
     }
-    .amendments-div{
+    
+    /* 微調段落樣式 */
+    /* 對照表左右對齊 */
+    .amendments-div, .amendments-description-div {
       @apply text-justify;
     }
-
-    /* 微調段落樣式 */
-    /* 現行與修正條文首相不縮排 */
+    /* 現行與修正條文首項不縮排 */
     .amendments-div > p:first-child {
       text-indent: 0;
+      @apply text-justify;
       /* font-weight: 550;  */
     }
 
