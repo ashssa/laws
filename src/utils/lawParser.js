@@ -118,6 +118,9 @@ export function parseAmendmentMarkdown(mdContent) {
     // 樣式 : 一二三四五 ......
     if (/^[一二三四五六七八九十]+、/.test(text)) return 'pl-[2em] -indent-[2em]';
 
+    // 樣式 : 星號
+    if (/^※/.test(text)) return 'pl-[1em] -indent-[1em] italic';
+
     // 樣式 : (一)(二)(三)(四) ......
     if (/^[(（][一二三四五六七八九十]+[)）]/.test(text)) return 'ml-[3em] pl-[3em] -indent-[2em] text-base-content';
 
