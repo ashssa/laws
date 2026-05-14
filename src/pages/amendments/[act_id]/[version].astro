@@ -67,8 +67,8 @@ function getDiffHtml(proposedArr, currentArr) {
     /* 自訂差異標記樣式：
       使用原生 CSS 確保權重夠高，並套用粗體與底線效果
     */
-    .diff-added {
-      font-weight: 700; /* 粗體 */
+    .diff-added, .diff-removed {
+      font-weight: 650; /* 粗體 */
       text-decoration: underline; /* 底線 */
       text-decoration-color: var(--color-success);
       /* text-decoration-style: double; */
@@ -76,21 +76,16 @@ function getDiffHtml(proposedArr, currentArr) {
       text-decoration-thickness: 2px;
       /* color: oklch(var(--su)); 借用 DaisyUI 的 Success 顏色 */
       /* background-color: oklch(var(--su) / 0.1); */
-      padding: 0 2px;
+      padding: 0 1px;
       border-radius: 4px;
     }
 
+    .diff-added {
+      text-decoration-color: var(--color-success);
+    }
+
     .diff-removed {
-      font-weight: 700;
-      text-decoration: underline;
       text-decoration-color: var(--color-error);
-      /* text-decoration-style: double; */
-      text-underline-offset: 4px;
-      text-decoration-thickness: 2px;
-      /* color: oklch(var(--er)); 借用 DaisyUI 的 Error 顏色 */
-      /* background-color: oklch(var(--er) / 0.1); */
-      padding: 0 2px;
-      border-radius: 4px;
     }
 
     /* 列印模式下自動移除背景色，節省墨水並維持正式感 */
@@ -106,10 +101,11 @@ function getDiffHtml(proposedArr, currentArr) {
     }
 
     .amendments-div > p:first-child {
-    text-indent: 0;
+      text-indent: 0;
+      /* font-weight: 550;  */
     }
     .amendments-description-div > p:only-child {
-    text-indent: 0;
+      text-indent: 0;
     }
   </style>
 
