@@ -2,7 +2,7 @@
 title: 國立高雄師範大學附屬高級中學學生會自治法規標準法
 abbr: 自治法規標準法
 # url: https://drive.google.com/drive/folders/19NiKGRx3ebBcay3KJp1AQ3CrefKWIg-d
-url: ../amendments/act07
+url: /amendments/act07
 ---
 
 ## 修法歷程

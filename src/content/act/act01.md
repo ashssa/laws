@@ -2,7 +2,7 @@
 title: 國立高雄師範大學附屬高級中學學生會組織章程
 abbr: 組織章程
 # url: https://drive.google.com/drive/folders/1yDKfKzalxR36okyYRL2_QIbYyDbaGjV7
-url: ../amendments/act01
+url: /amendments/act01
 ---
 
 ## 修法歷程

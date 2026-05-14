@@ -2,7 +2,7 @@
 title: 國立高雄師範大學附屬高級中學學生會學生議會組織及運作法
 abbr: 學生議會組織及運作法
 # url: https://drive.google.com/drive/folders/1vnaxpQNVcen8GMyOeUbQplyNrddeGcwD
-url: ../amendments/act04
+url: /amendments/act04
 ---
 
 ## 修法歷程

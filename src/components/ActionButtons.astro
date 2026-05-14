@@ -16,7 +16,7 @@ const baseUrl = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_UR
   <!-- <button class="btn btn-neutral" id="backBtn">回上頁</button> -->
   <a href={baseUrl} class="btn btn-neutral" id="backBtn">回目錄</a>
   { !finalUrl.includes('amendments') &&  <a href={finalUrl} target="_blank" class="btn btn-neutral">法規沿革</a>}
-  { finalUrl.includes('amendments') &&  <a href={finalUrl} class="btn btn-neutral">法規沿革</a>}
+  { finalUrl.includes('amendments') &&  <a href={baseUrl+finalUrl} class="btn btn-neutral">法規沿革</a>}
   <button class="btn btn-neutral " id="copyLinkBtn">複製本頁網址</button>
 </nav>
 

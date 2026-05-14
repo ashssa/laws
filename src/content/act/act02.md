@@ -2,7 +2,7 @@
 title: 國立高雄師範大學附屬高級中學學生會學生代表法
 abbr: 學生代表法
 # url: https://drive.google.com/drive/folders/1dLnSiUy6dEjEAUtmF4_ztQg4FQqZRa9i
-url: ../amendments/act02
+url: /amendments/act02
 ---
 
 ## 修法歷程
