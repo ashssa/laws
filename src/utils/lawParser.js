@@ -159,7 +159,7 @@ export function parseAmendmentMarkdown(mdContent) {
     if (trimmedLine.startsWith('【說明】')) { currentField = 'reason'; continue; }
 
     if (currentField) {
-      const isPlaceholder = trimmedLine === '（無）' || trimmedLine === '（刪除）';
+      const isPlaceholder = trimmedLine === '（無）' || trimmedLine === '（刪除）' || trimmedLine === '（本條新增）';
       currentAmendment[currentField].push({
         text: trimmedLine,
         isPlaceholder,

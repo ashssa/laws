@@ -4,7 +4,6 @@ import path from 'node:path';
 import { getCollection, getEntry } from 'astro:content'; 
 import MainLayout from '../../../layouts/MainLayout.astro';
 import { parseAmendmentMarkdown } from '../../../utils/lawParser.js';
-// 匯入 diff 庫 (記得執行 pnpm add diff)
 import { diffChars } from 'diff';
 
 export async function getStaticPaths() {
@@ -75,8 +74,8 @@ function getDiffHtml(proposedArr, currentArr) {
       /* text-decoration-style: double; */
       text-underline-offset: 4px;
       text-decoration-thickness: 2px;
-      color: oklch(var(--su)); /* 借用 DaisyUI 的 Success 顏色 */
-      background-color: oklch(var(--su) / 0.1);
+      /* color: oklch(var(--su)); 借用 DaisyUI 的 Success 顏色 */
+      /* background-color: oklch(var(--su) / 0.1); */
       padding: 0 2px;
       border-radius: 4px;
     }
@@ -88,8 +87,8 @@ function getDiffHtml(proposedArr, currentArr) {
       /* text-decoration-style: double; */
       text-underline-offset: 4px;
       text-decoration-thickness: 2px;
-      color: oklch(var(--er)); /* 借用 DaisyUI 的 Error 顏色 */
-      background-color: oklch(var(--er) / 0.1);
+      /* color: oklch(var(--er)); 借用 DaisyUI 的 Error 顏色 */
+      /* background-color: oklch(var(--er) / 0.1); */
       padding: 0 2px;
       border-radius: 4px;
     }
