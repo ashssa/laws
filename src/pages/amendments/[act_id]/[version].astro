@@ -104,6 +104,13 @@ function getDiffHtml(proposedArr, currentArr) {
     .amendments-div{
       @apply text-justify;
     }
+
+    .amendments-div > p:first-child {
+    text-indent: 0;
+    }
+    .amendments-description-div > p:only-child {
+    text-indent: 0;
+    }
   </style>
 
   <header class="mb-8 pb-0 print:border-black">
@@ -187,7 +194,7 @@ function getDiffHtml(proposedArr, currentArr) {
               <div class="flex items-center gap-2 mb-2">
                  <span class="badge badge-outline text-nowrap">說明</span>
               </div>
-              <div class="space-y-2 text-base-content/90">
+              <div class="space-y-2 text-base-content/90 amendments-description-div">
                 {amend.reason.map(p => (
                   <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'}  ${p.indentClass}`}>
                     {p.text}
