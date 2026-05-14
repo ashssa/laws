@@ -101,6 +101,9 @@ function getDiffHtml(proposedArr, currentArr) {
         text-decoration-color: black !important;
       }
     }
+    .amendments-div{
+      @apply text-justify;
+    }
   </style>
 
   <header class="mb-8 pb-0 print:border-black">
@@ -186,7 +189,7 @@ function getDiffHtml(proposedArr, currentArr) {
               </div>
               <div class="space-y-2 text-base-content/90">
                 {amend.reason.map(p => (
-                  <p class={`text-sm leading-relaxed ${p.indentClass}`}>
+                  <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'}  ${p.indentClass}`}>
                     {p.text}
                   </p>
                 ))}
