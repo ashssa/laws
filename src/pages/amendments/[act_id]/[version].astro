@@ -100,12 +100,27 @@ function getDiffHtml(proposedArr, currentArr) {
       @apply text-justify;
     }
 
+    /* 微調段落樣式 */
+    /* 現行與修正條文首相不縮排 */
     .amendments-div > p:first-child {
       text-indent: 0;
       /* font-weight: 550;  */
     }
+
+    /* 說明欄位只有一項不縮排 */
     .amendments-description-div > p:only-child {
       text-indent: 0;
+    }
+
+    /* 總說明增加間距 */
+    .general-description-text-div > p {
+      margin-bottom: 0.5rem ;
+      @apply text-justify;
+    }
+
+    /* 只有一項、最後一項總說明不加間距 */
+    .general-description-text-div > p:only-child , .general-description-text-div > p:last-child {
+      margin-bottom: 0rem ;
     }
   </style>
 
@@ -132,7 +147,7 @@ function getDiffHtml(proposedArr, currentArr) {
             <span class="icon-[tabler--file-description] text-xl"></span>
             <span class="font-bold text-sm uppercase tracking-widest">修正案總說明</span>
           </div>
-          <div class="space-y-3 text-base-content/90">
+          <div class="general-description-text-div space-y-3 text-base-content/90">
             {parsedData.globalDescription.map(p => (
               <p class={`${p.indentClass}`}>{p.text}</p>
             ))}
