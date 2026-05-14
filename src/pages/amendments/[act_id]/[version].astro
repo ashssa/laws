@@ -22,10 +22,6 @@ const filePath = path.join(process.cwd(), 'src/content/amendments', `${entry.id}
 const rawMarkdown = fs.readFileSync(filePath, 'utf-8');
 const parsedData = parseAmendmentMarkdown(rawMarkdown);
 
-/**
- * 核心升級：HTML 安全的跨行差異比對器
- * 確保標籤絕對不會跨越 <p> 段落，並完美對應原始陣列長度
- */
 function getDiffHtml(proposedArr, currentArr) {
   const proposedText = proposedArr.map(p => p.text).join('\n');
   const currentText = currentArr.map(p => p.text).join('\n');
@@ -70,11 +66,13 @@ function getDiffHtml(proposedArr, currentArr) {
 <MainLayout title={entry.data.title} data-law-title={targetAct?.data.title}>
   <style is:global>
     /* 自訂差異標記樣式：
-       使用原生 CSS 確保權重夠高，並套用粗體與底線效果
+      使用原生 CSS 確保權重夠高，並套用粗體與底線效果
     */
     .diff-added {
-      font-weight: 800; /* 粗體 */
+      font-weight: 700; /* 粗體 */
       text-decoration: underline; /* 底線 */
+      text-decoration-color: var(--color-success);
+      /* text-decoration-style: double; */
       text-underline-offset: 4px;
       text-decoration-thickness: 2px;
       color: oklch(var(--su)); /* 借用 DaisyUI 的 Success 顏色 */
@@ -84,8 +82,10 @@ function getDiffHtml(proposedArr, currentArr) {
     }
 
     .diff-removed {
-      font-weight: 800;
+      font-weight: 700;
       text-decoration: underline;
+      text-decoration-color: var(--color-error);
+      /* text-decoration-style: double; */
       text-underline-offset: 4px;
       text-decoration-thickness: 2px;
       color: oklch(var(--er)); /* 借用 DaisyUI 的 Error 顏色 */
@@ -99,6 +99,7 @@ function getDiffHtml(proposedArr, currentArr) {
       .diff-added, .diff-removed {
         background-color: transparent !important;
         color: black !important;
+        text-decoration-color: black !important;
       }
     }
   </style>
