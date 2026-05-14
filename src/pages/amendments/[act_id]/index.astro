@@ -2,6 +2,9 @@
 import { getCollection, getEntry } from 'astro:content';
 import MainLayout from '../../../layouts/MainLayout.astro';
 
+// 取得網站根目錄 (對接 astro.config.mjs 的 base 設定)
+const baseUrl = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_URL;
+
 // 動態生成所有擁有修法紀錄的法規路徑 (例如 /amendments/act01)
 export async function getStaticPaths() {
   const allAmendments = await getCollection('amendments');
@@ -69,6 +72,6 @@ const relatedAmendments = allAmendments
         </a>
       ))}
     </div>
-    <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href="/laws/amendments">回上頁</a></div>
+    <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href={baseUrl+"/amendments/"}>回上頁</a></div>
   </div>
 </MainLayout>
