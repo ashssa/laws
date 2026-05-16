@@ -26,13 +26,46 @@ const actsWithAmendments = await Promise.all(
 ---
 
 <MainLayout title="修法沿革">
-  <h2 class="page-title">修法沿革</h2>
-  <p class="text-base-content/70 px-3">
-    <!-- 請選擇您欲查詢修正對照表的法規名稱。 -->
-    ※ 本頁面如與學生議會修法沿革不同，以學生議會公告版本為主。
-  </p>
 
-  {actsWithAmendments.length !== 0 && (
+    <header class="mb-8 pb-0"><!-- border-b-2 border-base-300  -->
+      <div class="text-sm breadcrumbs mb-4 text-base-content/80">
+        <ul>
+          <li>修法沿革</li>
+        </ul>
+      </div>
+
+      <h2 class="text-3xl font-bold mb-2">修法沿革</h2>
+      <p class="text-base-content/70">※ 本頁面如與學生議會修法沿革不同，以學生議會公告版本為主。</p>
+    </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"><!-- md:grid-cols-2 -->
+
+    {actsWithAmendments.map((act) => (
+      <a 
+        href={`/laws/amendments/${act.id}`}
+        class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-base-100 border border-base-200 rounded-2xl hover:border-neutral/50 dark:hover:border-white hover:bg-base-200/40 duration-300 transition"
+      >
+        <div class="flex-1">
+          <h3 class="font-semibold text-lg text-base-content mb-1 truncate">{act.abbr}</h3>
+        </div>
+        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+          <span class="badge badge-sm md:badge-md badge-dash">修正 {act.count} 次</span>
+          <span class="icon-[tabler--chevron-right] ml-2 text-base-content/40 align-middle"></span>
+        </div>
+      </a>
+    ))}
+
+    {actsWithAmendments.length === 0 && (
+      <div class="col-span-full p-8 text-center bg-base-200 rounded-xl text-base-content/60">
+        目前系統中尚無任何法規修正紀錄。
+      </div>
+    )}
+  </div>
+  <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href=".">回首頁</a></div>
+</MainLayout>
+
+  <!-- 舊版法規選單 -->
+  <!-- {actsWithAmendments.length !== 0 && (
     <ul class="law-list list mt-3">
       <li class="law-list-title">選擇要查閱的法規歷程</li>
 
@@ -56,32 +89,4 @@ const actsWithAmendments = await Promise.all(
       ))}
 
     </ul>
-  )}
-
-  <div class="grid grid-cols-1 gap-4 mt-4"><!-- md:grid-cols-2 -->
-
-    <!-- 舊版法規選單 -->
-    <!-- {actsWithAmendments.map((act) => (
-      <a 
-        href={`/laws/amendments/${act.id}`} 
-        class="card bg-base-100 border border-base-300 hover:border-primary hover:shadow-md transition-all duration-200"
-      >
-        <div class="card-body p-6">
-          <h3 class="card-title text-lg mb-1">{act.title}</h3>
-          {act.abbr && <div class="text-sm text-base-content/60 mb-3">{act.abbr}</div>}
-          <div class="card-actions justify-end mt-auto">
-            <span class="badge badge-primary badge-outline">修正{act.count}次</span>
-          </div>
-        </div>
-      </a>
-    ))} -->
-
-    {actsWithAmendments.length === 0 && (
-      <div class="col-span-full p-8 text-center bg-base-200 rounded-xl text-base-content/60">
-        目前系統中尚無任何法規修正紀錄。
-      </div>
-    )}
-    <div class="grid mt-4"><a class="btn btn-sm btn-ghost btn-wide mt-2 mx-auto opacity-85" href=".">回首頁</a></div>
-
-  </div>
-</MainLayout>
+  )} -->
