@@ -144,7 +144,19 @@ function getDiffHtml(proposedArr, currentArr) {
       </div>
 
       <h2 class="text-3xl font-bold mb-4">{entry.data.title}</h2>
-      {entry.data.term && <span class="badge badge-lg badge-dash badge-primary">第 {entry.data.term} 屆{/* 學生議會 */}</span>}
+      {typeof entry.data.term === 'number' && (
+        entry.data.term === 0 ? (
+          /* 狀態 A：屆數為零 */
+          <span class="badge badge-lg badge-dash badge-primary">自治幹部會議</span>
+        ) : (
+          /* 狀態 B：屆數大於零 */
+          <span class="badge badge-lg badge-dash badge-primary">第 {entry.data.term} 屆</span>
+        )
+      )}
+      {/* {entry.data.term && (
+        <span class="badge badge-sm md:badge-md badge-dash">第 {entry.data.term} 屆</span>
+      )} */}
+      <!-- {entry.data.term && <span class="badge badge-lg badge-dash badge-primary">第 {entry.data.term} 屆{/* 學生議會 */}</span>} -->
       <div class="badge badge-lg badge-dash badge-primary">{entry.data.date} 通過</div>
       
       {parsedData.globalDescription.length > 0 && (
