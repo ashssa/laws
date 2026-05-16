@@ -32,55 +32,52 @@ const relatedAmendments = allAmendments
 ---
 
 <MainLayout title={`${actTitle} - 歷次修正紀錄`}>
-  <div class="max-w-4xl mx-auto px-0 py-8">
-
-    <header class="mb-8 pb-0"><!-- border-b-2 border-base-300  -->
-      <div class="text-sm breadcrumbs mb-4 text-base-content/80">
-        <ul>
-          <li><a href="/laws/amendments">修正歷程</a></li>
-          <li>{targetAct?.data.abbr || actTitle}</li>
-        </ul>
-      </div>
-
-      <h2 class="text-3xl font-bold mb-2">{actTitle}</h2>
-      <!-- <p class="text-base-content/70">修法沿革</p> -->
-      <p class="text-base-content/70">※ 本頁面所稱屆次，指學生議會之屆次。</p>
-    </header>
-
-
-    <div class="flex flex-col gap-3">
-      {relatedAmendments.map((amend) => (
-        <a 
-          href={`/laws/amendments/${act_id}/${amend.data.version}`}
-          class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-base-100 border border-base-200 rounded-2xl hover:border-neutral hover:bg-base-200/50 duration-300 transition"
-        >
-          <div class="flex-1">
-            <h3 class="font-bold text-lg text-base-content mb-1">{amend.data.title}</h3>
-            {amend.data.description && (
-              <p class="text-sm text-base-content/70 line-clamp-2 mt-2 font-[Lato]">
-                {amend.data.description}
-              </p>
-            )}
-          </div>
-          <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
-            {typeof amend.data.term === 'number' && (
-              amend.data.term === 0 ? (
-                /* 狀態 A：屆數為零 */
-                <span class="badge badge-sm md:badge-md badge-dash">自治幹部會議</span>
-              ) : (
-                /* 狀態 B：屆數大於零 */
-                <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
-              )
-            )}
-            {/* {amend.data.term && (
-              <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
-            )} */}
-            <span class="badge badge-sm md:badge-md badge-dash">{amend.data.date} 通過</span>
-            <span class="icon-[tabler--chevron-right] ml-2 text-base-content/40 align-middle"></span>
-          </div>
-        </a>
-      ))}
+  <header class="mb-8 pb-0"><!-- border-b-2 border-base-300  -->
+    <div class="text-sm breadcrumbs mb-4 text-base-content/80">
+      <ul>
+        <li><a href="/laws/amendments">修正歷程</a></li>
+        <li>{targetAct?.data.abbr || actTitle}</li>
+      </ul>
     </div>
-    <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href={baseUrl+"/amendments/"}>回上頁</a></div>
+
+    <h2 class="text-3xl font-bold mb-2">{actTitle}</h2>
+    <!-- <p class="text-base-content/70">修法沿革</p> -->
+    <p class="text-base-content/70">※ 本頁面所稱屆次，指學生議會之屆次。</p>
+  </header>
+
+
+  <div class="flex flex-col gap-3">
+    {relatedAmendments.map((amend) => (
+      <a 
+        href={`/laws/amendments/${act_id}/${amend.data.version}`}
+        class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-base-100 border border-base-200 rounded-2xl hover:border-neutral hover:bg-base-200/50 duration-300 transition"
+      >
+        <div class="flex-1">
+          <h3 class="font-bold text-lg text-base-content mb-1">{amend.data.title}</h3>
+          {amend.data.description && (
+            <p class="text-sm text-base-content/70 line-clamp-2 mt-2 font-[Lato]">
+              {amend.data.description}
+            </p>
+          )}
+        </div>
+        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+          {typeof amend.data.term === 'number' && (
+            amend.data.term === 0 ? (
+              /* 狀態 A：屆數為零 */
+              <span class="badge badge-sm md:badge-md badge-dash">自治幹部會議</span>
+            ) : (
+              /* 狀態 B：屆數大於零 */
+              <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
+            )
+          )}
+          {/* {amend.data.term && (
+            <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
+          )} */}
+          <span class="badge badge-sm md:badge-md badge-dash">{amend.data.date} 通過</span>
+          <span class="icon-[tabler--chevron-right] ml-2 text-base-content/40 align-middle"></span>
+        </div>
+      </a>
+    ))}
   </div>
+  <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href={baseUrl+"/amendments/"}>回上頁</a></div>
 </MainLayout>
