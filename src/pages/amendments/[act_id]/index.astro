@@ -19,7 +19,7 @@ const { act_id } = Astro.params;
 
 // 取得該法規的原始 metadata
 const targetAct = await getEntry('act', act_id);
-const actTitle = targetAct?.data.title || act_id;
+const actTitle = targetAct?.data.abbr || targetAct?.data.title || act_id;
 
 // 篩選出屬於該法規的所有修法紀錄，並依照日期「由新到舊」遞減排序
 const allAmendments = await getCollection('amendments');
@@ -43,7 +43,7 @@ const relatedAmendments = allAmendments
       </div>
 
       <h2 class="text-3xl font-bold mb-2">{actTitle}</h2>
-      <p class="text-base-content/70">修法沿革</p>
+      <!-- <p class="text-base-content/70">修法沿革</p> -->
       <p class="text-base-content/70">※ 本頁面所稱屆次，指學生議會之屆次。</p>
     </header>
 
