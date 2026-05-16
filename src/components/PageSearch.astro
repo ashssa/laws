@@ -103,7 +103,8 @@
         const nextBtn = document.getElementById('nextMatchBtn');
         const matchBtnContainer = document.getElementById('matchBtnContainer');
         const searchCount = document.getElementById('searchCount');
-        const contentArea = document.querySelector('.regulation-content');
+        // 搜尋範圍
+        const contentArea = document.querySelector('.regulation-content') || document.querySelector('.regulation-amendment');
         const swapLabel = document.getElementById('swapLabel');
 
         let matches = [];

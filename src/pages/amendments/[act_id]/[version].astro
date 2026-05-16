@@ -5,6 +5,7 @@ import { getCollection, getEntry } from 'astro:content';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import { parseAmendmentMarkdown } from '../../../utils/lawParser.js';
 import { diffChars } from 'diff';
+import PageSearch from '../../../components/PageSearch.astro';
 
 export async function getStaticPaths() {
   const amendments = await getCollection('amendments');
@@ -129,6 +130,7 @@ function getDiffHtml(proposedArr, currentArr) {
       margin-bottom: 0rem ;
     }
   </style>
+  <PageSearch />
 
   <header class="mb-8 pb-0 print:border-black">
       <div class="text-sm breadcrumbs mb-4 text-base-content/80">
