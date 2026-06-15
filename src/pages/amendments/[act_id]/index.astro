@@ -64,16 +64,16 @@ const relatedAmendments = allAmendments
           {typeof amend.data.term === 'number' && (
             amend.data.term === 0 ? (
               /* 狀態 A：屆數為零 */
-              <span class="badge badge-sm md:badge-md badge-secondary badge-dash">自治幹部會議</span>
+              <span class="badge badge-sm md:badge-md badge-dash">自治幹部會議</span>
             ) : (
               /* 狀態 B：屆數大於零 */
-              <span class="badge badge-sm md:badge-md badge-secondary badge-dash">第 {amend.data.term} 屆</span>
+              <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
             )
           )}
           {/* {amend.data.term && (
-            <span class="badge badge-sm md:badge-md badge-secondary badge-dash">第 {amend.data.term} 屆</span>
+            <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
           )} */}
-          <span class="badge badge-sm md:badge-md badge-secondary badge-dash">{amend.data.date} 通過</span>
+          <span class="badge badge-sm md:badge-md badge-dash">{amend.data.date} 通過</span>
           <span class="icon-[tabler--chevron-right] ml-2 text-base-content/40 align-middle"></span>
         </div>
       </a>
