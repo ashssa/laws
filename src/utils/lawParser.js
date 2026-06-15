@@ -125,10 +125,10 @@ export function parseAmendmentMarkdown(mdContent) {
     if (/^[(（][一二三四五六七八九十]+[)）]/.test(text)) return 'ml-[3em] pl-[3em] -indent-[2em] text-base-content';
 
     // 樣式 : 1. 2. 3. 4. ......
-    if (/^\d+[\s\.、]/.test(text)) return 'ml-[4em] pl-[1.5em] -indent-[1.5em] text-base-content';
+    if (/^\d+[\s\.、]/.test(text)) return 'ml-[4em] pl-[3.5em] -indent-[1.5em] text-base-content';
 
     // 樣式 : (1) (2) (3) (4) ......
-    if (/^[(（]\d+[)）]/.test(text)) return 'ml-[3em] pl-[3em] -indent-[1.25em] text-base-content';
+    if (/^[(（]\d+[)）]/.test(text)) return 'ml-[3em] pl-[4em] -indent-[1.25em] text-base-content';
 
     // 總說明一般段落：首行縮排 2 字
     return isGlobal ? 'indent-[2em]' : '';
