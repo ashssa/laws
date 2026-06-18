@@ -129,6 +129,15 @@ function getDiffHtml(proposedArr, currentArr) {
     .general-description-text-div > p:only-child , .general-description-text-div > p:last-child {
       margin-bottom: 0rem ;
     }
+
+    /* 讓定位字元 (\t) 在 HTML 中能正確渲染並設定寬度 */
+    .amendments-div p, 
+    .amendments-description-div p, 
+    .general-description-text-div p {
+      white-space: pre-wrap;
+      tab-size: 10;
+      -moz-tab-size: 2;
+    }
   </style>
   <PageSearch />
 

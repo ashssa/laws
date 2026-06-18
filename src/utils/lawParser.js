@@ -128,7 +128,7 @@ export function parseAmendmentMarkdown(mdContent) {
     if (/^\d+[\s\.、]/.test(text)) return 'ml-[4em] pl-[3.5em] -indent-[1.5em] text-base-content';
 
     // 樣式 : (1) (2) (3) (4) ......
-    if (/^[(（]\d+[)）]/.test(text)) return 'ml-[3em] pl-[4em] -indent-[1.25em] text-base-content';
+    if (/^[(（]\d+[)）]/.test(text)) return 'ml-[3em] pl-[4.75em] -indent-[1.75em] text-base-content';
 
     // 總說明一般段落：首行縮排 2 字
     return isGlobal ? 'indent-[2em]' : '';
@@ -152,8 +152,15 @@ export function parseAmendmentMarkdown(mdContent) {
     // 處理總說明 (位於第一個 ### 之前)
     if (currentField === 'globalDescription') {
       if (trimmedLine.startsWith('#')) continue;
+      // 修正：抓取星號、1.、(1)後，插入定位字元
+      let finalText = trimmedLine;
+      if (/^[※*]/.test(finalText)) finalText = finalText.replace(/^([※*])\s*/, '$1\t');
+      else if (/^\d+[\.、]/.test(finalText)) finalText = finalText.replace(/^(\d+[\.、])\s*/, '$1\t');
+      else if (/^\d+[\s　]+/.test(finalText)) finalText = finalText.replace(/^(\d+)[\s　]+/, '$1\t');
+      else if (/^[(（]\d+[)）]/.test(finalText)) finalText = finalText.replace(/^([(（]\d+[)）])\s*/, '$1\t');
+
       result.globalDescription.push({
-        text: trimmedLine,
+        text: finalText,
         indentClass: getIndentClass(trimmedLine, true)
       });
       continue;
@@ -167,8 +174,17 @@ export function parseAmendmentMarkdown(mdContent) {
 
     if (currentField) {
       const isPlaceholder = trimmedLine === '（無）' || trimmedLine === '（刪除）' || trimmedLine === '（本條新增）' || trimmedLine === '（本章新增）' || trimmedLine === '（本節新增）';
+      let finalText = trimmedLine;
+      if (!isPlaceholder) {
+        // 修正：抓取星號、1.、(1)後，插入定位字元
+        if (/^[※*]/.test(finalText)) finalText = finalText.replace(/^([※*])\s*/, '$1\t');
+        else if (/^\d+[\.、]/.test(finalText)) finalText = finalText.replace(/^(\d+[\.、])\s*/, '$1\t');
+      else if (/^\d+[\s　]+/.test(finalText)) finalText = finalText.replace(/^(\d+)[\s　]+/, '$1\t');
+        else if (/^[(（]\d+[)）]/.test(finalText)) finalText = finalText.replace(/^([(（]\d+[)）])\s*/, '$1\t');
+      }
+
       currentAmendment[currentField].push({
-        text: trimmedLine,
+        text: finalText,
         isPlaceholder,
         indentClass: !isPlaceholder ? getIndentClass(trimmedLine) : ''
       });
