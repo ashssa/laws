@@ -1,0 +1,237 @@
+---
+// src/components/CornerMarquee.astro
+//
+// 使用方式（在 Layout 或頁面中）：
+//
+// ---
+// import CornerMarquee from '../components/CornerMarquee.astro';
+// ---
+// <main class="main-content relative">  <!-- 注意：需要 relative，且不要 overflow-hidden -->
+//   <CornerMarquee />
+//   <slot />
+// </main>
+
+interface MarqueeConfig {
+  /** 是否顯示這個跑馬燈，關掉的話整個元件不會渲染 */
+  show?: boolean;
+  /** 跑馬燈顯示的文字 */
+  text: string;
+  /** 點擊後要跳轉的連結 */
+  href?: string;
+  /** 是否用新視窗開啟連結 */
+  openInNewTab?: boolean;
+  /** 旋轉角度，建議 15~35 度之間（會自動 clamp） */
+  rotate?: number;
+  /** 進場延遲（毫秒），頁面載入後多久開始出現 */
+  entranceDelay?: number;
+  /** 顯示多久後自動退場（毫秒）。設為 0 代表不自動消失、會持續顯示 */
+  displayDuration?: number;
+}
+
+// --- 在這裡修改跑馬燈內容 -----------------------------------------------
+const marqueeConfig: MarqueeConfig = {
+  show: true,
+  text: "重要：本法規系統收錄條文已知數項問題，詳情及預計修正期程 點我查看 →",
+  href: "https://ashssa-law-blog.netlify.app/posts/known-problems-20260626/",
+  openInNewTab: true,
+  rotate: 25,
+  entranceDelay: 700,
+  displayDuration: 13800,
+};
+// --------------------------------------------------------------------
+
+const {
+  show = true,
+  text,
+  href = "#",
+  openInNewTab = false,
+  rotate = 25,
+  entranceDelay = 700,
+  displayDuration = 8000,
+} = marqueeConfig;
+
+// 限制旋轉角度在 15~35 度之間，確保可讀性
+const clampedRotate = Math.min(35, Math.max(15, rotate));
+---
+
+{show && (
+  <div
+    class="corner-marquee-wrapper"
+    data-entrance-delay={entranceDelay}
+    data-display-duration={displayDuration}
+    style={`--marquee-rotate: ${clampedRotate}deg;`}
+  >
+    <a
+      href={href}
+      target={openInNewTab ? "_blank" : "_self"}
+      rel={openInNewTab ? "noopener noreferrer" : undefined}
+      class="corner-marquee bg-primary text-primary-content shadow-lg"
+      aria-label={text}
+    >
+      <span class="corner-marquee__track">
+        <span class="corner-marquee__text">{text}</span>
+        <span class="corner-marquee__text" aria-hidden="true">{text}</span>
+      </span>
+    </a>
+  </div>
+)}
+
+<style>
+  .corner-marquee-wrapper {
+    /* 定位在 main-content 右上角 */
+    position: fixed;
+    top:    1.75rem;
+    right:  -4.25rem;
+    z-index: 99;
+
+    /* 初始狀態：隱藏，等待 JS 觸發進場動畫 */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: rotate(var(--marquee-rotate)) translate(24px, -16px) scale(0.85);
+  }
+
+  /* 桌面版：main-content 有最大寬度時，讓跑馬燈稍微穿出邊緣 */
+  @media (min-width: 1024px) {
+    .corner-marquee-wrapper {
+      top: 2.5rem;
+      right: -2rem;
+    }
+  }
+
+  .corner-marquee-wrapper.is-visible {
+    visibility: visible;
+    pointer-events: auto;
+    animation: marqueeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .corner-marquee-wrapper.is-leaving {
+    visibility: visible;
+    pointer-events: none;
+    animation: marqueeOut 0.2s ease-in forwards;
+  }
+
+  .corner-marquee-wrapper.is-hidden {
+    display: none;
+  }
+
+  @keyframes marqueeIn {
+    from {
+      opacity: 0;
+      transform: rotate(var(--marquee-rotate)) translate(24px, -16px) scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: rotate(var(--marquee-rotate)) translate(0, 0) scale(1);
+    }
+  }
+
+  @keyframes marqueeOut {
+    from {
+      opacity: 1;
+      transform: rotate(var(--marquee-rotate)) translate(0, 0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: rotate(var(--marquee-rotate)) translate(24px, -16px) scale(0.85);
+    }
+  }
+
+  .corner-marquee {
+    display: inline-flex;
+    align-items: center;
+    max-width: min(70vw, 22rem);
+    padding: 0.4rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+    overflow: hidden;
+    white-space: nowrap;
+
+    /* 穿出 main-content 邊緣的部分漸漸淡化消失 */
+    mask-image: linear-gradient(100deg, black 0%, black 75%, transparent 97%);
+    -webkit-mask-image: linear-gradient(100deg, black 0%, black 75%, transparent 97%);
+  }
+
+  .corner-marquee__track {
+    display: flex;
+    white-space: nowrap;
+    animation: marqueeScroll 9s linear infinite;
+    animation-play-state: paused;
+  }
+
+  .corner-marquee-wrapper.is-scrolling .corner-marquee__track {
+    animation-play-state: running;
+  }
+
+  .corner-marquee__text {
+    /* padding-inline-end: 2.5rem; */
+    padding-inline-start: 3.5rem;
+  }
+
+  @keyframes marqueeScroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* 尊重使用者的減少動態偏好設定 */
+  @media (prefers-reduced-motion: reduce) {
+    .corner-marquee-wrapper,
+    .corner-marquee-wrapper.is-visible,
+    .corner-marquee-wrapper.is-leaving {
+      animation: none;
+      transition: opacity 0.1s ease;
+    }
+    .corner-marquee-wrapper.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: rotate(var(--marquee-rotate));
+    }
+    .corner-marquee__track {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // 控制跑馬燈的進場 / 退場，讓它不會一直顯示在畫面上
+  function initCornerMarquees() {
+    document
+      .querySelectorAll<HTMLElement>(".corner-marquee-wrapper")
+      .forEach((el) => {
+        if (el.dataset.marqueeInit === "true") return;
+        el.dataset.marqueeInit = "true";
+
+        const delay = Number(el.dataset.entranceDelay ?? 700);
+        const duration = Number(el.dataset.displayDuration ?? 8000);
+
+        el.addEventListener("animationend", (e) => {
+          if (e.animationName === "marqueeOut") {
+            // console.timeEnd("leave-animation"); 
+            el.classList.add("is-hidden");
+          }
+        });
+
+        setTimeout(() => {
+          el.classList.add("is-visible", "is-scrolling");
+
+          if (duration > 0) {
+            setTimeout(() => {
+              el.classList.remove("is-scrolling");
+              // console.time("leave-animation");
+              el.classList.add("is-leaving"); 
+            }, duration);
+          }
+        }, delay);
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", initCornerMarquees);
+  document.addEventListener("astro:page-load", initCornerMarquees); // 支援 View Transitions
+</script>

@@ -6,6 +6,7 @@ import PageSearch from '../components/PageSearch.astro';
 import ScrollToTop from '../components/ScrollToTop.astro';
 import BaseHead from '../components/BaseHead.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import CornerMarquee from '../components/CornerMarquee.astro';
 
 const { title, description, url } = Astro.props;
 
@@ -30,6 +31,7 @@ const { title, description, url } = Astro.props;
 
         <PageSearch />
         <ScrollToTop /> 
+        <CornerMarquee />
     </main>
     <Footer />
 </body>
