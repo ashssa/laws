@@ -128,7 +128,7 @@ const browserTitle = entry.data.abbr || entry.data.title;
       <ul class="attachments">
         {lawData.attachments.map((att) => (
           <li>
-            <a href={att.url.startsWith('/') ? `${baseUrl}${att.url}` : att.url} target="_blank" class="transition">
+            <a href={att.url.startsWith('/') ? `${baseUrl}${att.url}` : att.url} target="_blank" class="group transition">
               <span class="att-no">{att.no}</span>
               <span class="att-title">{att.title}</span>
               {/* 您可以加上 PDF 圖示 */}

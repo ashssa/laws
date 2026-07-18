@@ -8,9 +8,9 @@
         padding: 1.5rem 1rem;
         /* margin-top: 6rem; */
     }
-    .page-title {
+    /* .page-title {
         font-size: 1.5em;
-    }
+    } */
 
     /* 調整導覽列在小螢幕上的樣式
     .site-header nav ul li { display: block; margin: 0.5rem 0; } 
@@ -37,7 +37,7 @@
         left: -1.5rem;
         margin-right: -1rem; /* 在編號和內容之間添加一些間距 
     } */
-    .attachments {
+    /* .attachments {
     padding-left: 0;
     }
     .attachments-list{
@@ -48,10 +48,10 @@
     }
     .attachments li::before {
     content: ""; 
-    }
-    .footer-block{
-        display: block; /* 在小螢幕上顯示 <br> 標籤，強制換行 */
-    }
+    } */
+    /* .footer-block{
+        display: block; 在小螢幕上顯示 <br> 標籤，強制換行
+    } */
     /* #scrollToTopBtn:hover {
         /* background-color: var(--color-primary); 鼠標懸停時的顏色 
         transform: scale(1); /* 鼠標懸停時稍微放大 
@@ -59,6 +59,7 @@
     } */
 }
 
+/* 02. 其他調整 */
 /* --- 針對支援 text-autospace 的瀏覽器啟用混排文字間距 --- */
 @supports (text-autospace: normal) {
     .par, .sub , .item, .old-par, .old-sub, .old-item, .amendment-history li {
