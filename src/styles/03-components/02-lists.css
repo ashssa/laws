@@ -139,11 +139,7 @@
     width: fit-content;
     width: fit-content;
     transition: color 0.2s ease-in-out;
-<<<<<<< Updated upstream
     @apply mr-3 whitespace-nowrap group-hover:text-primary ;
-=======
-    @apply mr-3 whitespace-nowrap group-hover:text-primary ;
->>>>>>> Stashed changes
 }
 .att-title {
     flex-grow: 1;
