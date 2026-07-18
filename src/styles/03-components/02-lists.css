@@ -82,14 +82,11 @@
 }
 /* .attachments-list h3::before {
     content: "\e2c8"; "folder_open" icon in Material Symbols
-/* .attachments-list h3::before {
-    content: "\e2c8"; "folder_open" icon in Material Symbols
     content: "";
     font-family: 'Material Symbols Outlined';
     font-size: 1.2rem;
     font-weight: normal;
     vertical-align: middle;
-} */
 } */
 
 /* 03. 各法規：附件清單樣式 */
