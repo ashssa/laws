@@ -80,14 +80,14 @@
     align-items: center;
     gap: 0.4rem;
 }
-.attachments-list h3::before {
-    /* content: "\e2c8"; "folder_open" icon in Material Symbols */
+/* .attachments-list h3::before {
+    content: "\e2c8"; "folder_open" icon in Material Symbols
     content: "";
     font-family: 'Material Symbols Outlined';
     font-size: 1.2rem;
     font-weight: normal;
     vertical-align: middle;
-}
+} */
 
 /* 03. 各法規：附件清單樣式 */
 .attachments {
@@ -136,10 +136,10 @@
     color: var(--color-secondary);
     font-size: 0.9em;
     min-width: 2.2rem;
+    width: fit-content;
     transition: color 0.2s ease-in-out;
-    @apply whitespace-nowrap group-hover:text-primary ;
+    @apply mr-3 whitespace-nowrap group-hover:text-primary ;
 }
-
 .att-title {
     flex-grow: 1;
     word-break: break-all;
