@@ -1,15 +1,5 @@
 ---
 // src/components/CornerMarquee.astro
-//
-// 使用方式（在 Layout 或頁面中）：
-//
-// ---
-// import CornerMarquee from '../components/CornerMarquee.astro';
-// ---
-// <main class="main-content relative">  <!-- 注意：需要 relative，且不要 overflow-hidden -->
-//   <CornerMarquee />
-//   <slot />
-// </main>
 
 interface MarqueeConfig {
   /** 是否顯示這個跑馬燈，關掉的話整個元件不會渲染 */
@@ -20,8 +10,6 @@ interface MarqueeConfig {
   href?: string;
   /** 是否用新視窗開啟連結 */
   openInNewTab?: boolean;
-  /** 旋轉角度，建議 15~35 度之間（會自動 clamp） */
-  rotate?: number;
   /** 進場延遲（毫秒），頁面載入後多久開始出現 */
   entranceDelay?: number;
   /** 顯示多久後自動退場（毫秒）。設為 0 代表不自動消失、會持續顯示 */
@@ -30,11 +18,10 @@ interface MarqueeConfig {
 
 // --- 在這裡修改跑馬燈內容 -----------------------------------------------
 const marqueeConfig: MarqueeConfig = {
-  show: true,
+  show: false,
   text: "重要：本法規系統收錄條文已知數項問題，詳情及預計修正期程 點我查看 →",
   href: "https://ashssa-law-blog.netlify.app/posts/known-problems-20260626/",
   openInNewTab: true,
-  rotate: 25,
   entranceDelay: 700,
   displayDuration: 13800,
 };
@@ -45,13 +32,12 @@ const {
   text,
   href = "#",
   openInNewTab = false,
-  rotate = 25,
   entranceDelay = 700,
   displayDuration = 8000,
 } = marqueeConfig;
 
-// 限制旋轉角度在 15~35 度之間，確保可讀性
-const clampedRotate = Math.min(35, Math.max(15, rotate));
+// 限制旋轉角度在 25 度，確保可讀性
+const clampedRotate = 25 ;
 ---
 
 {show && (
