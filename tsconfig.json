@@ -10,7 +10,8 @@
       "@layouts/*":    ["./src/layouts/*"],
       "@assets/*":     ["./src/assets/*"],
       "@appendix/*":   ["./public/appendix/*"],
-      "@styles/*":     ["./src/styles/*"]
+      "@styles/*":     ["./src/styles/*"],
+      "@utils/*":      ["./src/utils/*"]
     }
   }
 }

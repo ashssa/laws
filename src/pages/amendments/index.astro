@@ -1,6 +1,6 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
-import MainLayout from '../../layouts/MainLayout.astro';
+import MainLayout from '@layouts/MainLayout.astro';
 
 // 取得所有修正歷程檔案
 const allAmendments = await getCollection('amendments');
@@ -27,16 +27,16 @@ const actsWithAmendments = await Promise.all(
 
 <MainLayout title="修法沿革">
 
-    <header class="mb-8 pb-0"><!-- border-b-2 border-base-300  -->
-      <div class="text-sm breadcrumbs mb-4 text-base-content/80">
-        <ul>
-          <li>修法沿革</li>
-        </ul>
-      </div>
+  <header class="mb-8 pb-0"><!-- border-b-2 border-base-300  -->
+    <div class="text-sm breadcrumbs mb-4 text-base-content/80">
+      <ul>
+        <li>修法沿革</li>
+      </ul>
+    </div>
 
-      <h2 class="page-title">修法沿革</h2>
-      <p class="text-base-content/70">※ 本頁面如與學生議會修法沿革不同，以學生議會公告版本為主。</p>
-    </header>
+    <h2 class="page-title">修法沿革</h2>
+    <p class="text-base-content/70">※ 本頁面如與學生議會修法沿革不同，以學生議會公告版本為主。</p>
+  </header>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"><!-- md:grid-cols-2 -->
 
@@ -61,7 +61,9 @@ const actsWithAmendments = await Promise.all(
       </div>
     )}
   </div>
+
   <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href=".">回首頁</a></div>
+
 </MainLayout>
 
   <!-- 舊版法規選單 -->

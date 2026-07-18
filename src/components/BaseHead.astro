@@ -1,7 +1,8 @@
 ---
 // src/components/BaseHead.astro
-import '../styles/global.css'; // 確保您的全域 CSS 在這裡引入
+import '@styles/global.css'; // 確保您的全域 CSS 在這裡引入
 import { pwaInfo } from 'virtual:pwa-info'; // 引入PWA資訊
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -24,6 +25,8 @@ const fullTitle = title === siteName ? title : `${title} - ${siteName}`; // 邏�
 <title>{fullTitle}</title>
 <meta name="title" content={fullTitle} />
 <meta name="description" content={description} />
+
+<ClientRouter />
 
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />

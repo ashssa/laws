@@ -1,10 +1,11 @@
 ---
-import '../styles/global.css'; // 引入原本的 CSS 檔案
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import ScrollToTop from '../components/ScrollToTop.astro'; // 暫時測試一下 ScrollToTop
-import BaseHead from '../components/BaseHead.astro';
-import CornerMarquee from '../components/CornerMarquee.astro';
+import '@styles/global.css'; // 引入原本的 CSS 檔案
+import Navbar from '@components/Navbar.astro';
+import Footer from '@components/Footer.astro';
+import ScrollToTop from '@components/ScrollToTop.astro'; // 暫時測試一下 ScrollToTop
+import BaseHead from '@components/BaseHead.astro';
+import CornerMarquee from '@components/CornerMarquee.astro';
+
 
 const { title } = Astro.props;
 const siteName = "高師大附中學生會自治法規共用系統";
