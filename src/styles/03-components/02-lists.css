@@ -137,7 +137,7 @@
     font-size: 0.9em;
     min-width: 2.2rem;
     transition: color 0.2s ease-in-out;
-    @apply group-hover:text-primary ;
+    @apply whitespace-nowrap group-hover:text-primary ;
 }
 
 .att-title {
