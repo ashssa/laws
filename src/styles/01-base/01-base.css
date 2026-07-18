@@ -27,6 +27,6 @@ p {
 }
 /* --- 選中文字反白顏色調整 --- */
 /*.main-content*/ ::selection {
-    background-color: var(--color-secondary);
-    color: var(--color-secondary-content);
+    opacity: 1 !important;
+    @apply bg-secondary text-secondary-content opacity-100;
 }

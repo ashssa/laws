@@ -14,7 +14,7 @@
     class="fixed top-0 toc:top-19 left-0 h-full toc:h-[calc(100vh-4rem)] w-64 bg-base-100/95 backdrop-blur shadow-lg border-r border-base-200 z-250 toc:z-25 transform -translate-x-full toc:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col"
 >
     <div class="flex justify-between items-center p-4 border-b border-base-200">
-        <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+        <h3 class="font-semibold text-lg text-base-content flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
             <!-- 法規 -->目次
         </h3>
@@ -40,7 +40,7 @@
 <!-- 電腦版打開目次按鈕 -->
 <button 
     id="desktop-toc-open-btn" 
-    class="hidden btn btn-square btn-ghost fixed top-24 left-0 z-30 shadow-sm bg-base-100 border border-base-200 rounded-l-none transition-all"
+    class="hidden btn btn-square btn-ghost fixed top-24 left-0 z-30 shadow-sm bg-base-100 border border-base-200 rounded-l-none transition-all hover:bg-base-200/60"
     title="打開目次"
 >
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
@@ -84,12 +84,12 @@
             const a = document.createElement('a');
             a.href = `#${heading.id}`;
             a.textContent = heading.textContent.trim();
-            a.className = "toc-link transition-all duration-200 block w-full"; 
+            a.className = "toc-link transition-all duration-200 block w-full px-3 py-1.5 rounded-lg text-base-content/80 hover:bg-base-200/60 hover:text-base-content"; 
             
             const tagName = heading.tagName.toLowerCase();
             if (tagName === 'h3') li.classList.add('ml-4', 'mt-1');
             if (tagName === 'h4') li.classList.add('ml-8', 'opacity-80', 'text-xs');
-            if (tagName === 'h2') a.classList.add('font-bold', 'text-base');
+            if (tagName === 'h2') a.classList.add('font-semibold', 'text-base');
 
             a.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -160,9 +160,11 @@
 
             const tocLinks = document.querySelectorAll('a.toc-link');
             tocLinks.forEach(link => {
-                link.classList.remove('bg-primary/10', 'text-primary', 'font-bold', 'border-l-4', 'border-primary');
+                link.classList.remove('bg-neutral', 'text-neutral-content', 'font-semibold');
+                link.classList.add('text-base-content/80');
                 if (link.getAttribute('href') === `#${currentId}`) {
-                    link.classList.add('bg-primary/10', 'text-primary', 'font-bold', 'border-l-4', 'border-primary');
+                    link.classList.remove('text-base-content/80');
+                    link.classList.add('bg-neutral', 'text-neutral-content', 'font-semibold');
                 }
             });
 
