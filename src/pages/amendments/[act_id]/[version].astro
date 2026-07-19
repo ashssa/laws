@@ -6,7 +6,7 @@ import MainLayout from '@layouts/MainLayout.astro';
 import { parseAmendmentMarkdown } from '@utils/lawParser.js';
 import { diffChars } from 'diff';
 import PageSearch from '@components/PageSearch.astro';
-
+import ReportIssueButton from '@components/ReportIssueButton.astro';
 export async function getStaticPaths() {
   const amendments = await getCollection('amendments');
   return amendments.map(entry => ({
@@ -140,6 +140,7 @@ function getDiffHtml(proposedArr, currentArr) {
     }
   </style>
   <PageSearch />
+  <ReportIssueButton />
 
   <header class="mb-8 pb-0 print:border-black">
       <div class="text-sm breadcrumbs mb-4 text-base-content/80">
