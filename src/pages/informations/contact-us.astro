@@ -1,11 +1,11 @@
 ---
-// src/pages/informations/contact-us.astro
+// src/pages/information/contact-us.astro
 import MainLayout from '../../layouts/MainLayout.astro';
 const title  = "聯絡我們";
-const description = "彙編高師大附中學生會所有自治法規的展示網站。";
+// const description = "彙編高師大附中學生會所有自治法規的展示網站。";
 ---
 
-<MainLayout title={title} description={description}>
+<MainLayout title={title}>
 
     <h2 class="page-title">聯絡我們</h2>
     <div class="form-container">
@@ -30,16 +30,16 @@ const description = "彙編高師大附中學生會所有自治法規的展示�
                 <div class="skeleton h-4 w-full"></div>
         </div>
         <iframe
-        id="form"
-        style="display: none;"
-        class="mx-8"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform?embedded=true" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        marginheight="0" 
-        marginwidth="0"
-        allowtransparency="true">
+            id="form"
+            style="display: none;"
+            class="mx-8"
+            src="https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform?embedded=true" 
+            width="100%" 
+            height="100%" 
+            frameborder="0" 
+            marginheight="0" 
+            marginwidth="0"
+            allowtransparency="true">
         </iframe>
     </div>
 
@@ -87,3 +87,4 @@ const description = "彙編高師大附中學生會所有自治法規的展示�
         iframe.style.display = 'block';
     };
 </script>
+<!-- https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform?usp=pp_url&entry.1897332589=%E6%B3%95%E8%A6%8F%E6%96%87%E6%9C%AC%E9%8C%AF%E8%AA%A4%E5%9B%9E%E5%A0%B1&entry.580713109={ASHSSSSS-01}&entry.1890015696={ASHSSSSS-02}&entry.1509752132={ASHSSSSS-03} -->
