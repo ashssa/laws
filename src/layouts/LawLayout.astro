@@ -43,14 +43,17 @@ const { title, description, url } = Astro.props;
 <script>
 //  將條內單一「項」par加上 only-one-par 類別
 const artDataElements = document.querySelectorAll('.art-data');
-artDataElements.forEach(artData => {
-    const parElements = artData.querySelectorAll('.par');
-    const firstPar = artData.querySelector('.par');
+function updateOnlyOnePar() {
+    artDataElements.forEach(artData => {
+        const parElements = artData.querySelectorAll('.par');
+        const firstPar = artData.querySelector('.par');
 
-    if (parElements.length === 1 && firstPar) {
-        firstPar.classList.add('only-one-par');
-    } else if (firstPar) {
-        firstPar.classList.remove('only-one-par');
-    }
-});
+        if (parElements.length === 1 && firstPar) {
+            firstPar.classList.add('only-one-par');
+        } else if (firstPar) {
+            firstPar.classList.remove('only-one-par');
+        }
+    });
+}
+document.addEventListener('astro:page-load', updateOnlyOnePar);
 </script>
