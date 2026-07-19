@@ -110,15 +110,17 @@
         let matches = [];
         let currentIndex = -1;
 
-        // UI 開關
-        toggleBtn?.addEventListener('click', () => {
-            container?.classList.toggle('hidden');
-            swapLabel?.classList.toggle('swap-active');
-            matchBtnContainer?.classList.add('hidden');
-            matchBtnContainer?.classList.remove('flex');
-            if (!container?.classList.contains('hidden')) searchInput?.focus();
-            else clearSearch();
-        });
+        // UI 開關（使用 onclick 賦值避免重複綁定）
+        if (toggleBtn) {
+            toggleBtn.onclick = () => {
+                container?.classList.toggle('hidden');
+                swapLabel?.classList.toggle('swap-active');
+                matchBtnContainer?.classList.add('hidden');
+                matchBtnContainer?.classList.remove('flex');
+                if (!container?.classList.contains('hidden')) searchInput?.focus();
+                else clearSearch();
+            };
+        }
 
         // 核心：安全地標記文字，避開公式與 HTML 標籤
         function highlightText(keyword) {
@@ -182,12 +184,20 @@
             if(searchCount) searchCount.textContent = `第 ${currentIndex + 1} / ${matches.length} 筆`;
         }
 
-        searchBtn?.addEventListener('click', () => highlightText(searchInput?.value || ''));
-        searchInput?.addEventListener('keydown', (e) => { if (e.key === 'Enter') highlightText(searchInput.value); });
-        nextBtn?.addEventListener('click', () => navigateToMatch(currentIndex + 1));
-        prevBtn?.addEventListener('click', () => navigateToMatch(currentIndex - 1));
+        // 使用 onclick 賦值避免重複綁定
+        if (searchBtn) searchBtn.onclick = () => highlightText(searchInput?.value || '');
+        if (searchInput) searchInput.onkeydown = (e) => { if (e.key === 'Enter') highlightText(searchInput.value); };
+        if (nextBtn) nextBtn.onclick = () => navigateToMatch(currentIndex + 1);
+        if (prevBtn) prevBtn.onclick = () => navigateToMatch(currentIndex - 1);
     }
 
-    document.addEventListener('astro:page-load', initSearch);
-    document.addEventListener('DOMContentLoaded', initSearch);
+    // === 對接 Astro 生命週期（防止重複初始化）===
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSearch);
+    } else {
+        initSearch();
+    }
+    document.addEventListener('astro:page-load', () => {
+        if (document.readyState !== 'loading') initSearch();
+    });
 </script>
