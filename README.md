@@ -1,6 +1,6 @@
 # **高師大附中學生會自治法規共用系統**
 
-![SaLaws](https://ashssa-law-blog.netlify.app/_astro/SALaw-1.BmQi5h52_DKKAi.webp)
+![SaLaws]([Preview-3.png](https://ashssa.github.io/laws/img/Preview-3.png))
 
 本專案乃採用 [Astro](https://astro.build) 框架所建構之高效能靜態網站系統，其核心宗旨在於將國立高雄師範大學附屬高級中學學生會之所有自治法規進行數位化彙編、系統性展示與長期保存。本系統導入現代化前端技術堆疊，除確保在各式裝置上皆能提供響應式之最佳瀏覽體驗外，亦支援深色模式切換功能，致力於建構一個資訊透明、檢索便捷且具備優良閱讀體驗的法規發布平台，以落實校園自治之精神。
 
