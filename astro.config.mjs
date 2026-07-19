@@ -45,22 +45,22 @@ export default defineConfig({
             type: "image/png"
           }
         ],
-        shortcuts: [
-          {
-            name: "組織章程",
-            short_name: "組織章程",
-            description: "閱讀本會組織章程",
-            url: "/laws/act/act01",
-            icons: [{ src: "/laws/img/shortcuts01-512.png", sizes: "512x512" }]
-          },
-          {
-            name: "學生會官網",
-            short_name: "SA 官網",
-            description: "前往學生會官方網站！",
-            url: "https://sites.google.com/stu.nknush.kh.edu.tw/ashssa",
-            icons: [{ src: "/laws/img/shortcuts02-512.png", sizes: "512x512" }]
-          }
-        ]
+        // shortcuts: [
+        //   {
+        //     name: "組織章程",
+        //     short_name: "組織章程",
+        //     description: "閱讀本會組織章程",
+        //     url: "/laws/act/act01",
+        //     icons: [{ src: "/laws/img/shortcuts01-512.png", sizes: "512x512" }]
+        //   },
+        //   {
+        //     name: "學生會官網",
+        //     short_name: "SA 官網",
+        //     description: "前往學生會官方網站！",
+        //     url: "https://sites.google.com/stu.nknush.kh.edu.tw/ashssa",
+        //     icons: [{ src: "/laws/img/shortcuts02-512.png", sizes: "512x512" }]
+        //   }
+        // ]
       }
     })
   ]
