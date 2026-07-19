@@ -93,14 +93,14 @@
             e.preventDefault();
             
             const sourceUrl = window.location.href;
-            const reportContent = `「${selectedText}」（來源：${sourceUrl}）`;
+            const reportContent = `【來源】${sourceUrl}\n【條文內容】\n${selectedText}`;
             
             const params = new URLSearchParams({
                 'report': reportContent,
             });
 
             window.open(
-                `${baseUrl}/informations/contact-us?${params.toString()}`,
+                `${baseUrl}/information/contact-us?${params.toString()}`,
                 '_blank'
             );
         };
