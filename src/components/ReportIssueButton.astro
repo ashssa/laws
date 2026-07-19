@@ -1,0 +1,120 @@
+---
+// src/components/ReportIssueButton.astro
+// 框選 .regulation-content 文字後彈出的「回報問題」浮動按鈕
+---
+
+<!-- 回報問題按鈕 -->
+<button 
+    id="report-issue-btn" 
+    class="hidden btn btn-warning btn-sm fixed bottom-36 left-0 toc:bottom-8 toc:left-auto toc:right-20 rounded-l-none toc:rounded-l-lg toc:rounded-r-lg z-255 shadow-md border-none backdrop-blur transition-all duration-300 print:hidden"
+>
+    <span class="grid grid-cols-[auto_1fr] items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+        </svg>
+        <span>回報問題</span>
+    </span>
+</button>
+
+<script>
+    function initReportIssueButton() {
+        const btn = document.getElementById('report-issue-btn');
+        if (!btn) return;
+
+        let selectedText = '';
+        let hideTimeout: ReturnType<typeof setTimeout> | null = null;
+        const MAX_TEXT_LENGTH = 500;
+
+        // 取得網站根目錄
+        const baseUrl = document.querySelector('meta[name="base-url"]')?.getAttribute('content') 
+            || '/laws';
+
+        function showBtn() {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
+            }
+            btn.classList.remove('hidden');
+            // 觸發動畫：延遲一幀後加入 opacity
+            requestAnimationFrame(() => {
+                btn.classList.remove('opacity-0');
+                btn.classList.add('opacity-100');
+            });
+        }
+
+        function hideBtn() {
+            btn.classList.remove('opacity-100');
+            btn.classList.add('opacity-0');
+            hideTimeout = setTimeout(() => {
+                btn.classList.add('hidden');
+            }, 300);
+        }
+
+        // 檢查選取範圍是否在 .regulation-content 內
+        function isSelectionInRegulationContent(selection: Selection): boolean {
+            if (!selection.rangeCount) return false;
+            const range = selection.getRangeAt(0);
+            const container = range.commonAncestorContainer;
+            // 往上找 .regulation-content
+            const element = container.nodeType === Node.TEXT_NODE 
+                ? container.parentElement 
+                : container as Element;
+            return !!element?.closest('.regulation-content');
+        }
+
+        // 監聽文字選取變化
+        function handleSelectionChange() {
+            const selection = window.getSelection();
+            if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+                // 延遲隱藏，給使用者時間點擊按鈕
+                if (!btn.classList.contains('hidden')) {
+                    hideTimeout = setTimeout(() => hideBtn(), 1500);
+                }
+                return;
+            }
+
+            if (isSelectionInRegulationContent(selection)) {
+                selectedText = selection.toString().trim();
+                if (selectedText.length > MAX_TEXT_LENGTH) {
+                    selectedText = selectedText.substring(0, MAX_TEXT_LENGTH) + '…';
+                }
+                showBtn();
+            }
+        }
+
+        // 點擊按鈕後導向 contact-us 頁面
+        btn.onclick = (e) => {
+            e.preventDefault();
+            
+            const sourceUrl = window.location.href;
+            const reportContent = `「${selectedText}」（來源：${sourceUrl}）`;
+            
+            const params = new URLSearchParams({
+                'report': reportContent,
+            });
+
+            // 導向 contact-us 頁面
+            window.open(
+                `${baseUrl}/informations/contact-us?${params.toString()}`,
+                '_blank'
+            );
+        };
+
+        // 綁定 selectionchange 事件
+        if ((window as any)._reportIssueHandler) {
+            document.removeEventListener('selectionchange', (window as any)._reportIssueHandler);
+        }
+        (window as any)._reportIssueHandler = handleSelectionChange;
+        document.addEventListener('selectionchange', (window as any)._reportIssueHandler);
+    }
+
+    // === 對接 Astro 生命週期 ===
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initReportIssueButton);
+    } else {
+        initReportIssueButton();
+    }
+    document.addEventListener('astro:page-load', () => {
+        if (document.readyState !== 'loading') initReportIssueButton();
+    });
+</script>

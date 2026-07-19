@@ -79,6 +79,23 @@ const description = "彙編高師大附中學生會所有自治法規的展示�
     const iframe = document.getElementById('form');
     const loadingMessage = document.getElementById('loading-message');
 
+    // 讀取 URL 查詢參數，用於從「回報問題按鈕」導入時預填表單
+    const urlParams = new URLSearchParams(window.location.search);
+    const reportText = urlParams.get('report');
+
+    if (reportText && iframe) {
+        // 有回報參數時，動態組合帶有預填值的 Google Form URL
+        const formBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform';
+        const formParams = new URLSearchParams({
+            'embedded': 'true',
+            'entry.1897332589': '法規文本錯誤回報',
+            'entry.580713109': reportText,
+            'entry.1890015696': '法規系統使用者○○○',
+            'entry.1509752132': 'no@thank.you',
+        });
+        iframe.src = `${formBaseUrl}?${formParams.toString()}`;
+    }
+
     // 當 iframe 載入完成時
     iframe.onload = function() {
         // 隱藏載入訊息
