@@ -93,7 +93,7 @@
             e.preventDefault();
             
             const sourceUrl = window.location.href;
-            const reportContent = `【來源】${sourceUrl}\n【條文內容】\n${selectedText}`;
+            const reportContent = `【來源】${sourceUrl}\n【條文內容】\n${selectedText}\n【問題描述】\n(請在此填寫您發現的問題或建議)`;
             
             const params = new URLSearchParams({
                 'report': reportContent,
