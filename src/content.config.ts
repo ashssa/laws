@@ -38,7 +38,11 @@ const blog = defineCollection({
     title: z.string(),
     author: z.string(),
     pubDate: z.coerce.date(),
-    modDate: z.coerce.date().optional(),
+    modDate: z.union([z.string(), z.date(), z.null()]).optional().transform(val => {
+      if (!val) return undefined;
+      const d = new Date(val);
+      return isNaN(d.getTime()) ? undefined : d;
+    }),
     slug: z.string(),
     showInHomePage: z.boolean().default(false),
     pinned: z.boolean().default(false),
