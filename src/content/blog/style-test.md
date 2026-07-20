@@ -3,8 +3,7 @@ title: "樣式測試"
 author: "學生議員潘祈瑋"
 pubDate: 2025-11-08
 slug: style-test
-featured: false
-draft: false
+draft: true
 tags: ["測試"]
 description: "樣式測試：寫一點介紹，測試各種Markdown與特殊樣式。"
 ---
