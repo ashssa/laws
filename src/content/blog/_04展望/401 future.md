@@ -1,22 +1,19 @@
 ---
 title: SA Law計劃：未來展望
 author: 學生議員潘祈瑋
-pubDate: 2025-11-02T4:12:26Z
+pubDate: 2025-11-02
 modDate:
 slug: future
-featured: false
+showInHomePage: false
+pinned: false
 draft: true
 tags:
   - 展望
 category: future
 description:
   【待補充】SA Law計劃：未來展望
-series: 介紹部落格
-order: 40
 ---
 
-
-## Table of contents
 
 ## SA Law計劃：未來展望
 

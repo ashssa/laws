@@ -4,14 +4,13 @@ author: 學生議員潘祈瑋
 pubDate: 2025-11-01
 modDate:
 slug: about-sa-law
-featured: true
+showInHomePage: false
+pinned: false
 draft: false
 tags:
   - 設計理念
 description:
   【敬請期待】SA Law：高中生替學生會打造法規系統的源起
-series: 介紹部落格
-order: 10
 
 ---
 
@@ -34,3 +33,4 @@ order: 10
 啊，可能也跟立政黨法的時候有關，因為拿時候也有去參酌各校學生會的法規，就又感而發這樣。-->
 
 *※ 本文由學生議會第八屆議員主筆*
+<!-- 或許可以寫本文由法規系統創辦人主筆 -->
