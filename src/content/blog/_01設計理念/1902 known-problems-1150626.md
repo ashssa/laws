@@ -66,5 +66,3 @@ description:
 * [學生議會網站「法規」專區](https://sites.google.com/a/stu.nknush.kh.edu.tw/ashs_sp/laws/)
 * [行政中心網站「會長令」專區](https://sites.google.com/stu.nknush.kh.edu.tw/ashssa/OpenData/Orders/)
 * [聯絡我們頁面](https://ashssa.github.io/laws/informations/contact_us/)
-
-*※ 本文由法規系統維運小組發布*
