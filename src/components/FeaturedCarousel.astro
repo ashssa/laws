@@ -38,7 +38,7 @@ function formatDate(date: Date): string {
     </div>
 
     {/* Carousel */}
-    <div class="carousel carousel-center w-full rounded-box bg-base-200/50 space-x-4 p-4">
+    <div class="carousel carousel-center w-full rounded-box bg-base-100/50 space-x-4 p-4">
       {posts.map((post, index) => (
         <div id={`blog-slide-${index}`} class="carousel-item relative w-full">
           <a href={`${base}/blog/${post.slug}`} class="blog-carousel-card card bg-base-100 shadow-md w-full no-underline">
