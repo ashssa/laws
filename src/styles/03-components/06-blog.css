@@ -42,6 +42,9 @@
     line-height: 1.8;
     text-align: justify;
 }
+.blog-post-content * {
+    font-family: Lato, "Noto Sans TC", sans-serif;
+}
 
 /* --- 粗體、斜體、底線 --- */
 .blog-post-content strong {
