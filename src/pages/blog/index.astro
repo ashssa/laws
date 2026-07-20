@@ -1,6 +1,6 @@
 ---
 // src/pages/blog/index.astro
-// 部落格文章總覽頁面
+// 部落格文章總覽頁面（最新訊息）
 
 import MainLayout from '@layouts/MainLayout.astro';
 import BlogPostCard from '@components/BlogPostCard.astro';
@@ -19,10 +19,11 @@ const sortedPosts = allPosts.sort((a, b) => {
 });
 ---
 
-<MainLayout title="文章總覽">
+<MainLayout title="最新訊息">
     <a href="/laws/" class="btn btn-ghost btn-sm mb-4 -ml-4">← 回首頁</a>
 
-    <h2 class="page-title">文章總覽</h2>
+    <h2 class="page-title">最新訊息
+</h2>
 
     <div class="blog-list">
         {sortedPosts.map((post) => (
