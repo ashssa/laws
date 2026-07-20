@@ -128,7 +128,7 @@
 
 /* --- 引用區塊 --- */
 .blog-post-content blockquote {
-    @apply bg-base-200 rounded-box pl-4 py-1 my-4 text-base-content italic;
+    @apply bg-base-200 rounded-box px-4 py-1 my-4 text-base-content italic;
 }
 .blog-post-content blockquote p {
     /* margin: 0.4rem 0; */
