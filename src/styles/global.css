@@ -37,7 +37,7 @@
 @import "./03-components/03-misc.css";
 @import "./03-components/04-header.css";
 @import "./03-components/05-search-btn.css";
-@import "./03-components/05-blog.css";
+@import "./03-components/06-blog.css";
 
 /* 05. 載入工具類別（響應式設計） */
 @import "./04-utilities/01-responsive.css";

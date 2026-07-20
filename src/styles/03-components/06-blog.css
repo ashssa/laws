@@ -1,4 +1,4 @@
-/* 05-blog.css：部落格 Markdown 內容樣式 */
+/* 06-blog.css：部落格 Markdown 內容樣式 */
 
 /* === 部落格文章內容區域 === */
 
@@ -6,11 +6,9 @@
 .blog-post-content h2 {
     margin-top: 2.6rem;
     margin-bottom: 1.3rem;
-    border-left: 6px solid var(--color-primary);
-    border-radius: 3px;
-    padding: 0.15rem 1rem;
+    padding: 0.15rem 0rem;
     font-weight: 700;
-    font-size: 1.35rem;
+    font-size: 1.55rem;
     letter-spacing: 0.03em;
     @apply rounded-r-lg;
 }
@@ -18,26 +16,24 @@
     margin-top: 2rem;
     margin-bottom: 1rem;
     font-weight: 600;
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     display: flex;
     align-items: center;
-}
-.blog-post-content h3::before {
-    content: "";
-    display: inline-block;
-    width: 4px;
-    height: 12px;
-    background-color: var(--color-primary);
-    border-radius: 9999px;
-    margin-right: 0.55rem;
-    flex-shrink: 0;
+    @apply italic text-base-content/90;
 }
 .blog-post-content h4 {
     margin-top: 1.6rem;
     margin-bottom: 0.8rem;
     font-weight: 600;
+    font-size: 1.15rem;
+    @apply italic text-base-content/85;
+}
+.blog-post-content h5, .blog-post-content h6 {
+    margin-top: 1.2rem;
+    margin-bottom: 0.8rem;
+    font-weight: 550;
     font-size: 1.05rem;
-    @apply text-base-content/85;
+    @apply italic text-base-content/85;
 }
 
 /* --- 段落 --- */
@@ -61,10 +57,7 @@
 
 /* --- 連結 --- */
 .blog-post-content a {
-    @apply text-primary underline underline-offset-2 decoration-primary/40 transition-colors duration-200;
-}
-.blog-post-content a:hover {
-    @apply text-primary decoration-primary/80;
+    @apply link link-primary link-hover;
 }
 
 /* --- 有序清單 --- */
@@ -72,6 +65,7 @@
     list-style-type: decimal;
     padding-left: 2rem;
     margin: 0.8rem 0;
+    @apply font-[Reddit_Sans] marker:italic marker:text-primary marker:font-[520];
 }
 .blog-post-content ol ol {
     list-style-type: lower-alpha;
@@ -91,6 +85,10 @@
 }
 .blog-post-content ul ul ul {
     list-style-type: square;
+}
+.blog-post-content ul {
+    /* color: var(--color-primary); */
+    @apply marker:text-primary marker:font-black;
 }
 
 /* --- 清單項共用 --- */
@@ -130,10 +128,10 @@
 
 /* --- 引用區塊 --- */
 .blog-post-content blockquote {
-    @apply border-l-4 border-primary/40 pl-4 my-4 text-base-content/75 italic;
+    @apply bg-base-200 rounded-box pl-4 py-1 my-4 text-base-content italic;
 }
 .blog-post-content blockquote p {
-    margin: 0.4rem 0;
+    /* margin: 0.4rem 0; */
 }
 
 /* --- 行內程式碼 --- */
@@ -173,4 +171,9 @@
 /* --- 標記 / highlight --- */
 .blog-post-content mark {
     @apply bg-warning/30 text-base-content rounded-sm px-0.5;
+}
+
+/* --- 註腳 / footnotes --- */
+.footnotes ol{
+    @apply marker:text-primary;
 }
