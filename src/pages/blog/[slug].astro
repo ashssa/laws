@@ -1,0 +1,28 @@
+---
+// src/pages/blog/[slug].astro
+// 個別文章頁面
+
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  modDate={post.data.modDate}
+  tags={post.data.tags}
+>
+  <Content />
+</BlogPostLayout>

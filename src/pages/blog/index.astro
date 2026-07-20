@@ -1,0 +1,53 @@
+---
+// src/pages/blog/index.astro
+// 部落格文章總覽頁面
+
+import MainLayout from '@layouts/MainLayout.astro';
+import BlogPostCard from '@components/BlogPostCard.astro';
+import { getCollection } from 'astro:content';
+
+// 取得所有非草稿文章
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+// 排序：pinned 優先，其餘按日期降序
+const sortedPosts = allPosts.sort((a, b) => {
+  if (a.data.pinned && !b.data.pinned) return -1;
+  if (!a.data.pinned && b.data.pinned) return 1;
+  const dateA = a.data.modDate || a.data.pubDate;
+  const dateB = b.data.modDate || b.data.pubDate;
+  return dateB.getTime() - dateA.getTime();
+});
+---
+
+<MainLayout title="文章總覽">
+    <a href="/laws/" class="btn btn-ghost btn-sm mb-4 -ml-4">← 回首頁</a>
+
+    <h2 class="page-title">文章總覽</h2>
+
+    <div class="blog-list">
+        {sortedPosts.map((post) => (
+            <BlogPostCard
+                slug={post.data.slug}
+                title={post.data.title}
+                pubDate={post.data.pubDate}
+                modDate={post.data.modDate}
+                description={post.data.description}
+                tags={post.data.tags}
+                pinned={post.data.pinned}
+            />
+        ))}
+    </div>
+
+    {sortedPosts.length === 0 && (
+        <p class="text-center opacity-60 py-8">目前沒有文章。</p>
+    )}
+
+</MainLayout>
+
+<style>
+    @reference "../../styles/global.css";
+
+    .blog-list {
+        @apply flex flex-col gap-4 px-4;
+    }
+</style>

@@ -1,0 +1,100 @@
+---
+// src/layouts/BlogPostLayout.astro
+// 部落格文章專用 layout，不含 TOC
+
+import '@styles/global.css';
+import Navbar from '@components/Navbar.astro';
+import Footer from '@components/Footer.astro';
+import ScrollToTop from '@components/ScrollToTop.astro';
+import BaseHead from '@components/BaseHead.astro';
+import CornerMarquee from '@components/CornerMarquee.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  modDate?: Date;
+  tags: string[];
+}
+
+const { title, description, pubDate, modDate, tags } = Astro.props;
+const displayDate = modDate || pubDate;
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('zh-TW', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <BaseHead title={title} description={description} />
+</head>
+<body>
+
+    <Navbar />
+
+    <main class="main-content">
+        <CornerMarquee />
+        
+        <article class="blog-post">
+            <a href="/laws/blog/" class="btn btn-ghost btn-sm mb-4">← 回文章總覽</a>
+            <!-- 文章標頭 -->
+            <header class="blog-post-header">
+                <div class="flex items-center gap-2 flex-wrap mb-2">
+                    <time class="text-sm opacity-60" datetime={displayDate.toISOString()}>
+                        {formatDate(displayDate)}
+                    </time>
+                    {modDate && (
+                        <span class="text-xs opacity-40">（已更新）</span>
+                    )}
+                </div>
+                <h2 class="page-title blog-post-title">{title}</h2>
+                <p class="blog-post-description">{description}</p>
+                <div class="flex gap-2 flex-wrap mt-3 mx-2">
+                    {tags.map((tag) => (
+                        <span class="text-sm text-base-content/80 font-semibold">＃{tag}</span>
+                    ))}
+                </div>
+            </header>
+
+            <div class="divider"></div>
+
+            <!-- 文章內容 -->
+            <div class="blog-post-content">
+                <slot />
+            </div>
+        </article>
+    </main>
+
+    <ScrollToTop />
+    <Footer />
+
+</body>
+</html>
+
+<style>
+    @reference "../styles/global.css";
+
+    .main-content {
+        margin: 2rem auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    .blog-post {
+        @apply max-w-3xl mx-auto;
+    }
+    .blog-post-title {
+        @apply mb-2;
+    }
+    .blog-post-description {
+        @apply text-base-content/70 text-sm;
+    }
+    .blog-post-content {
+        @apply max-w-none;
+    }
+</style>

@@ -1,0 +1,176 @@
+/* 05-blog.css：部落格 Markdown 內容樣式 */
+
+/* === 部落格文章內容區域 === */
+
+/* --- 標題樣式（h2、h3、h4） --- */
+.blog-post-content h2 {
+    margin-top: 2.6rem;
+    margin-bottom: 1.3rem;
+    border-left: 6px solid var(--color-primary);
+    border-radius: 3px;
+    padding: 0.15rem 1rem;
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: 0.03em;
+    @apply rounded-r-lg;
+}
+.blog-post-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+}
+.blog-post-content h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 12px;
+    background-color: var(--color-primary);
+    border-radius: 9999px;
+    margin-right: 0.55rem;
+    flex-shrink: 0;
+}
+.blog-post-content h4 {
+    margin-top: 1.6rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    @apply text-base-content/85;
+}
+
+/* --- 段落 --- */
+.blog-post-content p {
+    margin: 0.8rem 0;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* --- 粗體、斜體、底線 --- */
+.blog-post-content strong {
+    font-weight: 700;
+}
+.blog-post-content em {
+    font-style: italic;
+}
+.blog-post-content u {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+/* --- 連結 --- */
+.blog-post-content a {
+    @apply text-primary underline underline-offset-2 decoration-primary/40 transition-colors duration-200;
+}
+.blog-post-content a:hover {
+    @apply text-primary decoration-primary/80;
+}
+
+/* --- 有序清單 --- */
+.blog-post-content ol {
+    list-style-type: decimal;
+    padding-left: 2rem;
+    margin: 0.8rem 0;
+}
+.blog-post-content ol ol {
+    list-style-type: lower-alpha;
+}
+.blog-post-content ol ol ol {
+    list-style-type: lower-roman;
+}
+
+/* --- 無序清單 --- */
+.blog-post-content ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+    margin: 0.8rem 0;
+}
+.blog-post-content ul ul {
+    list-style-type: circle;
+}
+.blog-post-content ul ul ul {
+    list-style-type: square;
+}
+
+/* --- 清單項共用 --- */
+.blog-post-content li {
+    line-height: 1.8;
+    margin: 0.25rem 0;
+}
+.blog-post-content li > p {
+    margin: 0.2rem 0;
+}
+
+/* --- 表格（比照 old-act 的 rwa 表格風格） --- */
+.blog-post-content table {
+    @apply mx-auto my-4 max-w-fit overflow-x-auto rounded-box border-2 border-base-200 bg-base-100;
+    border-collapse: separate;
+    border-spacing: 0;
+    display: table;
+    width: 100%;
+}
+.blog-post-content thead {
+    @apply bg-base-200;
+}
+.blog-post-content th {
+    @apply border border-base-200 p-3 text-base-content font-semibold text-left;
+}
+.blog-post-content td {
+    @apply border border-base-200 p-3 text-base-content;
+}
+.blog-post-content tr:hover td {
+    @apply bg-base-200/50;
+    transition: background-color 0.15s ease;
+}
+/* 表格響應式容器 */
+.blog-post-content .table-wrapper {
+    @apply max-w-fit overflow-x-auto rounded-box border-2 border-base-200 bg-base-100 my-4;
+}
+
+/* --- 引用區塊 --- */
+.blog-post-content blockquote {
+    @apply border-l-4 border-primary/40 pl-4 my-4 text-base-content/75 italic;
+}
+.blog-post-content blockquote p {
+    margin: 0.4rem 0;
+}
+
+/* --- 行內程式碼 --- */
+.blog-post-content code {
+    @apply bg-base-200 text-base-content rounded-md px-1.5 py-0.5 text-sm;
+    font-family: "Consolas", "Monaco", "Noto Sans TC", monospace;
+}
+
+/* --- 程式碼區塊 --- */
+.blog-post-content pre {
+    @apply bg-base-200 rounded-box p-4 my-4 overflow-x-auto text-sm;
+}
+.blog-post-content pre code {
+    @apply bg-transparent p-0 rounded-none;
+}
+
+/* --- 水平分隔線 --- */
+.blog-post-content hr {
+    @apply border-base-300 my-6;
+}
+
+/* --- 圖片 --- */
+.blog-post-content img {
+    @apply rounded-box my-4 mx-auto max-w-full;
+}
+.blog-post-content img + em {
+    /* Markdown 圖片說明文字 (![alt](url) 後的 *caption*) */
+    @apply block text-center text-sm text-base-content/50 -mt-2 mb-4;
+    font-style: normal;
+}
+
+/* --- 刪除線 --- */
+.blog-post-content del {
+    @apply text-base-content/40 line-through;
+}
+
+/* --- 標記 / highlight --- */
+.blog-post-content mark {
+    @apply bg-warning/30 text-base-content rounded-sm px-0.5;
+}
