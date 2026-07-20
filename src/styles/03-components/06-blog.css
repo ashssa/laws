@@ -65,7 +65,7 @@
     list-style-type: decimal;
     padding-left: 2rem;
     margin: 0.8rem 0;
-    @apply font-[Reddit_Sans] marker:italic marker:text-primary marker:font-[520];
+    @apply marker:font-[Reddit_Sans] marker:italic marker:text-primary marker:font-[520];
 }
 .blog-post-content ol ol {
     list-style-type: lower-alpha;
