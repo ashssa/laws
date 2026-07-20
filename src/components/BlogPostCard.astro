@@ -29,7 +29,7 @@ function formatDate(date: Date): string {
   <div class="card-body">
     <div class="flex items-center gap-2 flex-wrap">
       {pinned && (
-        <span class="badge badge-soft badge-info badge-sm">置頂</span>
+        <span class="badge badge-ghost badge-sm">置頂</span>
       )}
       <time class="text-sm opacity-60" datetime={displayDate.toISOString()}>
         {formatDate(displayDate)}
