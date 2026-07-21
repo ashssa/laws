@@ -41,6 +41,8 @@
     margin: 0.8rem 0;
     line-height: 1.8;
     text-align: justify;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .blog-post-content * {
     font-family: Lato, "Noto Sans TC", sans-serif;
