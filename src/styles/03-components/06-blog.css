@@ -139,7 +139,7 @@
 
 /* --- 行內程式碼 --- */
 .blog-post-content code {
-    @apply bg-base-200 text-base-content rounded-md px-1.5 py-0.5 text-sm;
+    @apply bg-base-200 text-base-content rounded-md px-1.5 py-0.5 mx-0.5 text-sm;
     font-family: "Consolas", "Monaco", "Noto Sans TC", monospace;
 }
 
