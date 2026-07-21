@@ -3,7 +3,7 @@ title: 教學：全站搜尋功能
 author: 潘校外人士（曾為學生議員、副會長）
 pubDate: 2026-07-21
 modDate: 
-slug: 304-full-site-search
+slug: full-site-search
 showInHomePage: true
 pinned: false
 draft: false
@@ -37,7 +37,7 @@ description:
 
 ## 附帶說明與相關連結
 
-我們將持續調整系統各項功能，如果您在使用新搜尋功能的過程中有任何建議或發現問題，歡迎隨時 [來信告知我們](https://ashssa.github.io/laws/informations/contact_us/)，我們將儘速修正調整。感謝各位大家對高師大附中自治法規共用系統的支持與鼓勵！
+我們將持續調整系統各項功能，如果您在使用新搜尋功能的過程中有任何建議或發現問題，歡迎隨時 [來信告知我們](laws/information/contact-us/)，我們將儘速修正調整。感謝各位大家對高師大附中自治法規共用系統的支持與鼓勵！
 
 ### 相關連結
 
