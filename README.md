@@ -45,7 +45,7 @@ laws/
 │   │   ├── HomePageRemarks.astro # 首頁聲明與備註事項解析組件
 │   │   ├── LawListSection.astro # 首頁法規分類列表渲染組件
 │   │   ├── Navbar.astro         # 頂部響應式導覽列與主題切換下拉選單組件
-│   │   ├── PageSearch.astro     # 頁面懸浮搜尋與關鍵字無損高亮顯示組件
+│   │   ├── PageSearch.astro     # 頁面懸浮搜尋與關鍵字無損標記顯示組件
 │   │   ├── ScrollToTop.astro    # 懸浮式平滑滾動至頂部按鈕組件
 │   │   └── TableOfContents.astro # 響應式法規目次側邊欄與 ScrollSpy 滾動定位組件
 │   ├── content/                 # 內容集合 (Content Collections) - 系統主要資料庫來源
