@@ -41,8 +41,6 @@
     margin: 0.8rem 0;
     line-height: 1.8;
     text-align: justify;
-    text-overflow: ellipsis;
-    overflow: hidden;
 }
 .blog-post-content * {
     font-family: Lato, "Noto Sans TC", sans-serif;
@@ -62,6 +60,7 @@
 
 /* --- 連結 --- */
 .blog-post-content a {
+    overflow-wrap: anywhere; /* 過長的 URL 在任意字元處換行，避免撐開容器 */
     @apply link link-primary link-hover;
 }
 
