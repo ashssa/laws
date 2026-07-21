@@ -1,0 +1,297 @@
+---
+// src/components/SearchModal.astro
+const baseUrl = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL;
+---
+
+<dialog id="search-modal" class="modal">
+  <div class="modal-box w-11/12 max-w-3xl flex flex-col h-[80vh] overflow-hidden p-0 bg-base-100/50 backdrop-blur-sm rounded-box shadow-2xl">
+    
+    <!-- Header / Input area -->
+    <div class="p-4 border-b border-base-300 flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-base-content/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input 
+            type="text" 
+            id="search-input" 
+            class="w-full bg-transparent outline-none text-lg placeholder-base-content/50" 
+            placeholder="搜尋法規、沿革或最新消息..." 
+            autocomplete="off"
+        />
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+        </form>
+    </div>
+
+    <!-- Results area -->
+    <div class="flex-1 overflow-y-auto p-2" id="search-results">
+        <div class="text-center text-base-content/50 mt-10" id="search-placeholder">
+            輸入關鍵字開始搜尋
+        </div>
+    </div>
+    
+  </div>
+  
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+
+<script>
+    import Fuse from 'fuse.js';
+
+    // Group ordering definitions
+    const groupOrder = {
+        'act': 1,
+        'direction': 1,
+        'old-act': 1,
+        'amendment': 2,
+        'blog': 3
+    };
+
+    const groupLabels = {
+        1: '法規',
+        2: '修法沿革',
+        3: '最新消息'
+    };
+
+    const typeIcons = {
+        'act': `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
+        'direction': `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+        'old-act': `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+        'amendment': `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`, // Or history icon
+        'blog': `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>`
+    };
+
+    let searchData = [];
+    let fuse;
+    let isDataLoaded = false;
+    
+    // Retrieve base url from a meta tag or dataset if needed, but since it's hard to pass down safely without defining on window, we'll use a trick:
+    const baseUrl = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL;
+
+    function initSearch() {
+        const modal = document.getElementById('search-modal');
+        const input = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('search-results');
+        const placeholder = document.getElementById('search-placeholder');
+
+        if (!modal || !input || !resultsContainer || !placeholder) return;
+
+        // Load data
+        async function loadSearchData() {
+            if (isDataLoaded) return;
+            try {
+                const res = await fetch(`${baseUrl}/api/search.json`);
+                searchData = await res.json();
+                fuse = new Fuse(searchData, {
+                    keys: [
+                        { name: 'title', weight: 0.7 },
+                        { name: 'body', weight: 0.3 }
+                    ],
+                    includeMatches: true,
+                    threshold: 0.3,
+                    ignoreLocation: true
+                });
+                isDataLoaded = true;
+            } catch (error) {
+                console.error("Failed to load search index", error);
+            }
+        }
+
+        // Toggle Modal
+        function openModal() {
+            if (!modal.open) {
+                modal.showModal();
+                loadSearchData();
+                setTimeout(() => input.focus(), 100);
+            }
+        }
+
+        // Keyboard shortcut (Ctrl+K or Cmd+K)
+        const keydownHandler = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openModal();
+            }
+        };
+        document.removeEventListener('keydown', window._searchKeydownHandler);
+        window._searchKeydownHandler = keydownHandler;
+        document.addEventListener('keydown', keydownHandler);
+
+        // Expose open function to global for Navbar button
+        window.openSearchModal = openModal;
+
+        // Helper to extract a small snippet around the match and highlight it
+        function getSnippetWithHighlight(text, indices, maxLength = 80) {
+            if (!indices || indices.length === 0 || !text) return '';
+            
+            // Sort indices just in case
+            const sortedIndices = [...indices].sort((a, b) => a[0] - b[0]);
+            
+            const matchStart = sortedIndices[0][0];
+            const matchEnd = sortedIndices[0][1];
+            
+            let start = Math.max(0, matchStart - maxLength / 2);
+            let end = Math.min(text.length, matchEnd + maxLength / 2);
+            
+            let result = '';
+            let cursor = start;
+            
+            for (let [idxStart, idxEnd] of sortedIndices) {
+                idxEnd = idxEnd + 1; // Fuse.js end index is inclusive
+                
+                if (idxEnd <= start || idxStart >= end) continue; // outside snippet
+                
+                const hStart = Math.max(start, idxStart);
+                const hEnd = Math.min(end, idxEnd);
+                
+                if (hStart > cursor) {
+                    result += text.substring(cursor, hStart).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                }
+                
+                result += `<mark class="font-semibold rounded-selector px-1 py-0.5">` + 
+                          text.substring(hStart, hEnd).replace(/</g, '&lt;').replace(/>/g, '&gt;') + 
+                          `</mark>`;
+                
+                cursor = hEnd;
+            }
+            
+            if (cursor < end) {
+                result += text.substring(cursor, end).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+            
+            if (start > 0) result = '...' + result;
+            if (end < text.length) result = result + '...';
+            
+            return result;
+        }
+
+        // Handle Input
+        input.addEventListener('input', (e) => {
+            if (!isDataLoaded || !fuse) return;
+            
+            const query = e.target.value;
+            if (!query.trim()) {
+                resultsContainer.innerHTML = '';
+                resultsContainer.appendChild(placeholder);
+                return;
+            }
+
+            const results = fuse.search(query);
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `<div class="text-center text-base-content/50 mt-10">找不到與「${query}」相關的結果。</div>`;
+                return;
+            }
+
+            // Group and Sort
+            const grouped = { 1: [], 2: [], 3: [] };
+
+            results.forEach(res => {
+                const item = res.item;
+                const groupId = groupOrder[item.type] || 3;
+                
+                let snippet = '';
+                // Extract snippet if body matched
+                const bodyMatch = res.matches?.find(m => m.key === 'body');
+                if (bodyMatch) {
+                    snippet = getSnippetWithHighlight(item.body, bodyMatch.indices);
+                } else if (item.body) {
+                    // Fallback to first 80 chars
+                    snippet = item.body.substring(0, 80).replace(/</g, '&lt;').replace(/>/g, '&gt;') + (item.body.length > 80 ? '...' : '');
+                }
+
+                // Note: We could also highlight the title if it matched, but for simplicity we'll just do the body snippet.
+                grouped[groupId].push({ item, snippet });
+            });
+
+            // Sort group 1 internally by type: act -> direction -> old-act
+            const innerOrder = { 'act': 1, 'direction': 2, 'old-act': 3 };
+            grouped[1].sort((a, b) => {
+                return (innerOrder[a.item.type] || 99) - (innerOrder[b.item.type] || 99);
+            });
+
+            // Render
+            let html = '';
+            [1, 2, 3].forEach(groupId => {
+                if (grouped[groupId].length > 0) {
+                    html += `<div class="px-3 py-2 text-xs font-semibold text-base-content/40 tracking-wider uppercase rounded-field">${groupLabels[groupId]}</div>`;
+                    html += `<ul class="menu menu-sm bg-base-100/0 backdrop-blur-sm w-full mb-4 rounded-field">`;
+                    
+                    grouped[groupId].forEach(({item, snippet}) => {
+                        const icon = typeIcons[item.type] || '';
+                        html += `
+                            <li class="w-full max-w-full overflow-hidden">
+                                <a href="${item.url}" class="flex items-start gap-3 py-3 rounded-lg hover:bg-base-200/0 w-full rounded-field">
+                                    <div class="bg-base-200/0 p-2 rounded-md text-base-content/70 mt-1 shrink-0 ">
+                                        ${icon}
+                                    </div>
+                                    <div class="flex flex-col gap-1 overflow-hidden flex-1 min-w-0">
+                                        <div class="flex justify-between items-start gap-2 w-full">
+                                            <span class="font-medium text-base-content truncate">${item.title}</span>
+                                            <span class="text-xs text-base-content/50 shrink-0 mt-1">${item.type}</span>
+                                        </div>
+                                        ${snippet ? `<span class="text-xs text-base-content/60 line-clamp-2 whitespace-normal break-words">${snippet}</span>` : ''}
+                                    </div>
+                                </a>
+                            </li>
+                        `;
+                    });
+                    
+                    html += `</ul>`;
+                }
+            });
+
+            resultsContainer.innerHTML = html;
+            
+            setupKeyboardNav();
+        });
+
+        // Simple keyboard navigation for results
+        function setupKeyboardNav() {
+            const links = resultsContainer.querySelectorAll('a');
+            if (links.length === 0) return;
+
+            let currentIndex = -1;
+
+            const inputKeydown = (e) => {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    currentIndex = (currentIndex + 1) % links.length;
+                    links[currentIndex].focus();
+                }
+            };
+            
+            // Remove old listener if re-rendering
+            input.removeEventListener('keydown', window._inputKeydownHandler);
+            window._inputKeydownHandler = inputKeydown;
+            input.addEventListener('keydown', inputKeydown, { once: true });
+
+            links.forEach((link, idx) => {
+                link.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        currentIndex = (idx + 1) % links.length;
+                        links[currentIndex].focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        currentIndex = (idx - 1 + links.length) % links.length;
+                        // If going up from first item, focus input
+                        if (currentIndex === links.length - 1 && idx === 0) {
+                            input.focus();
+                            currentIndex = -1;
+                        } else {
+                            links[currentIndex].focus();
+                        }
+                    }
+                });
+            });
+        }
+    }
+
+    // Initialize on initial load and view transitions
+    initSearch();
+    document.addEventListener('astro:page-load', initSearch);
+
+</script>

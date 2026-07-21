@@ -20,7 +20,7 @@ description:
 
 ~~法規系統於 5 月 10 日、6 月 15 日，分別新增「法規沿革」頁面、更新 114 學年度修法內容。截至本文更新期日，已確認有數項問題，分項說明如下：~~
 
-本文內所提及的問題，均已於 7 月 19 日完成修復。如使用時仍有問題，請參考 [如何回報問題](./report-issue) 頁面說明。
+本文內所提及的問題，均已於 7 月 19 日完成修復。如使用時仍有問題，請參考 [如何回報問題](/laws/blog/report-issue) 頁面說明。
 
 ## 本文重要章節<!-- omit from toc -->
 
@@ -73,7 +73,7 @@ description:
 
 ## 附帶說明與相關連結
 
-使用中如發現法規或沿革，與學生議會網站公告文字有所不同，請以學生議會網站公告版本為準；並歡迎將該錯誤之處 [來信告知我們](https://ashssa.github.io/laws/informations/contact_us/)，我們將儘速更正。如有不便敬請見諒。感謝各位同學先進對高師大附中自治法規共用系統的支持與鼓勵。
+使用中如發現法規或沿革，與學生議會網站公告文字有所不同，請以學生議會網站公告版本為準；並歡迎將該錯誤之處 [來信告知我們](laws/information/contact-us/)，我們將儘速更正。如有不便敬請見諒。感謝各位同學先進對高師大附中自治法規共用系統的支持與鼓勵。
 
 ### 相關連結
 
@@ -81,4 +81,4 @@ description:
 - [學生議會網站「法規」專區](https://sites.google.com/a/stu.nknush.kh.edu.tw/ashs_sp/laws/)
 - [行政中心網站「會長令」專區](https://sites.google.com/stu.nknush.kh.edu.tw/ashssa/OpenData/Orders/)
 - [聯絡我們頁面](/information/contact-us/)
-- [如何回報問題](./report-issue)
+- [如何回報問題](/laws/blog/report-issue)

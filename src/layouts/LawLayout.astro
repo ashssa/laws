@@ -8,6 +8,7 @@ import BaseHead from '@components/BaseHead.astro';
 import TableOfContents from '@components/TableOfContents.astro';
 import CornerMarquee from '@components/CornerMarquee.astro';
 import ReportIssueButton from '@components/ReportIssueButton.astro';
+import SearchModal from '@components/SearchModal.astro';
 
 const { title, description, url } = Astro.props;
 
@@ -36,6 +37,7 @@ const { title, description, url } = Astro.props;
         <ReportIssueButton />
     </main>
     <Footer />
+    <SearchModal />
 </body>
 </html>
 

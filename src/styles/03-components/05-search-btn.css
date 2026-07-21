@@ -1,12 +1,12 @@
 /* --- 舊版 --- */
 .highlight {
-    background-color: var(--color-warning); /* 高亮顏色 */
+    background-color: var(--color-warning); /* 標記顏色 */
     color: var(--color-warning-content);
     padding: 2px 0;
     border-radius: var(--radius-selector);
 }
 .current-match {
-    background-color: var(--color-error); /* 選中目標高亮顏色 */
+    background-color: var(--color-error); /* 選中目標標記顏色 */
     color: var(--color-error-content);
     /* border: 2px solid var(--color-primary-content); */
     opacity: 1;

@@ -133,7 +133,7 @@
 
             let node;
             while (node = walker.nextNode()) {
-                // 避開公式標籤與已經高亮的標籤
+                // 避開公式標籤與已經標記的標籤
                 if (node.parentElement?.closest('.katex') || node.parentElement?.classList.contains('search-mark')) continue;
                 if (node.nodeValue?.match(regex)) textNodes.push(node);
             }

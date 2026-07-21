@@ -8,6 +8,7 @@ import Footer from '@components/Footer.astro';
 import ScrollToTop from '@components/ScrollToTop.astro';
 import BaseHead from '@components/BaseHead.astro';
 import CornerMarquee from '@components/CornerMarquee.astro';
+import SearchModal from '@components/SearchModal.astro';
 
 export interface Props {
   title: string;
@@ -85,7 +86,7 @@ function formatDate(date: Date): string {
 
     <ScrollToTop />
     <Footer />
-
+    <SearchModal />
 </body>
 </html>
 

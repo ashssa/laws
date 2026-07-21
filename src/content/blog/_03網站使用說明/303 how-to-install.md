@@ -54,5 +54,5 @@ description:
 
 遇到問題嗎？請前往：
 
-- [聯絡我們頁面](../information/contact-us)
-- [教學：如何回報問題](./report-issue)
+- [聯絡我們頁面](/laws/information/contact-us)
+- [教學：如何回報問題](/laws/blog/report-issue)
