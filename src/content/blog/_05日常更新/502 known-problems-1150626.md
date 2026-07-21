@@ -8,8 +8,11 @@ showInHomePage: true
 pinned: true
 draft: false
 tags:
-  - 更新
+  # - 使用說明
   - 待辦清單
+  - 更新
+  # - 行政公告
+  # - 設計理念
 description:
   【0630 更新組織章程】法規系統自 5 月 10 日、6 月 15 日分別更新「法規沿革」及「114 學年度修法」內容後，已確認數個問題，並已規劃陸續修復。
 

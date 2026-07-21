@@ -8,6 +8,10 @@ showInHomePage: false
 pinned: false
 draft: false
 tags:
+  # - 使用說明
+  # - 待辦清單
+  # - 更新
+  # - 行政公告
   - 設計理念
 description:
   【敬請期待】SA Law：高中生替學生會打造法規系統的源起
