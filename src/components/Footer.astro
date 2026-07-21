@@ -1,5 +1,6 @@
 ---
 // src/components/Footer.astro
+const baseUrl = import.meta.env.BASE_URL;
 const currentYear = new Date().getFullYear();
 
 // 取得當前建置時間，並強制轉換為 UTC+8 (台北時間)
@@ -28,9 +29,9 @@ const buildTime = `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}
     </nav>
     <nav class="flex justify-center">
         <div class="join join-vertical">
-            <a class="btn btn-ghost join-item break-keep" href="/laws/information/contact-us">聯絡我們</a>
-            <a class="btn btn-ghost join-item break-keep" href="https://ashssa-law-blog.netlify.app/">部落格</a>
-            <a class="btn btn-ghost join-item break-keep" href="/laws/information/sources">Sources</a>
+            <a class="btn btn-ghost join-item break-keep" href={baseUrl+"/information/contact-us"}>聯絡我們</a>
+            <a class="btn btn-ghost join-item break-keep" href={baseUrl+"/blog/"}>最新訊息</a>
+            <a class="btn btn-ghost join-item break-keep" href={baseUrl+"/information/sources"}>Sources</a>
         </div>
     </nav>
 </footer>

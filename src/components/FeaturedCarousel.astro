@@ -1,0 +1,93 @@
+---
+// src/components/FeaturedCarousel.astro
+// 首頁文章輪播元件，使用 DaisyUI carousel with indicator buttons
+
+export interface Props {
+  posts: Array<{
+    slug: string;
+    title: string;
+    pubDate: Date;
+    modDate?: Date;
+    description: string;
+    tags: string[];
+    pinned: boolean;
+  }>;
+}
+
+const { posts } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+// 日期格式化
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('zh-TW', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+{posts.length > 0 && (
+  <div class="blog-carousel-section">
+    <h3 class="page-subtitle"><a href={`${base}/blog/`} class="link link-hover">最新訊息</a></h3>
+
+    <div class="text-sm text-base-content/80 mb-4 flex justify-end -my-10">
+      <a href={`${base}/blog/`} class="btn btn-ghost btn-sm">
+        查看所有文章
+      </a>
+    </div>
+
+    {/* Carousel */}
+    <div class="carousel carousel-center w-full rounded-box bg-base-100/50 space-x-4 p-4">
+      {posts.map((post, index) => (
+        <div id={`blog-slide-${index}`} class="carousel-item relative w-full">
+          <a href={`${base}/blog/${post.slug}`} class="blog-carousel-card card bg-base-100 shadow-md w-full no-underline">
+            <div class="card-body">
+              <div class="flex items-center gap-2 flex-wrap">
+                {post.pinned && (
+                  <span class="badge badge-ghost badge-sm">置頂</span>
+                )}
+                <time class="text-sm opacity-60" datetime={(post.modDate || post.pubDate).toISOString()}>
+                  {formatDate(post.modDate || post.pubDate)}
+                </time>
+              </div>
+              <h4 class="card-title text-base-content">{post.title}</h4>
+              <p class="text-base-content/70 text-sm line-clamp-2">{post.description}</p>
+              <div class="card-actions mt-2 mx-2">
+                {post.tags.map((tag) => (
+                  <span class="text-sm text-base-content/80 font-semibold">＃{tag}</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        </div>
+      ))}
+    </div>
+
+    {/* <!-- Indicator buttons --> */}
+    {posts.length > 1 && (
+      <div class="flex w-full justify-center gap-2 py-3">
+        {posts.map((_, index) => (
+          <a href={`#blog-slide-${index}`} class="btn btn-xs">{index + 1}</a>
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+<style>
+  @reference "../styles/global.css";
+
+  .blog-carousel-section {
+    @apply mb-6 px-4;
+  }
+  .blog-carousel-card {
+    @apply transition-shadow duration-300 cursor-pointer;
+  }
+  .blog-carousel-card:hover {
+    @apply shadow-lg;
+  }
+  .blog-carousel-card .card-title {
+    @apply text-lg;
+  }
+</style>

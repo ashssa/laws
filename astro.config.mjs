@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import AstroPWA from '@vite-pwa/astro';
 import remarkAmendment from './src/plugins/remark-amendment.js';
+import rehypeExternalLinks from 'rehype-external-links';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,10 +13,13 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  // markdown: {
-  //   // 註冊套件至 Markdown 編譯流程
-  //   remarkPlugins: [remarkAmendment],
-  // },
+  markdown: {
+    // 註冊套件至 Markdown 編譯流程
+    // remarkPlugins: [remarkAmendment],
+    rehypePlugins: [
+      [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],
+    ],
+  },
   integrations: [
     AstroPWA({
       registerType: 'autoUpdate', // 當有新版本時自動更新快取

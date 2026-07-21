@@ -31,5 +31,26 @@ const amendments = defineCollection({
   }),
 });
 
+// 定義 'blog' (部落格) 集合
+const blog = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
+  schema: z.object({
+    title: z.string(),
+    author: z.string(),
+    pubDate: z.coerce.date(),
+    modDate: z.union([z.string(), z.date(), z.null()]).optional().transform(val => {
+      if (!val) return undefined;
+      const d = new Date(val);
+      return isNaN(d.getTime()) ? undefined : d;
+    }),
+    slug: z.string(),
+    showInHomePage: z.boolean().default(false),
+    pinned: z.boolean().default(false),
+    draft: z.boolean().default(false),
+    tags: z.array(z.string()).default([]),
+    description: z.string(),
+  }),
+});
+
 // 匯出集合
-export const collections = { act, amendments };
+export const collections = { act, amendments, blog };

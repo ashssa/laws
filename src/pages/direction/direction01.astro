@@ -2,6 +2,7 @@
 import LawLayout from '@layouts/LawLayout.astro';
 import ActionButtons from '@components/ActionButtons.astro';
 
+const baseUrl = import.meta.env.BASE_URL;
 const title = "國立高雄師範大學附屬高級中學學生會組織辦法";
 const abbr = "高師大附中會議旁聽要點";
 const url = "https://drive.google.com/drive/folders/1lji91-HwLtoSnGU6FEibFqGJjXNaMkgy" ;
@@ -110,13 +111,13 @@ const url = "https://drive.google.com/drive/folders/1lji91-HwLtoSnGU6FEibFqGJjXN
         <h3>本法附件</h3>
         <ul class="attachments">
             <li>
-                <a href="../../appendix/00 會議旁聽要點 附件1 會議旁聽申請書.pdf" target="_blank">
+                <a href={`${baseUrl}/appendix/00 會議旁聽要點 附件1 會議旁聽申請書.pdf`} target="_blank">
                     <span class="att-no">附件1</span>
                     <span class="att-title">會議旁聽申請書</span>
                 </a>
             </li>
             <li>
-                <a href="../../appendix/00 會議旁聽要點 附件2 會議旁聽簽到表.pdf" target="_blank">
+                <a href={`${baseUrl}/appendix/00 會議旁聽要點 附件2 會議旁聽簽到表.pdf`} target="_blank">
                     <span class="att-no">附件2</span>
                     <span class="att-title">會議旁聽簽到表</span>
                 </a>

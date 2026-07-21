@@ -2,7 +2,29 @@
 import MainLayout from '@layouts/MainLayout.astro';
 import LawListSection from '@components/LawListSection.astro';
 import HomePageRemarks from '@components/HomePageRemarks.astro';
+import FeaturedCarousel from '@components/FeaturedCarousel.astro';
+import { getCollection } from 'astro:content';
 import { lawSections } from '../laws.js'; // 引入法規清單 JSON 資料
+
+// 取得首頁顯示的文章（showInHomePage: true 且非草稿）
+const homePagePosts = (await getCollection('blog', ({ data }) => data.showInHomePage && !data.draft))
+  .sort((a, b) => {
+    // pinned 優先排在最前面
+    if (a.data.pinned && !b.data.pinned) return -1;
+    if (!a.data.pinned && b.data.pinned) return 1;
+    const dateA = a.data.modDate || a.data.pubDate;
+    const dateB = b.data.modDate || b.data.pubDate;
+    return dateB.getTime() - dateA.getTime();
+  })
+  .map((post) => ({
+    slug: post.data.slug,
+    title: post.data.title,
+    pubDate: post.data.pubDate,
+    modDate: post.data.modDate,
+    description: post.data.description,
+    tags: post.data.tags,
+    pinned: post.data.pinned,
+  }));
 
 // 聲明文字
 const remarksText = `
@@ -35,5 +57,8 @@ const remarksText = `
     
     <h3 class="page-subtitle">聲明</h3>
     <HomePageRemarks rawText={remarksText} />
+
+    <!-- 首頁文章輪播 -->
+    <FeaturedCarousel posts={homePagePosts} />
 
 </MainLayout>

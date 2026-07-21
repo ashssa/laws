@@ -1,32 +1,32 @@
 ---
 // src/components/Navbar.astro
+const baseUrl = import.meta.env.BASE_URL;
 
 // 定義導覽連結資料
 const navLinks = [
-    { name: "首頁", href: "/laws/" },
+    { name: "首頁", href: `${baseUrl}/` },
     { 
         name: "法規總覽", 
         type: "dropdown", 
         children: [
-        { name: "組織章程", href: "/laws/act/act01" },
-        { name: "學生代表法", href: "/laws/act/act02" },
-        { name: "行政中心組織運作法", href: "/laws/act/act03" },
-        { name: "學生議會組織運作法", href: "/laws/act/act04" },
-        { name: "選舉及罷免法", href: "/laws/act/act05" },
-        { name: "經費法", href: "/laws/act/act06" },
-        { name: "自治法規標準法", href: "/laws/act/act07" },
-        { name: "學生政黨法", href: "/laws/act/act08" },
-        // { name: "議會會議彈性運作臨時條例", href: "/laws/act/act09" },
-        { name: "學校會議旁聽要點", href: "/laws/direction/direction01" },
+        { name: "組織章程", href: `${baseUrl}/act/act01` },
+        { name: "學生代表法", href: `${baseUrl}/act/act02` },
+        { name: "行政中心組織運作法", href: `${baseUrl}/act/act03` },
+        { name: "學生議會組織運作法", href: `${baseUrl}/act/act04` },
+        { name: "選舉及罷免法", href: `${baseUrl}/act/act05` },
+        { name: "經費法", href: `${baseUrl}/act/act06` },
+        { name: "自治法規標準法", href: `${baseUrl}/act/act07` },
+        { name: "學生政黨法", href: `${baseUrl}/act/act08` },
+        // { name: "議會會議彈性運作臨時條例", href: `${baseUrl}/laws/act/act09` },
+        { name: "學校會議旁聽要點", href: `${baseUrl}/direction/direction01` },
     ]
     },
     // { name: "本會官網", href: "https://sites.google.com/stu.nknush.kh.edu.tw/ashssa/mac", target: "_blank" },
-    // 修法沿革在 header 先註解掉了，如果之後需要再打開
-    // { name: "修法沿革", href: "https://sites.google.com/a/stu.nknush.kh.edu.tw/ashs_sp/laws/修法歷程", target: "_blank" },
-    { name: "修法沿革", href: "/laws/amendments" },
+    { name: "修法沿革", href: `${baseUrl}/amendments` },
+    // { name: "最新訊息", href: `${baseUrl}/blog` },
 ];
 
-const themes = ["default", "retro", "cyberpunk", "valentine", "aqua", "lemonade", "abyss"];
+// const themes = ["default", "retro", "cyberpunk", "valentine", "aqua", "lemonade", "abyss"];
 ---
 
 <div id="main-header" class="h-16"> <div class="fixed navbar bg-base-100/85 shadow-sm print:hidden z-30 backdrop-blur top-0 w-full">
@@ -91,6 +91,7 @@ const themes = ["default", "retro", "cyberpunk", "valentine", "aqua", "lemonade"
 
             <!-- 主題切換選單邏輯 -->
             <div class="navbar-end relative">
+                <!-- <a href={baseUrl+"/blog"} class="btn btn-ghost">最新訊息</a> -->
                 <!-- <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button" class="btn m-1">
                         Theme
