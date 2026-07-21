@@ -43,4 +43,4 @@ description:
 
 - [本法規系統](/laws/)
 - [聯絡我們頁面](/information/contact-us/)
-- [如何回報問題](./report-issue)
+- [如何回報問題](/laws/blog/report-issue)

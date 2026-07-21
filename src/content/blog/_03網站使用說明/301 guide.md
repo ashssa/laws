@@ -104,10 +104,10 @@ description:
 
 ## 其他相關教學文章
 
-- [教學：如何回報問題](./report-issue)
-- [教學：如何安裝 SA Law](./how-to-install)
+- [教學：如何回報問題](/laws/blog/report-issue)
+- [教學：如何安裝 SA Law](/laws/blog/how-to-install)
 
-[^1]: 本會自治法規標準法第6條之1內容請[見此](../act/act07#article-6-1)。
+[^1]: 本會自治法規標準法第6條之1內容請[見此](/laws/act/act07#article-6-1)。
 
 <!-- === TODO ===
 - [x] PWA

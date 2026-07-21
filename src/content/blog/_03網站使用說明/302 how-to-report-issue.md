@@ -50,4 +50,4 @@ description:
 
 ## 相關連結
 
-- [聯絡我們頁面](../information/contact-us)
+- [聯絡我們頁面](/laws/information/contact-us)
