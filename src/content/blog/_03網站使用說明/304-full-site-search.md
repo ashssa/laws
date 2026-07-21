@@ -4,7 +4,7 @@ author: 潘校外人士（曾為學生議員、副會長）
 pubDate: 2026-07-21
 modDate: 
 slug: full-site-search
-showInHomePage: true
+showInHomePage: false
 pinned: false
 draft: false
 tags:
