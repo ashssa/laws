@@ -50,7 +50,8 @@ laws/
 │   │   └── TableOfContents.astro # 響應式法規目次側邊欄與 ScrollSpy 滾動定位組件
 │   ├── content/                 # 內容集合 (Content Collections) - 系統主要資料庫來源
 │   │   ├── act/                 # 存放現行自治法規的原始 Markdown (.md) 檔案
-│   │   └── amendments/          # 存放修法歷程對照的原始 Markdown (.md) 檔案
+│   │   ├── amendments/          # 存放修法歷程對照的原始 Markdown (.md) 檔案
+│   │   └── blog/                # 存放部落格與最新訊息的原始 Markdown (.md) 檔案
 │   ├── layouts/
 │   │   ├── LawLayout.astro      # 專為法規內頁設計之閱讀佈局 (包含目次、搜尋、回到頂部等組件)
 │   │   └── MainLayout.astro     # 首頁與通用頁面之基礎佈局
@@ -62,6 +63,9 @@ laws/
 │   │   │   │   ├── [version].astro # 特定法規特定版本的修法條文對照頁面
 │   │   │   │   └── index.astro    # 特定法規的所有修法版本列表頁面
 │   │   │   └── index.astro      # 修法沿革/歷程總覽頁面
+│   │   ├── blog/                # 部落格與最新訊息專區
+│   │   │   ├── [slug].astro     # 動態路由，渲染單篇部落格文章
+│   │   │   └── index.astro      # 部落格文章總覽列表 (含 Tags 標籤篩選功能)
 │   │   ├── direction/           # 學校校務章則專區 (因格式複雜，不採用 Markdown 動態解析)
 │   │   │   ├── direction01.astro # 學校會議旁聽要點頁面
 │   │   │   ├── direction02.astro # 教育部高級中等以下學校校園行動載具使用原則頁面
@@ -209,6 +213,30 @@ url: https://drive.google.com/drive/folders/1yDKfKzalxR36okyYRL2_QIbYyDbaGjV7
 
 附件1 [學生會行政中心辭職書](/laws/appendix/03%20行政中心組織及運作法%20附件1%20學生會行政中心辭職書.pdf)
 ```
+
+### **4. 部落格 (最新訊息) 撰寫規範**
+
+系統新增了部落格功能，請於 `src/content/blog/` 目錄下建立 `.md` 檔案，並在開頭加上以下 Frontmatter 資訊：
+
+```markdown
+---
+title: 文章標題
+author: 作者名稱
+pubDate: 2025-11-01
+modDate: 2025-11-05
+slug: custom-url-slug
+showInHomePage: false  # (選填) 是否顯示於首頁的精選動態 Carousel 中
+pinned: false          # (選填) 是否在列表置頂
+draft: false           # (選填) 是否為草稿（草稿不會被建置與發布）
+tags:
+  - 標籤一
+  - 標籤二
+description: 
+  文章簡短說明與摘要...
+---
+```
+
+部落格文章支援完整的 Markdown 語法（包含粗體、斜體、表格、清單、多級標題等），且所有的外部連結將會自動加上 `target="_blank"` 與 `rel="noopener noreferrer"` 以開新視窗呈現。另外，系統會自動收集所有文章的 `tags`，並在 `/laws/blog/` 頁面上產生 DaisyUI Filter 的標籤篩選器。
 
 ## **🚢 部署流程 (Deployment Workflow)**
 
