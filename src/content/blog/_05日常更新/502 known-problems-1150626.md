@@ -4,7 +4,7 @@ author: 已畢業校外人士潘祈瑋
 pubDate: 2026-06-26
 modDate: 2026-07-19
 slug: known-problems-20260626
-showInHomePage: true
+showInHomePage: false
 pinned: true
 draft: false
 tags:

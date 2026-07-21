@@ -4,7 +4,7 @@ author: 學生議員潘祈瑋
 pubDate: 2026-07-20
 modDate: 
 slug: report-issue
-showInHomePage: true
+showInHomePage: false
 pinned: false
 draft: false
 tags:
