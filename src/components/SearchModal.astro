@@ -15,7 +15,7 @@ const baseUrl = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL
             type="text" 
             id="search-input" 
             class="w-full bg-transparent outline-none text-lg placeholder-base-content/50" 
-            placeholder="搜尋法規、沿革或最新消息..." 
+            placeholder="搜尋法規、沿革或最新消息……" 
             autocomplete="off"
         />
         <form method="dialog">
@@ -221,9 +221,22 @@ const baseUrl = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL
                     
                     grouped[groupId].forEach(({item, snippet}) => {
                         const icon = typeIcons[item.type] || '';
+                        
+                        let finalUrl = item.url;
+                        if (['act', 'direction', 'old-act', 'amendment'].includes(item.type)) {
+                            const queryParam = `q=${encodeURIComponent(query)}`;
+                            if (finalUrl.includes('?')) {
+                                finalUrl += `&${queryParam}`;
+                            } else if (finalUrl.includes('#')) {
+                                finalUrl = finalUrl.replace('#', `?${queryParam}#`);
+                            } else {
+                                finalUrl += `?${queryParam}`;
+                            }
+                        }
+
                         html += `
                             <li class="w-full max-w-full overflow-hidden">
-                                <a href="${item.url}" class="flex items-start gap-3 py-3 rounded-lg hover:bg-base-200/0 w-full rounded-field">
+                                <a href="${finalUrl}" class="flex items-start gap-3 py-3 rounded-lg hover:bg-base-200/0 w-full rounded-field">
                                     <div class="bg-base-200/0 p-2 rounded-md text-base-content/70 mt-1 shrink-0 ">
                                         ${icon}
                                     </div>

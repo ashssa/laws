@@ -189,6 +189,20 @@
         if (searchInput) searchInput.onkeydown = (e) => { if (e.key === 'Enter') highlightText(searchInput.value); };
         if (nextBtn) nextBtn.onclick = () => navigateToMatch(currentIndex + 1);
         if (prevBtn) prevBtn.onclick = () => navigateToMatch(currentIndex - 1);
+
+        // Auto-search from URL query
+        const urlParams = new URLSearchParams(window.location.search);
+        const autoSearchQuery = urlParams.get('q');
+        if (autoSearchQuery && searchInput) {
+            searchInput.value = autoSearchQuery;
+            container?.classList.remove('hidden');
+            swapLabel?.classList.add('swap-active');
+            
+            // Wait slightly for DOM to be ready before highlighting and scrolling
+            setTimeout(() => {
+                highlightText(autoSearchQuery);
+            }, 100);
+        }
     }
 
     // === 對接 Astro 生命週期（防止重複初始化）===
