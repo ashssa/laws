@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import MainLayout from '@layouts/MainLayout.astro';
 
+const baseUrl = import.meta.env.BASE_URL;
 // 取得所有修正歷程檔案
 const allAmendments = await getCollection('amendments');
 
@@ -62,7 +63,7 @@ const actsWithAmendments = await Promise.all(
     )}
   </div>
 
-  <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href=".">回首頁</a></div>
+  <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href={baseUrl}>回首頁</a></div>
 
 </MainLayout>
 
