@@ -4,12 +4,15 @@ import tailwindcss from "@tailwindcss/vite";
 import AstroPWA from "@vite-pwa/astro";
 import remarkAmendment from "./src/plugins/remark-amendment.js";
 import rehypeExternalLinks from "rehype-external-links";
+import react from "@astrojs/react";
+import keystatic from "@keystatic/astro";
 
 // https://astro.build/config
 export default defineConfig({
   // 設定 GitHub Pages 網址
   site: "https://ashssa.github.io",
-  base: "/laws",
+  // base: "/laws",
+  base: process.env.NODE_ENV === "production" ? "/laws" : "/",
   vite: {
     plugins: [tailwindcss()],
   },
@@ -24,6 +27,8 @@ export default defineConfig({
     ],
   },
   integrations: [
+    react(),
+    keystatic(),
     AstroPWA({
       registerType: "autoUpdate", // 當有新版本時自動更新快取
       workbox: {
