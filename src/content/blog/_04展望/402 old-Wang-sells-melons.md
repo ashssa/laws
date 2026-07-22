@@ -13,7 +13,6 @@ tags:
   # - 更新
   # - 行政公告
   - 設計理念
-category: future
 description: 【待補充】
 ---
 
