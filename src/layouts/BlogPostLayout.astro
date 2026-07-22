@@ -87,6 +87,42 @@ function formatDate(date: Date): string {
     <ScrollToTop />
     <Footer />
     <SearchModal />
+
+    <script>
+        // 建立圖片環境光暈效果（Ambient Blur）
+        function setupImageBlurs() {
+            document.querySelectorAll('.blog-post-content img').forEach(img => {
+                // 如果已經包裹過，或是沒有 src，則跳過
+                if (img.closest('.ambient-image-wrapper') || !img.src) return;
+                
+                const parent = img.parentNode;
+                
+                // 建立外層容器
+                const wrapper = document.createElement('div');
+                wrapper.className = 'ambient-image-wrapper relative flex justify-center items-center w-full my-4 rounded-box border-2 border-base-200/80 overflow-hidden';
+                // 讓容器保持原圖片的拉伸寬度，但內部用 flex 居中
+                
+                // 建立霧化背景層
+                const blurBg = document.createElement('div');
+                blurBg.className = 'absolute inset-[-50px] z-0 opacity-15 blur-xl mask-x-from-80% mask-x-to-100% bg-cover bg-center';
+                blurBg.style.backgroundImage = `url(${img.src})`;
+                
+                // 調整原圖片樣式
+                // 將圖片原本的 full width 與 border 移除，讓其自然呈現比例
+                img.className = 'relative z-10 w-auto max-w-full max-h-[50vh] object-contain border-none my-0';
+                
+                // 將元素組合
+                parent.insertBefore(wrapper, img);
+                wrapper.appendChild(blurBg);
+                wrapper.appendChild(img);
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', setupImageBlurs);
+        // 如果有使用 ViewTransitions，也需要在頁面切換後執行
+        document.addEventListener('astro:page-load', setupImageBlurs);
+    </script>
 </body>
 </html>
 

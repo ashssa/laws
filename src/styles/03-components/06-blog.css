@@ -159,9 +159,10 @@
 
 /* --- 圖片 --- */
 .blog-post-content img {
-    @apply rounded-box my-4 mx-auto w-full max-h-[50vh] object-contain border-2 border-base-200/80;
+    /* @apply rounded-box my-4 mx-auto w-full max-h-[50vh] object-contain border-2 border-base-200/80; */
 }
-.blog-post-content img + em {
+.blog-post-content img + em,
+.blog-post-content .ambient-image-wrapper + em {
     /* Markdown 圖片說明文字 (![alt](url) 後的 *caption*) */
     @apply block text-center text-sm text-base-content/50 -mt-2 mb-4;
     font-style: normal;
