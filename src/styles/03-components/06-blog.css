@@ -154,7 +154,7 @@
 
 /* --- 水平分隔線 --- */
 .blog-post-content hr {
-    @apply border-base-300 my-6;
+    @apply border-base-content/20 border-[1.25px] my-6 mx-20;
 }
 
 /* --- 圖片 --- */
