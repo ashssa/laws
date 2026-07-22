@@ -1,61 +1,79 @@
 ---
 // src/pages/404.astro
-import MainLayout from '@layouts/MainLayout.astro';
-import { lawSections } from '../laws.js';
+import MainLayout from "@layouts/MainLayout.astro";
+import { lawSections } from "../laws.js";
 
 const title = "找不到頁面 | 404";
 ---
 
 <MainLayout title={title}>
-    <div class="hero bg-base-100 py-20">
-        <div class="hero-content text-center">
-            <div class="max-w-2xl">
-                <h1 class="text-9xl font-bold text-primary italic">404</h1>
-                <h2 class="text-4xl font-bold mt-4 mb-6">不好意思！你好像闖進了時空裂縫</h2>
-                <p class="text-lg pb-6">所尋找的頁面可能已被移動或不存在。</p>
-                
-                <div id="suggestion-box" class="hidden alert mb-8 text-left flex flex-col items-start">
-                    <div class="flex items-center gap-2 font-medium">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span>您是不是在找：</span>
-                        <span id="suggestion-link" class=""></span>
-                    </div>
-                </div>
+  <div class="hero bg-base-100 py-20">
+    <div class="hero-content text-center">
+      <div class="max-w-2xl">
+        <h1 class="text-primary text-9xl font-bold italic">404</h1>
+        <h2 class="mt-4 mb-6 text-4xl font-bold">
+          不好意思！你好像闖進了時空裂縫
+        </h2>
+        <p class="pb-6 text-lg">所尋找的頁面可能已被移動或不存在。</p>
 
-                <div class="flex justify-center gap-4">
-                    <a href="/laws" class="btn btn-primary text-white">回首頁</a>
-                    <button class="btn btn-outline" onclick="history.back()">回上一頁</button>
-                </div>
-            </div>
+        <div
+          id="suggestion-box"
+          class="alert mb-8 flex hidden flex-col items-start text-left"
+        >
+          <div class="flex items-center gap-2 font-medium">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              class="h-6 w-6 shrink-0 stroke-current"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path></svg
+            >
+            <span>您是不是在找：</span>
+            <span id="suggestion-link" class=""></span>
+          </div>
         </div>
+
+        <div class="flex justify-center gap-4">
+          <a href="/laws" class="btn btn-primary text-white">回首頁</a>
+          <button class="btn btn-outline" onclick="history.back()"
+            >回上一頁</button
+          >
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script define:vars={{ lawSections }}>
-        // 從目前的 URL 獲取關鍵字 (例如: act01)
-        const currentPath = window.location.pathname;
-        const match = currentPath.match(/(act|direction|old-act)\d+/i);
+  <script define:vars={{ lawSections }}>
+    // 從目前的 URL 獲取關鍵字 (例如: act01)
+    const currentPath = window.location.pathname;
+    const match = currentPath.match(/(act|direction|old-act)\d+/i);
 
-        if (match) {
-            const targetId = match[0].toLowerCase();
-            let foundLaw = null;
+    if (match) {
+      const targetId = match[0].toLowerCase();
+      let foundLaw = null;
 
-            // 在法規資料庫中搜尋匹配項
-            for (const section of lawSections) {
-                foundLaw = section.items.find(item => item.path.includes(targetId));
-                if (foundLaw) break;
-            }
+      // 在法規資料庫中搜尋匹配項
+      for (const section of lawSections) {
+        foundLaw = section.items.find((item) => item.path.includes(targetId));
+        if (foundLaw) break;
+      }
 
-            if (foundLaw) {
-                const box = document.getElementById('suggestion-box');
-                const linkContainer = document.getElementById('suggestion-link');
-                
-                box.classList.remove('hidden');
-                linkContainer.innerHTML = `
+      if (foundLaw) {
+        const box = document.getElementById("suggestion-box");
+        const linkContainer = document.getElementById("suggestion-link");
+
+        box.classList.remove("hidden");
+        linkContainer.innerHTML = `
                     <a href="${foundLaw.path}" class="link link-hover text-lg font-semibold">
                         ${foundLaw.name}
                     </a>
                 `;
-            }
-        }
-    </script>
+      }
+    }
+  </script>
 </MainLayout>

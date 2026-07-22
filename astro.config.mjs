@@ -1,38 +1,42 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
-import AstroPWA from '@vite-pwa/astro';
-import remarkAmendment from './src/plugins/remark-amendment.js';
-import rehypeExternalLinks from 'rehype-external-links';
+import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
+import AstroPWA from "@vite-pwa/astro";
+import remarkAmendment from "./src/plugins/remark-amendment.js";
+import rehypeExternalLinks from "rehype-external-links";
 
 // https://astro.build/config
 export default defineConfig({
   // 設定 GitHub Pages 網址
-  site: 'https://ashssa.github.io',
-  base: '/laws',
+  site: "https://ashssa.github.io",
+  base: "/laws",
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
   markdown: {
     // 註冊套件至 Markdown 編譯流程
     // remarkPlugins: [remarkAmendment],
     rehypePlugins: [
-      [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],
+      [
+        rehypeExternalLinks,
+        { target: "_blank", rel: ["noopener", "noreferrer"] },
+      ],
     ],
   },
   integrations: [
     AstroPWA({
-      registerType: 'autoUpdate', // 當有新版本時自動更新快取
+      registerType: "autoUpdate", // 當有新版本時自動更新快取
       workbox: {
         // 自動捕捉 dist 目錄下所有的資源進行離線快取
-        globDirectory: 'dist',
-        globPatterns: ['**/*.{html,js,css,ico,png,svg,woff,woff2,ttf,pdf}'],
-        navigateFallback: null
+        globDirectory: "dist",
+        globPatterns: ["**/*.{html,js,css,ico,png,svg,woff,woff2,ttf,pdf}"],
+        navigateFallback: null,
       },
       manifest: {
         name: "高師大附中學生會自治法規共用系統",
         short_name: "SA Law",
-        description: "高師大附中自治法規共用系統，彙編高師大附中學生會所有自治法規的展示網站。",
+        description:
+          "高師大附中自治法規共用系統，彙編高師大附中學生會所有自治法規的展示網站。",
         start_url: "/laws/",
         display: "standalone",
         background_color: "#ffffff",
@@ -41,13 +45,13 @@ export default defineConfig({
           {
             src: "/laws/img/icon-194.png",
             sizes: "194x194",
-            type: "image/png"
+            type: "image/png",
           },
           {
             src: "/laws/img/icon-512.png",
             sizes: "512x512",
-            type: "image/png"
-          }
+            type: "image/png",
+          },
         ],
         // shortcuts: [
         //   {
@@ -65,8 +69,7 @@ export default defineConfig({
         //     icons: [{ src: "/laws/img/shortcuts02-512.png", sizes: "512x512" }]
         //   }
         // ]
-      }
-    })
-  ]
+      },
+    }),
+  ],
 });
-

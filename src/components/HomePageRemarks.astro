@@ -9,51 +9,50 @@ export interface Props {
 const { rawText } = Astro.props;
 
 // 資料處理邏輯：
-// 1. 透過正規表達式以換行符號切割 (\r?\n) 
+// 1. 透過正規表達式以換行符號切割 (\r?\n)
 // 2. 去除每行前後空白
 // 3. 過濾掉空行
 // 4. 透過正規表達式移除開頭的 Markdown 清單標記 (如 -, *, +, 或是 1., 2. 等)
 
 const listItems = rawText
   .split(/\r?\n/)
-  .map(line => line.trim())
-  .filter(line => line.length > 0)
-  .map(line => {
-    const cleanLine = line.replace(/^([-\*\+]|\d+\.)\s+/, '');
+  .map((line) => line.trim())
+  .filter((line) => line.length > 0)
+  .map((line) => {
+    const cleanLine = line.replace(/^([-\*\+]|\d+\.)\s+/, "");
     // 支援將 [text](url) 轉換為 <a> 標籤，並加上 target="_blank"、rel="noopener noreferrer" 與樣式類別
     return cleanLine.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer" class="link link-primary link-hover">$1</a>'
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="link link-primary link-hover">$1</a>',
     );
   });
 ---
+
 <div class="remarks-content">
   <ul class="remarks">
-    {listItems.map((item) => (
-      <li set:html={item}></li>
-    ))}
+    {listItems.map((item) => <li set:html={item} />)}
   </ul>
 </div>
 
 <style>
-@reference "../styles/global.css";
+  @reference "../styles/global.css";
 
-.remarks-content{
-  margin: 0 1.5rem 0;
-}
-.remarks {
-  list-style-type: none; /* 移除預設的列表符號 */
-  padding-left: 0;       /* 移除預設的左邊內距 */
-}
-.remarks li {
-  position: relative;   /* 建立定位上下文，方便絕對定位偽元素 */
-  padding-left: 1.5rem; /* 為文字內容預留空間 */
-}
-.remarks li::before {
-  content: "※";         /* 設定偽元素的內容為「※」 */
-  position: absolute;   /* 相對於 li 元素定位 */
-  left: 0;              /* 將符號定位在最左邊 */
-  line-height: inherit; /* 簡單地與文字行高對齊 */
-  margin-right: 0.5rem; /* 設定符號與文字之間的間距 */
-}
+  .remarks-content {
+    margin: 0 1.5rem 0;
+  }
+  .remarks {
+    list-style-type: none; /* 移除預設的列表符號 */
+    padding-left: 0; /* 移除預設的左邊內距 */
+  }
+  .remarks li {
+    position: relative; /* 建立定位上下文，方便絕對定位偽元素 */
+    padding-left: 1.5rem; /* 為文字內容預留空間 */
+  }
+  .remarks li::before {
+    content: "※"; /* 設定偽元素的內容為「※」 */
+    position: absolute; /* 相對於 li 元素定位 */
+    left: 0; /* 將符號定位在最左邊 */
+    line-height: inherit; /* 簡單地與文字行高對齊 */
+    margin-right: 0.5rem; /* 設定符號與文字之間的間距 */
+  }
 </style>

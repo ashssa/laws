@@ -15,10 +15,8 @@ tags:
   # - 設計理念
   - 展望
 category: future
-description:
-  【待補充】SA Law計劃：未來展望
+description: 【待補充】SA Law計劃：未來展望
 ---
-
 
 ## SA Law計劃：未來展望
 

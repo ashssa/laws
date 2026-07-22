@@ -1,64 +1,75 @@
 ---
-import '@styles/global.css';
-import Navbar from '@components/Navbar.astro';
-import Footer from '@components/Footer.astro';
-import PageSearch from '@components/PageSearch.astro';
-import ScrollToTop from '@components/ScrollToTop.astro';
-import BaseHead from '@components/BaseHead.astro';
-import TableOfContents from '@components/TableOfContents.astro';
-import CornerMarquee from '@components/CornerMarquee.astro';
-import ReportIssueButton from '@components/ReportIssueButton.astro';
-import SearchModal from '@components/SearchModal.astro';
+import "@styles/global.css";
+import Navbar from "@components/Navbar.astro";
+import Footer from "@components/Footer.astro";
+import PageSearch from "@components/PageSearch.astro";
+import ScrollToTop from "@components/ScrollToTop.astro";
+import BaseHead from "@components/BaseHead.astro";
+import TableOfContents from "@components/TableOfContents.astro";
+import CornerMarquee from "@components/CornerMarquee.astro";
+import ReportIssueButton from "@components/ReportIssueButton.astro";
+import SearchModal from "@components/SearchModal.astro";
 
 const { title, description, url } = Astro.props;
-
 ---
-<html lang="zh-TW">
-<head>
-    <BaseHead title={title} />
-</head>
 
-<body>
+<html lang="zh-TW">
+  <head>
+    <BaseHead title={title} />
+  </head>
+
+  <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5DK9JSPT"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5DK9JSPT"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe></noscript
+    >
     <!-- End Google Tag Manager (noscript) -->
     <Navbar />
     <TableOfContents />
 
     <main class="main-content" id="law-main-content">
-        <div class="law-content">
-            <slot />
-        </div>
+      <div class="law-content">
+        <slot />
+      </div>
 
-        <PageSearch />
-        <ScrollToTop /> 
-        <CornerMarquee />
-        <ReportIssueButton />
+      <PageSearch />
+      <ScrollToTop />
+      <CornerMarquee />
+      <ReportIssueButton />
     </main>
     <Footer />
     <SearchModal />
-</body>
+  </body>
 </html>
 
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script
+  is:inline
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+></script>
+<script
+  is:inline
+  src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+></script>
 <script src="../scripts/main.js"></script>
 <script>
-//  將條內單一「項」par加上 only-one-par 類別
-function updateOnlyOnePar() {
-    const artDataElements = document.querySelectorAll('.art-data');
-    artDataElements.forEach(artData => {
-        const parElements = artData.querySelectorAll('.par');
-        const firstPar = artData.querySelector('.par');
+  //  將條內單一「項」par加上 only-one-par 類別
+  function updateOnlyOnePar() {
+    const artDataElements = document.querySelectorAll(".art-data");
+    artDataElements.forEach((artData) => {
+      const parElements = artData.querySelectorAll(".par");
+      const firstPar = artData.querySelector(".par");
 
-        if (parElements.length === 1 && firstPar) {
-            firstPar.classList.add('only-one-par');
-        } else if (firstPar) {
-            firstPar.classList.remove('only-one-par');
-        }
+      if (parElements.length === 1 && firstPar) {
+        firstPar.classList.add("only-one-par");
+      } else if (firstPar) {
+        firstPar.classList.remove("only-one-par");
+      }
     });
-}
-document.addEventListener('DOMContentLoaded', updateOnlyOnePar);
-document.addEventListener('astro:page-load', updateOnlyOnePar);
+  }
+  document.addEventListener("DOMContentLoaded", updateOnlyOnePar);
+  document.addEventListener("astro:page-load", updateOnlyOnePar);
 </script>

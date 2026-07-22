@@ -1,26 +1,26 @@
 /* global.css：最主要的 CSS */
 
 /* 00. import 字體 from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5,500;1,62.5,500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5,700;1,62.5,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5,500;1,62.5,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5,700;1,62.5,700&display=swap");
 /*@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,slnt,GRAD@8..144,0,150&display=swap');*/
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap");
 /* 未來熒黑 */
 @font-face {
-    font-family: 'GlowSans';
-    src:
-        url('../fonts/GlowSansTCCompressed-Bold.woff2') format('woff2'),
-        url('../fonts/GlowSansTCCompressed-Bold.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
+  font-family: "GlowSans";
+  src:
+    url("../fonts/GlowSansTCCompressed-Bold.woff2") format("woff2"),
+    url("../fonts/GlowSansTCCompressed-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
 }
 
 /* 01. 載入 tailwindcss */
-@import "tailwindcss" ;
+@import "tailwindcss";
 @theme {
-    --breakpoint-toc: 1372px;
+  --breakpoint-toc: 1372px;
 }
 
 /* 02. 載入基本樣式 */
@@ -45,6 +45,14 @@
 /* 06. import Daisy UI */
 /* @source "../*.{html,js}"; */
 @plugin "daisyui" {
-    themes: corporate --default, dracula --prefersdark, retro, cyberpunk, valentine, aqua, lemonade, abyss;
+  themes:
+    corporate --default,
+    dracula --prefersdark,
+    retro,
+    cyberpunk,
+    valentine,
+    aqua,
+    lemonade,
+    abyss;
 }
 @custom-variant dark (&:where([data-theme=dracula], [data-theme=dracula] *, [data-theme=aqua], [data-theme=aqua] *, [data-theme=abyss], [data-theme=abyss] *));

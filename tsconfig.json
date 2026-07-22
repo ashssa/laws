@@ -2,7 +2,8 @@
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"],
-  "compilerOptions": {/*  使用 @ 路徑別名 */
+  "compilerOptions": {
+    /*  使用 @ 路徑別名 */
     // "baseUrl": ".",
     "paths": {
       "@/*":           ["./src/*"],

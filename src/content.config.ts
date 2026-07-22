@@ -1,6 +1,6 @@
 // src/content.config.ts
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders'; // 引入新的 glob loader
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders"; // 引入新的 glob loader
 
 // 定義 'act' (法規) 集合
 const act = defineCollection({
@@ -25,7 +25,7 @@ const amendments = defineCollection({
     title: z.string(),
     target_act: z.string(), // 對應 act 資料夾中的 ID，例如 "act01"
     date: z.string(),
-    version: z.string(),    // 作為次級路由，例如 "v7"
+    version: z.string(), // 作為次級路由，例如 "v7"
     term: z.number().optional(),
     description: z.string().optional(),
   }),
@@ -38,11 +38,14 @@ const blog = defineCollection({
     title: z.string(),
     author: z.string(),
     pubDate: z.coerce.date(),
-    modDate: z.union([z.string(), z.date(), z.null()]).optional().transform(val => {
-      if (!val) return undefined;
-      const d = new Date(val);
-      return isNaN(d.getTime()) ? undefined : d;
-    }),
+    modDate: z
+      .union([z.string(), z.date(), z.null()])
+      .optional()
+      .transform((val) => {
+        if (!val) return undefined;
+        const d = new Date(val);
+        return isNaN(d.getTime()) ? undefined : d;
+      }),
     slug: z.string(),
     showInHomePage: z.boolean().default(false),
     pinned: z.boolean().default(false),

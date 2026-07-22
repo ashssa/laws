@@ -1,13 +1,15 @@
 ---
-import MainLayout from '@layouts/MainLayout.astro';
-import LawListSection from '@components/LawListSection.astro';
-import HomePageRemarks from '@components/HomePageRemarks.astro';
-import FeaturedCarousel from '@components/FeaturedCarousel.astro';
-import { getCollection } from 'astro:content';
-import { lawSections } from '../laws.js'; // 引入法規清單 JSON 資料
+import MainLayout from "@layouts/MainLayout.astro";
+import LawListSection from "@components/LawListSection.astro";
+import HomePageRemarks from "@components/HomePageRemarks.astro";
+import FeaturedCarousel from "@components/FeaturedCarousel.astro";
+import { getCollection } from "astro:content";
+import { lawSections } from "../laws.js"; // 引入法規清單 JSON 資料
 
 // 取得首頁顯示的文章（showInHomePage: true 且非草稿）
-const homePagePosts = (await getCollection('blog', ({ data }) => data.showInHomePage && !data.draft))
+const homePagePosts = (
+  await getCollection("blog", ({ data }) => data.showInHomePage && !data.draft)
+)
   .sort((a, b) => {
     // pinned 優先排在最前面
     if (a.data.pinned && !b.data.pinned) return -1;
@@ -36,29 +38,26 @@ const remarksText = `
 ---
 
 <MainLayout title="總覽">
-    
-    <h2 class="page-title">總覽</h2>
+  <h2 class="page-title">總覽</h2>
 
-    <!-- 目次 -->
-    {lawSections.map((section) => (
-        <LawListSection 
-            title={section.title} 
-            items={section.items} 
-        />
-    ))}
+  <!-- 目次 -->
+  {
+    lawSections.map((section) => (
+      <LawListSection title={section.title} items={section.items} />
+    ))
+  }
 
-    <!-- 法規歷程入口 -->
-    <!-- <h3 class="page-subtitle">修法歷程</h3> -->
-    <!-- <div class="w-full flex justify-center items-center ">
+  <!-- 法規歷程入口 -->
+  <!-- <h3 class="page-subtitle">修法歷程</h3> -->
+  <!-- <div class="w-full flex justify-center items-center ">
         <a href="/laws/amendments" class="btn btn-wide mx-auto">進入修法歷程</a>
     </div> -->
 
-    <!-- <div class="divider mt-12"></div> -->
-    
-    <h3 class="page-subtitle">聲明</h3>
-    <HomePageRemarks rawText={remarksText} />
+  <!-- <div class="divider mt-12"></div> -->
 
-    <!-- 首頁文章輪播 -->
-    <FeaturedCarousel posts={homePagePosts} />
+  <h3 class="page-subtitle">聲明</h3>
+  <HomePageRemarks rawText={remarksText} />
 
+  <!-- 首頁文章輪播 -->
+  <FeaturedCarousel posts={homePagePosts} />
 </MainLayout>

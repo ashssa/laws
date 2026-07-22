@@ -1,21 +1,21 @@
 // src/utils/lawParser.js
 
 export function parseLawMarkdown(mdContent) {
-  const lines = mdContent.split('\n');
-  
+  const lines = mdContent.split("\n");
+
   const result = {
     history: [],
     articles: [], // 包含章節標題與條文
-    attachments: []
+    attachments: [],
   };
 
-  let currentSection = 'none'; // 'history', 'content', 'attachments'
+  let currentSection = "none"; // 'history', 'content', 'attachments'
   let currentArticle = null; // 暫存當前處理的條文
 
   // 輔助函數：將暫存的條文推入結果
   const flushArticle = () => {
     if (currentArticle) {
-      result.articles.push({ type: 'article', ...currentArticle });
+      result.articles.push({ type: "article", ...currentArticle });
       currentArticle = null;
     }
   };
@@ -25,51 +25,55 @@ export function parseLawMarkdown(mdContent) {
     if (!line) continue; // 跳過空行
 
     // 1. 偵測區塊標題
-    if (line.includes('## 修法歷程')) {
-      currentSection = 'history';
+    if (line.includes("## 修法歷程")) {
+      currentSection = "history";
       continue;
     }
-    if (line.includes('## 法規內容')) {
-      currentSection = 'content';
+    if (line.includes("## 法規內容")) {
+      currentSection = "content";
       continue;
     }
-    if (line.includes('## 本法附件')) { // 偵測到附件區塊開始
-        flushArticle(); // 結束最後一條條文
-        currentSection = 'attachments';
-        continue;
+    if (line.includes("## 本法附件")) {
+      // 偵測到附件區塊開始
+      flushArticle(); // 結束最後一條條文
+      currentSection = "attachments";
+      continue;
     }
 
     // 2. 根據當前區塊處理內容
-    if (currentSection === 'history') {
+    if (currentSection === "history") {
       // 簡單的日期偵測，假設格式為 "107.01.08 ..."
       if (/^\d{3}\.\d{2}\.\d{2}/.test(line)) {
         result.history.push(line);
       }
-    } 
-    else if (currentSection === 'content') {
+    } else if (currentSection === "content") {
       // 偵測章節 (Header 3 / 4)
-      if (line.startsWith('第一章') || line.startsWith('第二章') || line.match(/^第[一二三四五六七八九十]+章/)) {
+      if (
+        line.startsWith("第一章") ||
+        line.startsWith("第二章") ||
+        line.match(/^第[一二三四五六七八九十]+章/)
+      ) {
         flushArticle();
-        result.articles.push({ type: 'chapter', text: line });
-      } 
-      else if (line.match(/^第[一二三四五六七八九十]+節/)) {
+        result.articles.push({ type: "chapter", text: line });
+      } else if (line.match(/^第[一二三四五六七八九十]+節/)) {
         flushArticle();
-        result.articles.push({ type: 'section', text: line });
+        result.articles.push({ type: "section", text: line });
       }
       // 偵測條文 (關鍵邏輯)
       // Regex: 第(數字)條之(數子)[(備註)]
       else if (line.match(/^第\s*(\d+(?:-\d+)?)\s*條(?:之\s*\d+)?/)) {
         flushArticle(); // 存入上一條
-        
-        const match = line.match(/^第\s*(\d+(?:-\d+)?)\s*條(?:之\s*(\d+))?(?:\s*[（(](.*?)[）)])?/);
+
+        const match = line.match(
+          /^第\s*(\d+(?:-\d+)?)\s*條(?:之\s*(\d+))?(?:\s*[（(](.*?)[）)])?/,
+        );
         currentArticle = {
           number: match[1], // 條號主體 (例如 12)
           subNumber: match[2] || null, // 「之幾」的數字 (例如 1)
           note: match[3] || null, // 備註 (括號內的字)
-          paragraphs: [] // 內文段落
+          paragraphs: [], // 內文段落
         };
-      } 
-      else {
+      } else {
         // 如果是普通文字
         if (currentArticle) {
           // 如果正在處理某一條，這行就是該條的段落 (.par)
@@ -78,20 +82,19 @@ export function parseLawMarkdown(mdContent) {
           // 如果不在條文內 (例如章節下的前言)，可視需求處理
         }
       }
-    }
-    else if (currentSection === 'attachments') {
+    } else if (currentSection === "attachments") {
       // 偵測附件格式: 附件1 [標題](連結)
       const match = line.match(/(附件\d+(?:-\d+)?)\s*\[(.*?)\]\((.*?)\)/);
       if (match) {
         result.attachments.push({
           no: match[1],
           title: match[2],
-          url: match[3]
+          url: match[3],
         });
       }
     }
   }
-  
+
   flushArticle(); // 迴圈結束，確保最後一條有存入
   return result;
 }
@@ -100,9 +103,9 @@ export function parseAmendmentMarkdown(mdContent) {
   // 1. 徹底剃除 Frontmatter (確保不影響總說明)
   const lines = mdContent.split(/\r?\n/);
   let startIndex = 0;
-  if (lines[0]?.trim() === '---') {
+  if (lines[0]?.trim() === "---") {
     for (let i = 1; i < lines.length; i++) {
-      if (lines[i].trim() === '---') {
+      if (lines[i].trim() === "---") {
         startIndex = i + 1;
         break;
       }
@@ -112,26 +115,30 @@ export function parseAmendmentMarkdown(mdContent) {
 
   const result = { globalDescription: [], amendments: [] };
   let currentAmendment = null;
-  let currentField = 'globalDescription'; // 預設先抓總說明
+  let currentField = "globalDescription"; // 預設先抓總說明
 
   const getIndentClass = (text, isGlobal = false) => {
     // 樣式 : 一二三四五 ......
-    if (/^[一二三四五六七八九十]+、/.test(text)) return 'pl-[2em] -indent-[2em]';
+    if (/^[一二三四五六七八九十]+、/.test(text))
+      return "pl-[2em] -indent-[2em]";
 
     // 樣式 : 星號
-    if (/^※/.test(text)) return 'pl-[1em] -indent-[1em] italic';
+    if (/^※/.test(text)) return "pl-[1em] -indent-[1em] italic";
 
     // 樣式 : (一)(二)(三)(四) ......
-    if (/^[(（][一二三四五六七八九十]+[)）]/.test(text)) return 'ml-[3em] pl-[3em] -indent-[2em] text-base-content';
+    if (/^[(（][一二三四五六七八九十]+[)）]/.test(text))
+      return "ml-[3em] pl-[3em] -indent-[2em] text-base-content";
 
     // 樣式 : 1. 2. 3. 4. ......
-    if (/^\d+[\s\.、]/.test(text)) return 'ml-[4em] pl-[3.5em] -indent-[1.5em] text-base-content';
+    if (/^\d+[\s\.、]/.test(text))
+      return "ml-[4em] pl-[3.5em] -indent-[1.5em] text-base-content";
 
     // 樣式 : (1) (2) (3) (4) ......
-    if (/^[(（]\d+[)）]/.test(text)) return 'ml-[3em] pl-[4.75em] -indent-[1.75em] text-base-content';
+    if (/^[(（]\d+[)）]/.test(text))
+      return "ml-[3em] pl-[4.75em] -indent-[1.75em] text-base-content";
 
     // 總說明一般段落：首行縮排 2 字
-    return isGlobal ? 'indent-[2em]' : '';
+    return isGlobal ? "indent-[2em]" : "";
   };
 
   for (let line of actualLines) {
@@ -139,10 +146,12 @@ export function parseAmendmentMarkdown(mdContent) {
     if (!trimmedLine) continue;
 
     // 偵測條文標題
-    if (trimmedLine.startsWith('### ')) {
+    if (trimmedLine.startsWith("### ")) {
       currentAmendment = {
-        title: trimmedLine.replace('### ', '').trim(),
-        proposed: [], current: [], reason: []
+        title: trimmedLine.replace("### ", "").trim(),
+        proposed: [],
+        current: [],
+        reason: [],
       };
       result.amendments.push(currentAmendment);
       currentField = null;
@@ -150,43 +159,65 @@ export function parseAmendmentMarkdown(mdContent) {
     }
 
     // 處理總說明 (位於第一個 ### 之前)
-    if (currentField === 'globalDescription') {
-      if (trimmedLine.startsWith('#')) continue;
+    if (currentField === "globalDescription") {
+      if (trimmedLine.startsWith("#")) continue;
       // 修正：抓取星號、1.、(1)後，插入定位字元
       let finalText = trimmedLine;
-      if (/^[※*]/.test(finalText)) finalText = finalText.replace(/^([※*])\s*/, '$1\t');
-      else if (/^\d+[\.、]/.test(finalText)) finalText = finalText.replace(/^(\d+[\.、])\s*/, '$1\t');
-      else if (/^\d+[\s　]+/.test(finalText)) finalText = finalText.replace(/^(\d+)[\s　]+/, '$1\t');
-      else if (/^[(（]\d+[)）]/.test(finalText)) finalText = finalText.replace(/^([(（]\d+[)）])\s*/, '$1\t');
+      if (/^[※*]/.test(finalText))
+        finalText = finalText.replace(/^([※*])\s*/, "$1\t");
+      else if (/^\d+[\.、]/.test(finalText))
+        finalText = finalText.replace(/^(\d+[\.、])\s*/, "$1\t");
+      else if (/^\d+[\s　]+/.test(finalText))
+        finalText = finalText.replace(/^(\d+)[\s　]+/, "$1\t");
+      else if (/^[(（]\d+[)）]/.test(finalText))
+        finalText = finalText.replace(/^([(（]\d+[)）])\s*/, "$1\t");
 
       result.globalDescription.push({
         text: finalText,
-        indentClass: getIndentClass(trimmedLine, true)
+        indentClass: getIndentClass(trimmedLine, true),
       });
       continue;
     }
 
     // 處理對照表內容
     if (!currentAmendment) continue;
-    if (trimmedLine.startsWith('【修正條文】')) { currentField = 'proposed'; continue; }
-    if (trimmedLine.startsWith('【現行條文】')) { currentField = 'current'; continue; }
-    if (trimmedLine.startsWith('【說明】')) { currentField = 'reason'; continue; }
+    if (trimmedLine.startsWith("【修正條文】")) {
+      currentField = "proposed";
+      continue;
+    }
+    if (trimmedLine.startsWith("【現行條文】")) {
+      currentField = "current";
+      continue;
+    }
+    if (trimmedLine.startsWith("【說明】")) {
+      currentField = "reason";
+      continue;
+    }
 
     if (currentField) {
-      const isPlaceholder = trimmedLine === '（無）' || trimmedLine === '（刪除）' || trimmedLine === '（本條新增）' || trimmedLine === '（本章新增）' || trimmedLine === '（本節新增）';
+      const isPlaceholder =
+        trimmedLine === "（無）" ||
+        trimmedLine === "（刪除）" ||
+        trimmedLine === "（本條新增）" ||
+        trimmedLine === "（本章新增）" ||
+        trimmedLine === "（本節新增）";
       let finalText = trimmedLine;
       if (!isPlaceholder) {
         // 修正：抓取星號、1.、(1)後，插入定位字元
-        if (/^[※*]/.test(finalText)) finalText = finalText.replace(/^([※*])\s*/, '$1\t');
-        else if (/^\d+[\.、]/.test(finalText)) finalText = finalText.replace(/^(\d+[\.、])\s*/, '$1\t');
-      else if (/^\d+[\s　]+/.test(finalText)) finalText = finalText.replace(/^(\d+)[\s　]+/, '$1\t');
-        else if (/^[(（]\d+[)）]/.test(finalText)) finalText = finalText.replace(/^([(（]\d+[)）])\s*/, '$1\t');
+        if (/^[※*]/.test(finalText))
+          finalText = finalText.replace(/^([※*])\s*/, "$1\t");
+        else if (/^\d+[\.、]/.test(finalText))
+          finalText = finalText.replace(/^(\d+[\.、])\s*/, "$1\t");
+        else if (/^\d+[\s　]+/.test(finalText))
+          finalText = finalText.replace(/^(\d+)[\s　]+/, "$1\t");
+        else if (/^[(（]\d+[)）]/.test(finalText))
+          finalText = finalText.replace(/^([(（]\d+[)）])\s*/, "$1\t");
       }
 
       currentAmendment[currentField].push({
         text: finalText,
         isPlaceholder,
-        indentClass: !isPlaceholder ? getIndentClass(trimmedLine) : ''
+        indentClass: !isPlaceholder ? getIndentClass(trimmedLine) : "",
       });
     }
   }

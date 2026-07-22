@@ -4,181 +4,182 @@
 
 /* --- 標題樣式（h2、h3、h4） --- */
 .blog-post-content h2 {
-    margin-top: 2.6rem;
-    margin-bottom: 1.3rem;
-    padding: 0.15rem 0rem;
-    font-weight: 700;
-    font-size: 1.55rem;
-    letter-spacing: 0.03em;
-    @apply rounded-r-lg;
+  margin-top: 2.6rem;
+  margin-bottom: 1.3rem;
+  padding: 0.15rem 0rem;
+  font-weight: 700;
+  font-size: 1.55rem;
+  letter-spacing: 0.03em;
+  @apply rounded-r-lg;
 }
 .blog-post-content h3 {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    font-size: 1.35rem;
-    display: flex;
-    align-items: center;
-    @apply italic text-base-content/90;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  @apply text-base-content/90 italic;
 }
 .blog-post-content h4 {
-    margin-top: 1.6rem;
-    margin-bottom: 0.8rem;
-    font-weight: 600;
-    font-size: 1.15rem;
-    @apply italic text-base-content/85;
+  margin-top: 1.6rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  font-size: 1.15rem;
+  @apply text-base-content/85 italic;
 }
-.blog-post-content h5, .blog-post-content h6 {
-    margin-top: 1.2rem;
-    margin-bottom: 0.8rem;
-    font-weight: 550;
-    font-size: 1.05rem;
-    @apply italic text-base-content/85;
+.blog-post-content h5,
+.blog-post-content h6 {
+  margin-top: 1.2rem;
+  margin-bottom: 0.8rem;
+  font-weight: 550;
+  font-size: 1.05rem;
+  @apply text-base-content/85 italic;
 }
 
 /* --- 段落 --- */
 .blog-post-content p {
-    margin: 0.8rem 0;
-    line-height: 1.8;
-    text-align: justify;
+  margin: 0.8rem 0;
+  line-height: 1.8;
+  text-align: justify;
 }
 .blog-post-content * {
-    font-family: Lato, "Noto Sans TC", sans-serif;
+  font-family: Lato, "Noto Sans TC", sans-serif;
 }
 
 /* --- 粗體、斜體、底線 --- */
 .blog-post-content strong {
-    font-weight: 700;
+  font-weight: 700;
 }
 .blog-post-content em {
-    font-style: italic;
+  font-style: italic;
 }
 .blog-post-content u {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 /* --- 連結 --- */
 .blog-post-content a {
-    overflow-wrap: anywhere; /* 過長的 URL 在任意字元處換行，避免撐開容器 */
-    @apply link link-primary link-hover;
+  overflow-wrap: anywhere; /* 過長的 URL 在任意字元處換行，避免撐開容器 */
+  @apply link link-primary link-hover;
 }
 
 /* --- 有序清單 --- */
 .blog-post-content ol {
-    list-style-type: decimal;
-    padding-left: 2rem;
-    margin: 0.8rem 0;
-    @apply marker:font-[Reddit_Sans] marker:italic marker:text-primary marker:font-[520];
+  list-style-type: decimal;
+  padding-left: 2rem;
+  margin: 0.8rem 0;
+  @apply marker:text-primary marker:font-[Reddit_Sans] marker:font-[520] marker:italic;
 }
 .blog-post-content ol ol {
-    list-style-type: lower-alpha;
+  list-style-type: lower-alpha;
 }
 .blog-post-content ol ol ol {
-    list-style-type: lower-roman;
+  list-style-type: lower-roman;
 }
 
 /* --- 無序清單 --- */
 .blog-post-content ul {
-    list-style-type: disc;
-    padding-left: 2rem;
-    margin: 0.8rem 0;
+  list-style-type: disc;
+  padding-left: 2rem;
+  margin: 0.8rem 0;
 }
 .blog-post-content ul ul {
-    list-style-type: circle;
+  list-style-type: circle;
 }
 .blog-post-content ul ul ul {
-    list-style-type: square;
+  list-style-type: square;
 }
 .blog-post-content ul {
-    /* color: var(--color-primary); */
-    @apply marker:text-primary marker:font-black;
+  /* color: var(--color-primary); */
+  @apply marker:text-primary marker:font-black;
 }
 
 /* --- 清單項共用 --- */
 .blog-post-content li {
-    line-height: 1.8;
-    margin: 0.25rem 0;
+  line-height: 1.8;
+  margin: 0.25rem 0;
 }
 .blog-post-content li > p {
-    margin: 0.2rem 0;
+  margin: 0.2rem 0;
 }
 
 /* --- 表格（比照 old-act 的 rwa 表格風格） --- */
 .blog-post-content table {
-    @apply mx-auto my-4 max-w-fit overflow-x-auto rounded-box border-2 border-base-200 bg-base-100;
-    border-collapse: separate;
-    border-spacing: 0;
-    display: table;
-    width: 100%;
+  @apply rounded-box border-base-200 bg-base-100 mx-auto my-4 max-w-fit overflow-x-auto border-2;
+  border-collapse: separate;
+  border-spacing: 0;
+  display: table;
+  width: 100%;
 }
 .blog-post-content thead {
-    @apply bg-base-200;
+  @apply bg-base-200;
 }
 .blog-post-content th {
-    @apply border border-base-200 p-3 text-base-content font-semibold text-left;
+  @apply border-base-200 text-base-content border p-3 text-left font-semibold;
 }
 .blog-post-content td {
-    @apply border border-base-200 p-3 text-base-content;
+  @apply border-base-200 text-base-content border p-3;
 }
 .blog-post-content tr:hover td {
-    @apply bg-base-200/50;
-    transition: background-color 0.15s ease;
+  @apply bg-base-200/50;
+  transition: background-color 0.15s ease;
 }
 /* 表格響應式容器 */
 .blog-post-content .table-wrapper {
-    @apply max-w-fit overflow-x-auto rounded-box border-2 border-base-200 bg-base-100 my-4;
+  @apply rounded-box border-base-200 bg-base-100 my-4 max-w-fit overflow-x-auto border-2;
 }
 
 /* --- 引用區塊 --- */
 .blog-post-content blockquote {
-    @apply bg-base-200 rounded-box px-4 py-1 my-4 text-base-content italic;
+  @apply bg-base-200 rounded-box text-base-content my-4 px-4 py-1 italic;
 }
 .blog-post-content blockquote p {
-    /* margin: 0.4rem 0; */
+  /* margin: 0.4rem 0; */
 }
 
 /* --- 行內程式碼 --- */
 .blog-post-content code {
-    @apply bg-base-200 text-base-content border-none rounded-md px-1.5 py-0.5 mx-1 text-sm;
-    font-family: "Consolas", "Monaco", "Noto Sans TC", monospace;
+  @apply bg-base-200 text-base-content mx-1 rounded-md border-none px-1.5 py-0.5 text-sm;
+  font-family: "Consolas", "Monaco", "Noto Sans TC", monospace;
 }
 
 /* --- 程式碼區塊 --- */
 .blog-post-content pre {
-    @apply bg-base-200 rounded-box p-4 my-4 overflow-x-auto text-sm;
+  @apply bg-base-200 rounded-box my-4 overflow-x-auto p-4 text-sm;
 }
 .blog-post-content pre code {
-    @apply bg-transparent p-0 rounded-none;
+  @apply rounded-none bg-transparent p-0;
 }
 
 /* --- 水平分隔線 --- */
 .blog-post-content hr {
-    @apply border-base-content/20 border-[1.25px] my-6 mx-20;
+  @apply border-base-content/20 mx-20 my-6 border-[1.25px];
 }
 
 /* --- 圖片 --- */
 .blog-post-content img {
-    /* @apply rounded-box my-4 mx-auto w-full max-h-[50vh] object-contain border-2 border-base-200/80; */
+  /* @apply rounded-box my-4 mx-auto w-full max-h-[50vh] object-contain border-2 border-base-200/80; */
 }
 .blog-post-content img + em,
 .blog-post-content .ambient-image-wrapper + em {
-    /* Markdown 圖片說明文字 (![alt](url) 後的 *caption*) */
-    @apply block text-center text-sm text-base-content/50 -mt-2 mb-4;
-    font-style: normal;
+  /* Markdown 圖片說明文字 (![alt](url) 後的 *caption*) */
+  @apply text-base-content/50 -mt-2 mb-4 block text-center text-sm;
+  font-style: normal;
 }
 
 /* --- 刪除線 --- */
 .blog-post-content del {
-    @apply text-base-content/40 line-through;
+  @apply text-base-content/40 line-through;
 }
 
 /* --- 標記 / highlight --- */
 .blog-post-content mark {
-    @apply bg-warning/30 text-base-content rounded-sm px-0.5;
+  @apply bg-warning/30 text-base-content rounded-sm px-0.5;
 }
 
 /* --- 註腳 / footnotes --- */
-.footnotes ol{
-    @apply marker:text-primary;
+.footnotes ol {
+  @apply marker:text-primary;
 }

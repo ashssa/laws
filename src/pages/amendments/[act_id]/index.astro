@@ -1,16 +1,19 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import MainLayout from '@layouts/MainLayout.astro';
+import { getCollection, getEntry } from "astro:content";
+import MainLayout from "@layouts/MainLayout.astro";
 
 // 取得網站根目錄 (對接 astro.config.mjs 的 base 設定)
-const baseUrl = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_URL;
+const baseUrl =
+  import.meta.env.BASE_URL === "/" ? "/" : import.meta.env.BASE_URL;
 
 // 動態生成所有擁有修法紀錄的法規路徑 (例如 /amendments/act01)
 export async function getStaticPaths() {
-  const allAmendments = await getCollection('amendments');
-  const uniqueActIds = [...new Set(allAmendments.map(a => a.data.target_act))];
-  
-  return uniqueActIds.map(act_id => ({
+  const allAmendments = await getCollection("amendments");
+  const uniqueActIds = [
+    ...new Set(allAmendments.map((a) => a.data.target_act)),
+  ];
+
+  return uniqueActIds.map((act_id) => ({
     params: { act_id },
   }));
 }
@@ -18,22 +21,23 @@ export async function getStaticPaths() {
 const { act_id } = Astro.params;
 
 // 取得該法規的原始 metadata
-const targetAct = await getEntry('act', act_id);
+const targetAct = await getEntry("act", act_id);
 const actTitle = targetAct?.data.abbr || targetAct?.data.title || act_id;
 
 // 篩選出屬於該法規的所有修法紀錄，並依照日期「由新到舊」遞減排序
-const allAmendments = await getCollection('amendments');
+const allAmendments = await getCollection("amendments");
 const relatedAmendments = allAmendments
-  .filter(a => a.data.target_act === act_id)
+  .filter((a) => a.data.target_act === act_id)
   .sort((a, b) => {
-     // 假設 date 格式為 "114.03.10"，字串反向比較即可達到日期遞減效果
+    // 假設 date 格式為 "114.03.10"，字串反向比較即可達到日期遞減效果
     return b.data.date.localeCompare(a.data.date);
   });
 ---
 
 <MainLayout title={`${actTitle} - 歷次修正紀錄`}>
-  <header class="mb-8 pb-0"><!-- border-b-2 border-base-300  -->
-    <div class="text-sm breadcrumbs mb-4 text-base-content/80">
+  <header class="mb-8 pb-0">
+    <!-- border-b-2 border-base-300  -->
+    <div class="breadcrumbs text-base-content/80 mb-4 text-sm">
       <ul>
         <li><a href="/laws/amendments">修法沿革<!-- 修正歷程 --></a></li>
         <li>{targetAct?.data.abbr || actTitle}</li>
@@ -45,39 +49,52 @@ const relatedAmendments = allAmendments
     <p class="text-base-content/70">※ 本頁面所稱屆次，指學生議會之屆次。</p>
   </header>
 
-
   <div class="flex flex-col gap-3">
-    {relatedAmendments.map((amend) => (
-      <a 
-        href={`/laws/amendments/${act_id}/${amend.data.version}`}
-        class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-base-100 border border-base-200 rounded-2xl hover:border-neutral hover:bg-base-200/50 duration-300 transition"
-      >
-        <div class="flex-1">
-          <h3 class="font-bold text-lg text-base-content mb-1">{amend.data.title}</h3>
-          {amend.data.description && (
-            <p class="text-sm text-base-content/70 line-clamp-2 mt-2 font-[Lato]">
-              {amend.data.description}
-            </p>
-          )}
-        </div>
-        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
-          {typeof amend.data.term === 'number' && (
-            amend.data.term === 0 ? (
-              /* 狀態 A：屆數為零 */
-              <span class="badge badge-sm md:badge-md badge-dash">自治幹部會議</span>
-            ) : (
-              /* 狀態 B：屆數大於零 */
-              <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
-            )
-          )}
-          {/* {amend.data.term && (
+    {
+      relatedAmendments.map((amend) => (
+        <a
+          href={`/laws/amendments/${act_id}/${amend.data.version}`}
+          class="bg-base-100 border-base-200 hover:border-neutral hover:bg-base-200/50 flex flex-col justify-between rounded-2xl border p-5 transition duration-300 sm:flex-row sm:items-center"
+        >
+          <div class="flex-1">
+            <h3 class="text-base-content mb-1 text-lg font-bold">
+              {amend.data.title}
+            </h3>
+            {amend.data.description && (
+              <p class="text-base-content/70 mt-2 line-clamp-2 font-[Lato] text-sm">
+                {amend.data.description}
+              </p>
+            )}
+          </div>
+          <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-6">
+            {typeof amend.data.term === "number" &&
+              (amend.data.term === 0 ? (
+                /* 狀態 A：屆數為零 */
+                <span class="badge badge-sm md:badge-md badge-dash">
+                  自治幹部會議
+                </span>
+              ) : (
+                /* 狀態 B：屆數大於零 */
+                <span class="badge badge-sm md:badge-md badge-dash">
+                  第 {amend.data.term} 屆
+                </span>
+              ))}
+            {/* {amend.data.term && (
             <span class="badge badge-sm md:badge-md badge-dash">第 {amend.data.term} 屆</span>
           )} */}
-          <span class="badge badge-sm md:badge-md badge-dash">{amend.data.date} 通過</span>
-          <span class="icon-[tabler--chevron-right] ml-2 text-base-content/40 align-middle"></span>
-        </div>
-      </a>
-    ))}
+            <span class="badge badge-sm md:badge-md badge-dash">
+              {amend.data.date} 通過
+            </span>
+            <span class="icon-[tabler--chevron-right] text-base-content/40 ml-2 align-middle" />
+          </div>
+        </a>
+      ))
+    }
   </div>
-  <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href={baseUrl+"/amendments/"}>回上頁</a></div>
+  <div class="mt-4 grid">
+    <a
+      class="btn btn-sm btn-outline btn-wide mx-auto mt-2"
+      href={baseUrl + "/amendments/"}>回上頁</a
+    >
+  </div>
 </MainLayout>

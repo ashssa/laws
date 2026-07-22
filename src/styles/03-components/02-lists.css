@@ -1,84 +1,84 @@
 /* 02-lists：各種清單樣式 */
 
 /* --- 01 首頁：聲明（備註）星號列點 --- */
-    /* 移動至 Astro 元件中 */
+/* 移動至 Astro 元件中 */
 
 /* --- 02. 各法規：修法歷程選單樣式 --- */
 .amendment-history {
-    background-color: var(--color-base-200);
-    padding: 1.25rem 1.5rem;
-    margin-top: 1rem;
-    margin-bottom: 1.75rem;
-    border-radius: var(--radius-box, 12px);
-    font-size: 0.95em;
-    @apply bg-base-200/50 rounded-box
+  background-color: var(--color-base-200);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.75rem;
+  border-radius: var(--radius-box, 12px);
+  font-size: 0.95em;
+  @apply bg-base-200/50 rounded-box;
 }
 .amendment-history h3 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    margin-left: -0.25rem;
-    font-size: 1.25em;
-    font-weight: 600;
-    color: var(--color-secondary);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  margin-left: -0.25rem;
+  font-size: 1.25em;
+  font-weight: 600;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 .amendment-history h3::before {
-    /* content: "\e889"; "history" icon in Material Symbols */
-    content: "";
-    font-family: 'Material Symbols Outlined';
-    font-size: 1.25rem;
-    font-weight: normal;
-    vertical-align: middle;
+  /* content: "\e889"; "history" icon in Material Symbols */
+  content: "";
+  font-family: "Material Symbols Outlined";
+  font-size: 1.25rem;
+  font-weight: normal;
+  vertical-align: middle;
 }
 .amendment-history ul {
-    list-style: none !important;
-    /* padding-left: 0.75rem !important; */
-    /* border-left: 2px dashed var(--color-base-300); */
-    margin-left: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
+  list-style: none !important;
+  /* padding-left: 0.75rem !important; */
+  /* border-left: 2px dashed var(--color-base-300); */
+  margin-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 .amendment-history li {
-    position: relative;
-    padding-left: 0.75rem !important;
-    margin-bottom: 0 !important;
-    line-height: 1.6;
-    color: var(--color-base-content);
+  position: relative;
+  padding-left: 0.75rem !important;
+  margin-bottom: 0 !important;
+  line-height: 1.6;
+  color: var(--color-base-content);
 }
 .amendment-history li::before {
-    content: "" !important;
-    position: absolute;
-    left: -0.55rem;
-    top: 0.55rem;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background-color: var(--color-base-200);
-    border: 2.75px solid var(--color-secondary);
-    box-sizing: content-box;
+  content: "" !important;
+  position: absolute;
+  left: -0.55rem;
+  top: 0.55rem;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: var(--color-base-200);
+  border: 2.75px solid var(--color-secondary);
+  box-sizing: content-box;
 }
 
 /* --- 02b. 各法規：附件選單外框樣式 --- */
 .attachments-list {
-    padding: 1.25rem 1.5rem;
-    margin-top: 1rem;
-    margin-bottom: 1.75rem;
-    font-size: 0.95em;
-    @apply bg-base-200/50 rounded-box
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.95em;
+  @apply bg-base-200/50 rounded-box;
 }
 .attachments-list h3 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    margin-left: -0.25rem;
-    font-size: 1.25em;
-    font-weight: 600;
-    color: var(--color-secondary);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  margin-left: -0.25rem;
+  font-size: 1.25em;
+  font-weight: 600;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 /* .attachments-list h3::before {
     content: "\e2c8"; "folder_open" icon in Material Symbols
@@ -91,68 +91,68 @@
 
 /* 03. 各法規：附件清單樣式 */
 .attachments {
-    font-family: "Reddit Sans", "Noto Sans TC";
-    padding-left: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+  font-family: "Reddit Sans", "Noto Sans TC";
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 .attachments li {
-    list-style: none;
-    padding-left: 0;
-    display: block;
+  list-style: none;
+  padding-left: 0;
+  display: block;
 }
 .attachments li::before {
-    display: none !important; /* 隱藏原本的清單圓點 */
+  display: none !important; /* 隱藏原本的清單圓點 */
 }
 .attachments a {
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.65rem;
-    border-radius: var(--radius-selector, 8px);
-    width: 100%;
-    color: var(--color-base-content);
-    transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-selector, 8px);
+  width: 100%;
+  color: var(--color-base-content);
+  transition: all 0.2s ease-in-out;
 }
 .attachments a:hover {
-    background-color: var(--color-base-300);
-    text-decoration: none;
+  background-color: var(--color-base-300);
+  text-decoration: none;
 }
 .attachments a::before {
-    content: "\e226"; /* "attachment" icon in Material Symbols */
-    font-family: 'Material Symbols Outlined';
-    font-weight: normal;
-    font-size: 1.15rem;
-    color: var(--color-secondary);
-    transition: color 0.2s ease-in-out;
+  content: "\e226"; /* "attachment" icon in Material Symbols */
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-size: 1.15rem;
+  color: var(--color-secondary);
+  transition: color 0.2s ease-in-out;
 }
 .attachments a:hover::before {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 .att-no {
-    font-weight: 600;
-    color: var(--color-secondary);
-    font-size: 0.9em;
-    min-width: 2.2rem;
-    width: fit-content;
-    width: fit-content;
-    transition: color 0.2s ease-in-out;
-    @apply mr-3 whitespace-nowrap group-hover:text-primary ;
+  font-weight: 600;
+  color: var(--color-secondary);
+  font-size: 0.9em;
+  min-width: 2.2rem;
+  width: fit-content;
+  width: fit-content;
+  transition: color 0.2s ease-in-out;
+  @apply group-hover:text-primary mr-3 whitespace-nowrap;
 }
 .att-title {
-    flex-grow: 1;
-    word-break: break-all;
+  flex-grow: 1;
+  word-break: break-all;
 }
 
 /* 04. Sources 頁面 */
 .sources-content p {
-    @apply font-mono text-left text-xs md:text-sm pb-[1em] px-8
+  @apply px-8 pb-[1em] text-left font-mono text-xs md:text-sm;
 }
 .sources-content h3 {
-    border-left: none;
+  border-left: none;
 }
 .sources-content > h3 > a {
-    @apply link link-hover
+  @apply link link-hover;
 }

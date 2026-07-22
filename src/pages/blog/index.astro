@@ -2,12 +2,12 @@
 // src/pages/blog/index.astro
 // 部落格文章總覽頁面（最新訊息）
 
-import MainLayout from '@layouts/MainLayout.astro';
-import BlogPostCard from '@components/BlogPostCard.astro';
-import { getCollection } from 'astro:content';
+import MainLayout from "@layouts/MainLayout.astro";
+import BlogPostCard from "@components/BlogPostCard.astro";
+import { getCollection } from "astro:content";
 
 // 取得所有非草稿文章
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
 
 // 排序：pinned 優先，其餘按日期降序
 const sortedPosts = allPosts.sort((a, b) => {
@@ -19,97 +19,120 @@ const sortedPosts = allPosts.sort((a, b) => {
 });
 
 // 收集所有不重複的 tags 並排序
-const allTags = [...new Set(sortedPosts.flatMap((post) => post.data.tags))].sort();
+const allTags = [
+  ...new Set(sortedPosts.flatMap((post) => post.data.tags)),
+].sort();
 ---
 
 <MainLayout title="最新訊息">
-    <a href="/laws/" class="btn btn-ghost btn-sm mb-4 -ml-4">← 回首頁</a>
+  <a href="/laws/" class="btn btn-ghost btn-sm mb-4 -ml-4">← 回首頁</a>
 
-    <h2 class="page-title">最新訊息</h2>
+  <h2 class="page-title">最新訊息</h2>
 
-    <!-- DaisyUI Filter：使用 tags 篩選文章 -->
-    {allTags.length > 0 && (
-        <div class="filter mb-3 px-4" id="blog-tag-filter">
-            <input class="btn btn-sm btn-ghost filter-reset shadow-sm dark:shadow-lg" type="radio" name="blog-tags" aria-label="×" checked />
-            {allTags.map((tag) => (
-                <input class="btn btn-sm btn-ghost shadow-sm dark:shadow-lg" type="radio" name="blog-tags" aria-label={tag} data-tag={tag} />
-            ))}
-        </div>
-    )}
-
-    <div class="blog-list" id="blog-post-list">
-        {sortedPosts.map((post) => (
-            <div class="blog-post-item" data-tags={JSON.stringify(post.data.tags)}>
-                <BlogPostCard
-                    slug={post.data.slug}
-                    title={post.data.title}
-                    pubDate={post.data.pubDate}
-                    modDate={post.data.modDate}
-                    description={post.data.description}
-                    tags={post.data.tags}
-                    pinned={post.data.pinned}
-                />
-            </div>
+  <!-- DaisyUI Filter：使用 tags 篩選文章 -->
+  {
+    allTags.length > 0 && (
+      <div class="mb-3 px-4 filter" id="blog-tag-filter">
+        <input
+          class="btn btn-sm btn-ghost filter-reset shadow-sm dark:shadow-lg"
+          type="radio"
+          name="blog-tags"
+          aria-label="×"
+          checked
+        />
+        {allTags.map((tag) => (
+          <input
+            class="btn btn-sm btn-ghost shadow-sm dark:shadow-lg"
+            type="radio"
+            name="blog-tags"
+            aria-label={tag}
+            data-tag={tag}
+          />
         ))}
-    </div>
+      </div>
+    )
+  }
 
-    <!-- 無搜尋結果提示 -->
-    <p class="text-center opacity-60 py-8 hidden" id="blog-no-results">
-        找不到符合篩選條件的文章。
-    </p>
+  <div class="blog-list" id="blog-post-list">
+    {
+      sortedPosts.map((post) => (
+        <div class="blog-post-item" data-tags={JSON.stringify(post.data.tags)}>
+          <BlogPostCard
+            slug={post.data.slug}
+            title={post.data.title}
+            pubDate={post.data.pubDate}
+            modDate={post.data.modDate}
+            description={post.data.description}
+            tags={post.data.tags}
+            pinned={post.data.pinned}
+          />
+        </div>
+      ))
+    }
+  </div>
 
-    {sortedPosts.length === 0 && (
-        <p class="text-center opacity-60 py-8">目前沒有文章。</p>
-    )}
+  <!-- 無搜尋結果提示 -->
+  <p class="hidden py-8 text-center opacity-60" id="blog-no-results">
+    找不到符合篩選條件的文章。
+  </p>
 
+  {
+    sortedPosts.length === 0 && (
+      <p class="py-8 text-center opacity-60">目前沒有文章。</p>
+    )
+  }
 </MainLayout>
 
 <style>
-    @reference "../../styles/global.css";
+  @reference "../../styles/global.css";
 
-    .blog-list {
-        @apply flex flex-col gap-4 px-4;
-    }
-    .blog-post-item {
-        transition: opacity 0.2s ease, max-height 0.3s ease;
-    }
-    .blog-post-item.hidden-by-filter {
-        display: none;
-    }
+  .blog-list {
+    @apply flex flex-col gap-4 px-4;
+  }
+  .blog-post-item {
+    transition:
+      opacity 0.2s ease,
+      max-height 0.3s ease;
+  }
+  .blog-post-item.hidden-by-filter {
+    display: none;
+  }
 </style>
 
 <script>
-    document.addEventListener('astro:page-load', () => {
-        const filterContainer = document.getElementById('blog-tag-filter');
-        const postList = document.getElementById('blog-post-list');
-        const noResults = document.getElementById('blog-no-results');
-        if (!filterContainer || !postList) return;
+  document.addEventListener("astro:page-load", () => {
+    const filterContainer = document.getElementById("blog-tag-filter");
+    const postList = document.getElementById("blog-post-list");
+    const noResults = document.getElementById("blog-no-results");
+    if (!filterContainer || !postList) return;
 
-        const radios = filterContainer.querySelectorAll<HTMLInputElement>('input[name="blog-tags"]');
-        const postItems = postList.querySelectorAll<HTMLElement>('.blog-post-item');
+    const radios = filterContainer.querySelectorAll<HTMLInputElement>(
+      'input[name="blog-tags"]',
+    );
+    const postItems = postList.querySelectorAll<HTMLElement>(".blog-post-item");
 
-        radios.forEach((radio) => {
-            radio.addEventListener('change', () => {
-                const selectedTag = radio.dataset.tag; // undefined = 全部 (filter-reset)
-                let visibleCount = 0;
+    radios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        const selectedTag = radio.dataset.tag; // undefined = 全部 (filter-reset)
+        let visibleCount = 0;
 
-                postItems.forEach((item) => {
-                    const tags: string[] = JSON.parse(item.dataset.tags || '[]');
-                    const shouldShow = !selectedTag || tags.includes(selectedTag);
+        postItems.forEach((item) => {
+          const tags: string[] = JSON.parse(item.dataset.tags || "[]");
+          const shouldShow = !selectedTag || tags.includes(selectedTag);
 
-                    if (shouldShow) {
-                        item.classList.remove('hidden-by-filter');
-                        visibleCount++;
-                    } else {
-                        item.classList.add('hidden-by-filter');
-                    }
-                });
-
-                // 顯示/隱藏「無搜尋結果」提示
-                if (noResults) {
-                    noResults.classList.toggle('hidden', visibleCount > 0);
-                }
-            });
+          if (shouldShow) {
+            item.classList.remove("hidden-by-filter");
+            visibleCount++;
+          } else {
+            item.classList.add("hidden-by-filter");
+          }
         });
+
+        // 顯示/隱藏「無搜尋結果」提示
+        if (noResults) {
+          noResults.classList.toggle("hidden", visibleCount > 0);
+        }
+      });
     });
+  });
 </script>

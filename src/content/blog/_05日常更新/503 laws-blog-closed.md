@@ -2,7 +2,7 @@
 title: laws-blog網站與專案已關閉並整併至本專案
 author: 已畢業校外人士潘祈瑋
 pubDate: 2026-07-21
-modDate: 
+modDate:
 slug: laws-blog-closed
 showInHomePage: false
 pinned: false
@@ -13,8 +13,7 @@ tags:
   - 更新
   # - 行政公告
   # - 設計理念
-description:
-  laws-blog專案已停止更新。原部落格內容及功能已遷移至本專案。
+description: laws-blog專案已停止更新。原部落格內容及功能已遷移至本專案。
 ---
 
 各位法規系統使用者好，

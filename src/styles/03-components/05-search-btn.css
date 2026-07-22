@@ -1,49 +1,50 @@
 /* --- 舊版 --- */
 .highlight {
-    background-color: var(--color-warning); /* 標記顏色 */
-    color: var(--color-warning-content);
-    padding: 2px 0;
-    border-radius: var(--radius-selector);
+  background-color: var(--color-warning); /* 標記顏色 */
+  color: var(--color-warning-content);
+  padding: 2px 0;
+  border-radius: var(--radius-selector);
 }
 .current-match {
-    background-color: var(--color-error); /* 選中目標標記顏色 */
-    color: var(--color-error-content);
-    /* border: 2px solid var(--color-primary-content); */
-    opacity: 1;
+  background-color: var(--color-error); /* 選中目標標記顏色 */
+  color: var(--color-error-content);
+  /* border: 2px solid var(--color-primary-content); */
+  opacity: 1;
 }
-.highlight, .current-match {
-    @apply  px-0.5 transition duration-200 ease-in-out;
+.highlight,
+.current-match {
+  @apply px-0.5 transition duration-200 ease-in-out;
 }
 
 /* --- 共通 --- */
 #toggleSearchBtn {
-    @apply btn btn-sm btn-soft ml-auto text-neutral;
-    @apply bg-base-100/50 border-none md:bg-neutral dark:bg-neutral text-base-content/70 md:text-neutral-content dark:text-neutral-content shadow-sm backdrop-blur-sm print:hidden;
-    @apply transition-all transition-discrete hover:scale-105 duration-300 md:duration-150 ease-in-out ; /* 棄用：motion-reduce:transition-none motion-reduce:hover:transform-none  */
-    /* 棄用：btn-circle */
+  @apply btn btn-sm btn-soft text-neutral ml-auto;
+  @apply bg-base-100/50 md:bg-neutral dark:bg-neutral text-base-content/70 md:text-neutral-content dark:text-neutral-content border-none shadow-sm backdrop-blur-sm print:hidden;
+  @apply transition-all transition-discrete duration-300 ease-in-out hover:scale-105 md:duration-150; /* 棄用：motion-reduce:transition-none motion-reduce:hover:transform-none  */
+  /* 棄用：btn-circle */
 }
 #searchFieldsetContainer {
-    @apply fixed top-24 right-4 z-50 flex flex-col items-end;
-    @apply transition-all transition-discrete duration-300 md:duration-150 ease-in-out ; /* 棄用：motion-reduce:transition-none motion-reduce:hover:transform-none  */
+  @apply fixed top-24 right-4 z-50 flex flex-col items-end;
+  @apply transition-all transition-discrete duration-300 ease-in-out md:duration-150; /* 棄用：motion-reduce:transition-none motion-reduce:hover:transform-none  */
 }
 #searchFieldsetContainer.show {
-    opacity: 1; 
-    visibility: visible; 
+  opacity: 1;
+  visibility: visible;
 }
 .search-container-span {
-    @apply mt-1
+  @apply mt-1;
 }
 
 /* --- 新版 --- */
-.search-mark{
-    @apply bg-yellow-300/50 dark:bg-yellow-200/40 text-base-content px-0.5
+.search-mark {
+  @apply text-base-content bg-yellow-300/50 px-0.5 dark:bg-yellow-200/40;
 }
 .search-highlight {
-    /* @apply ring-4 ring-error/70 scale-110 transition-all ; */
-    @apply bg-orange-400/60 dark:bg-orange-400/50 scale-110 transition-all ;
+  /* @apply ring-4 ring-error/70 scale-110 transition-all ; */
+  @apply scale-110 bg-orange-400/60 transition-all dark:bg-orange-400/50;
 }
 #searchContainer {
-    /* 以 md 為斷點，進行 backdrop-blur 設計 */
-    @apply bg-base-100/80 border-none backdrop-blur-sm rounded-box w-72 p-4 shadow-xl flex-col gap-2 transition-all transition-discrete ;
-    @apply md:bg-base-200 md:border md:border-base-300 
+  /* 以 md 為斷點，進行 backdrop-blur 設計 */
+  @apply bg-base-100/80 rounded-box w-72 flex-col gap-2 border-none p-4 shadow-xl backdrop-blur-sm transition-all transition-discrete;
+  @apply md:bg-base-200 md:border-base-300 md:border;
 }

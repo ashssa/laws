@@ -1,60 +1,67 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
-import { getCollection, getEntry } from 'astro:content'; 
-import MainLayout from '@layouts/MainLayout.astro';
-import { parseAmendmentMarkdown } from '@utils/lawParser.js';
-import { diffChars } from 'diff';
-import PageSearch from '@components/PageSearch.astro';
-import ReportIssueButton from '@components/ReportIssueButton.astro';
+import fs from "node:fs";
+import path from "node:path";
+import { getCollection, getEntry } from "astro:content";
+import MainLayout from "@layouts/MainLayout.astro";
+import { parseAmendmentMarkdown } from "@utils/lawParser.js";
+import { diffChars } from "diff";
+import PageSearch from "@components/PageSearch.astro";
+import ReportIssueButton from "@components/ReportIssueButton.astro";
 export async function getStaticPaths() {
-  const amendments = await getCollection('amendments');
-  return amendments.map(entry => ({
+  const amendments = await getCollection("amendments");
+  return amendments.map((entry) => ({
     params: { act_id: entry.data.target_act, version: entry.data.version },
     props: { entry },
   }));
 }
 
 // 取得網站根目錄 (對接 astro.config.mjs 的 base 設定)
-const baseUrl = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_URL;
+const baseUrl =
+  import.meta.env.BASE_URL === "/" ? "/" : import.meta.env.BASE_URL;
 const act_id = Astro.params.act_id;
 
 const { entry } = Astro.props;
-const targetAct = await getEntry('act', entry.data.target_act);
+const targetAct = await getEntry("act", entry.data.target_act);
 
-const filePath = path.join(process.cwd(), 'src/content/amendments', `${entry.id}.md`);
-const rawMarkdown = fs.readFileSync(filePath, 'utf-8');
+const filePath = path.join(
+  process.cwd(),
+  "src/content/amendments",
+  `${entry.id}.md`,
+);
+const rawMarkdown = fs.readFileSync(filePath, "utf-8");
 const parsedData = parseAmendmentMarkdown(rawMarkdown);
 
 function getDiffHtml(proposedArr, currentArr) {
-  const proposedText = proposedArr.map(p => p.text).join('\n');
-  const currentText = currentArr.map(p => p.text).join('\n');
-  
+  const proposedText = proposedArr.map((p) => p.text).join("\n");
+  const currentText = currentArr.map((p) => p.text).join("\n");
+
   const diff = diffChars(currentText, proposedText);
-  
-  let proposedLines = [''];
-  let currentLines = [''];
+
+  let proposedLines = [""];
+  let currentLines = [""];
 
   diff.forEach((part) => {
     // 依據換行切割這個片段
-    const splitVals = part.value.split('\n');
+    const splitVals = part.value.split("\n");
 
     splitVals.forEach((lineText, index) => {
       // 遇到換行時，推入新的陣列元素 (對應下一段 <p>)
       if (index > 0) {
-        if (part.added || !part.removed) proposedLines.push('');
-        if (part.removed || !part.added) currentLines.push('');
+        if (part.added || !part.removed) proposedLines.push("");
+        if (part.removed || !part.added) currentLines.push("");
       }
 
       if (lineText) {
         // 安全處理：轉義可能破壞 HTML 的字元
-        const safeText = lineText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeText = lineText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
         // 每行獨立開閉 <span> 標籤，絕對不跨行
         if (part.added) {
-          proposedLines[proposedLines.length - 1] += `<span class="diff-added">${safeText}</span>`;
+          proposedLines[proposedLines.length - 1] +=
+            `<span class="diff-added">${safeText}</span>`;
         } else if (part.removed) {
-          currentLines[currentLines.length - 1] += `<span class="diff-removed">${safeText}</span>`;
+          currentLines[currentLines.length - 1] +=
+            `<span class="diff-removed">${safeText}</span>`;
         } else {
           proposedLines[proposedLines.length - 1] += safeText;
           currentLines[currentLines.length - 1] += safeText;
@@ -72,7 +79,8 @@ function getDiffHtml(proposedArr, currentArr) {
     /* 自訂差異標記樣式：
       使用原生 CSS 確保權重夠高，並套用粗體與底線效果
     */
-    .diff-added, .diff-removed {
+    .diff-added,
+    .diff-removed {
       font-weight: 650; /* 粗體 */
       text-decoration: underline; /* 底線 */
       text-decoration-color: var(--color-success);
@@ -95,16 +103,18 @@ function getDiffHtml(proposedArr, currentArr) {
 
     /* 列印模式下自動移除背景色，節省墨水並維持正式感 */
     @media print {
-      .diff-added, .diff-removed {
+      .diff-added,
+      .diff-removed {
         background-color: transparent !important;
         color: black !important;
         text-decoration-color: black !important;
       }
     }
-    
+
     /* 微調段落樣式 */
     /* 對照表左右對齊 */
-    .amendments-div, .amendments-description-div {
+    .amendments-div,
+    .amendments-description-div {
       @apply text-justify;
     }
     /* 現行與修正條文首項不縮排 */
@@ -121,18 +131,19 @@ function getDiffHtml(proposedArr, currentArr) {
 
     /* 總說明增加間距 */
     .general-description-text-div > p {
-      margin-bottom: 0.5rem ;
+      margin-bottom: 0.5rem;
       @apply text-justify;
     }
 
     /* 只有一項、最後一項總說明不加間距 */
-    .general-description-text-div > p:only-child , .general-description-text-div > p:last-child {
-      margin-bottom: 0rem ;
+    .general-description-text-div > p:only-child,
+    .general-description-text-div > p:last-child {
+      margin-bottom: 0rem;
     }
 
     /* 讓定位字元 (\t) 在 HTML 中能正確渲染並設定寬度 */
-    .amendments-div p, 
-    .amendments-description-div p, 
+    .amendments-div p,
+    .amendments-description-div p,
     .general-description-text-div p {
       white-space: pre-wrap;
       tab-size: 10;
@@ -143,119 +154,176 @@ function getDiffHtml(proposedArr, currentArr) {
   <ReportIssueButton />
 
   <header class="mb-8 pb-0 print:border-black">
-      <div class="text-sm breadcrumbs mb-4 text-base-content/80">
-        <ul>
-          <li><a href="/laws/amendments">修法沿革<!-- 修正歷程 --></a></li>
-          <li>
-            <a href={`/laws/amendments/${entry.data.target_act}`}>
-              {targetAct?.data.abbr || targetAct?.data.title}
-            </a>
-          </li>
-          <li>{entry.data.title}</li>
-        </ul>
-      </div>
+    <div class="breadcrumbs text-base-content/80 mb-4 text-sm">
+      <ul>
+        <li><a href="/laws/amendments">修法沿革<!-- 修正歷程 --></a></li>
+        <li>
+          <a href={`/laws/amendments/${entry.data.target_act}`}>
+            {targetAct?.data.abbr || targetAct?.data.title}
+          </a>
+        </li>
+        <li>{entry.data.title}</li>
+      </ul>
+    </div>
 
-      <h2 class="page-title">{entry.data.title}</h2>
-      {typeof entry.data.term === 'number' && (
-        entry.data.term === 0 ? (
+    <h2 class="page-title">{entry.data.title}</h2>
+    {
+      typeof entry.data.term === "number" &&
+        (entry.data.term === 0 ? (
           /* 狀態 A：屆數為零 */
-          <span class="badge badge-lg badge-dash badge-primary">自治幹部會議</span>
+          <span class="badge badge-lg badge-dash badge-primary">
+            自治幹部會議
+          </span>
         ) : (
           /* 狀態 B：屆數大於零 */
-          <span class="badge badge-lg badge-dash badge-primary">第 {entry.data.term} 屆</span>
-        )
-      )}
-      {/* {entry.data.term && (
+          <span class="badge badge-lg badge-dash badge-primary">
+            第 {entry.data.term} 屆
+          </span>
+        ))
+    }
+    {
+      /* {entry.data.term && (
         <span class="badge badge-sm md:badge-md badge-dash">第 {entry.data.term} 屆</span>
-      )} */}
-      <!-- {entry.data.term && <span class="badge badge-lg badge-dash badge-primary">第 {entry.data.term} 屆{/* 學生議會 */}</span>} -->
-      <div class="badge badge-lg badge-dash badge-primary">{entry.data.date} 通過</div>
-      
-      {parsedData.globalDescription.length > 0 && (
-        <div class="mt-6 p-6 sm:p-8 bg-base-200 rounded-3xl text-lg leading-relaxed print:bg-white print:border print:border-black print:mt-4 shadow-inner">
-          <div class="flex items-center gap-2 mb-4 opacity-70">
-            <span class="icon-[tabler--file-description] text-xl"></span>
-            <span class="font-bold text-sm uppercase tracking-widest">修正案總說明</span>
+      )} */
+    }
+    <!-- {entry.data.term && <span class="badge badge-lg badge-dash badge-primary">第 {entry.data.term} 屆{/* 學生議會 */}</span>} -->
+    <div class="badge badge-lg badge-dash badge-primary">
+      {entry.data.date} 通過
+    </div>
+
+    {
+      parsedData.globalDescription.length > 0 && (
+        <div class="bg-base-200 mt-6 rounded-3xl p-6 text-lg leading-relaxed shadow-inner sm:p-8 print:mt-4 print:border print:border-black print:bg-white">
+          <div class="mb-4 flex items-center gap-2 opacity-70">
+            <span class="icon-[tabler--file-description] text-xl" />
+            <span class="text-sm font-bold tracking-widest uppercase">
+              修正案總說明
+            </span>
           </div>
-          <div class="general-description-text-div space-y-3 text-base-content/90">
-            {parsedData.globalDescription.map(p => (
+          <div class="general-description-text-div text-base-content/90 space-y-3">
+            {parsedData.globalDescription.map((p) => (
               <p class={`${p.indentClass}`}>{p.text}</p>
             ))}
           </div>
         </div>
-      )}
+      )
+    }
   </header>
 
-  <div class="grid pb-8"><a class="btn btn-sm btn-outline btn-wide mx-auto" href={baseUrl+"/amendments/"+act_id}>回上頁</a></div>
+  <div class="grid pb-8">
+    <a
+      class="btn btn-sm btn-outline btn-wide mx-auto"
+      href={baseUrl + "/amendments/" + act_id}>回上頁</a
+    >
+  </div>
 
   <div role="alert" class="alert alert-info alert-soft mb-8 print:hidden">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      class="h-6 w-6 shrink-0 stroke-current"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
     </svg>
-    <span>本頁面對照表使用電腦程式自動加劃底線。如與學生議會公告之原本不同，以原本為準。</span>
+    <span
+      >本頁面對照表使用電腦程式自動加劃底線。如與學生議會公告之原本不同，以原本為準。</span
+    >
   </div>
 
   <article class="regulation-amendment space-y-12">
-    {parsedData.amendments.map((amend) => {
-      // 判斷是否需要比對：如果其中一方是「無」或「刪除」，就跳過比對，維持純文字
-      const isPlaceholder = amend.proposed[0]?.isPlaceholder || amend.current[0]?.isPlaceholder;
-      const diffResult = isPlaceholder ? null : getDiffHtml(amend.proposed, amend.current);
+    {
+      parsedData.amendments.map((amend) => {
+        // 判斷是否需要比對：如果其中一方是「無」或「刪除」，就跳過比對，維持純文字
+        const isPlaceholder =
+          amend.proposed[0]?.isPlaceholder || amend.current[0]?.isPlaceholder;
+        const diffResult = isPlaceholder
+          ? null
+          : getDiffHtml(amend.proposed, amend.current);
 
-      return (
-        <div class="card bg-base-100 overflow-hidden print:border-black">
-          <h3 class="text-xl font-black text-base-content/80 print:text-black">
-            {amend.title}
-          </h3>
+        return (
+          <div class="card bg-base-100 overflow-hidden print:border-black">
+            <h3 class="text-base-content/80 text-xl font-black print:text-black">
+              {amend.title}
+            </h3>
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-base-200/80 print:table print:border-collapse">
-            
-            {/* 修正條文 */}
-            <div class="p-6 bg-base-100 print:table-cell">
-              <div class="flex items-center gap-2 mb-2">
-                 <span class="badge badge-success badge-outline">修正條文</span>
+            <div class="divide-base-200/80 grid grid-cols-1 divide-y lg:grid-cols-3 lg:divide-x lg:divide-y-0 print:table print:border-collapse">
+              {/* 修正條文 */}
+              <div class="bg-base-100 p-6 print:table-cell">
+                <div class="mb-2 flex items-center gap-2">
+                  <span class="badge badge-success badge-outline">
+                    修正條文
+                  </span>
+                </div>
+                <div class="amendments-div space-y-2">
+                  {amend.proposed.map((p, idx) => (
+                    <p
+                      class={`text-sm leading-relaxed ${p.indentClass || "indent-8"} ${p.isPlaceholder ? "py-2 italic opacity-40" : ""}`}
+                      set:html={
+                        diffResult
+                          ? diffResult.proposed[idx]
+                          : p.text === "（刪除）"
+                            ? p.text
+                            : p.text.replace(/</g, "&lt;")
+                      }
+                    />
+                  ))}
+                </div>
               </div>
-              <div class="space-y-2 amendments-div">
-                {amend.proposed.map((p, idx) => (
-                  <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}
-                     set:html={diffResult ? diffResult.proposed[idx] : (p.text === '（刪除）' ? p.text : p.text.replace(/</g, '&lt;'))}>
-                  </p>
-                ))}
+
+              {/* 現行條文 */}
+              <div class="bg-base-100 p-6 print:table-cell">
+                <div class="mb-2 flex items-center gap-2">
+                  <span class="badge badge-error badge-outline text-nowrap">
+                    現行條文
+                  </span>
+                </div>
+                <div class="amendments-div space-y-2">
+                  {amend.current.map((p, idx) => (
+                    <p
+                      class={`text-sm leading-relaxed ${p.indentClass || "indent-8"} ${p.isPlaceholder ? "py-2 italic opacity-40" : ""}`}
+                      set:html={
+                        diffResult
+                          ? diffResult.current[idx]
+                          : p.text === "（無）"
+                            ? p.text
+                            : p.text.replace(/</g, "&lt;")
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* 說明 (保持原樣不比對) */}
+              <div class="bg-base-100 p-6 print:table-cell print:border-black">
+                <div class="mb-2 flex items-center gap-2">
+                  <span class="badge badge-outline text-nowrap">說明</span>
+                </div>
+                <div class="text-base-content/90 amendments-description-div space-y-2">
+                  {amend.reason.map((p) => (
+                    <p
+                      class={`text-sm leading-relaxed ${p.indentClass || "indent-8"} ${p.indentClass}`}
+                    >
+                      {p.text}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
-
-            {/* 現行條文 */}
-            <div class="p-6 bg-base-100 print:table-cell">
-              <div class="flex items-center gap-2 mb-2">
-                 <span class="badge badge-error badge-outline text-nowrap">現行條文</span>
-              </div>
-              <div class="space-y-2 amendments-div">
-                {amend.current.map((p, idx) => (
-                  <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'} ${p.isPlaceholder ? 'italic opacity-40 py-2' : ''}`}
-                     set:html={diffResult ? diffResult.current[idx] : (p.text === '（無）' ? p.text : p.text.replace(/</g, '&lt;'))}>
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* 說明 (保持原樣不比對) */}
-            <div class="p-6 bg-base-100 print:table-cell print:border-black">
-              <div class="flex items-center gap-2 mb-2">
-                 <span class="badge badge-outline text-nowrap">說明</span>
-              </div>
-              <div class="space-y-2 text-base-content/90 amendments-description-div">
-                {amend.reason.map(p => (
-                  <p class={`text-sm leading-relaxed ${p.indentClass || 'indent-8'}  ${p.indentClass}`}>
-                    {p.text}
-                  </p>
-                ))}
-              </div>
-            </div>
-
           </div>
-        </div>
-      );
-    })}
+        );
+      })
+    }
   </article>
 
-  <div class="grid mt-4"><a class="btn btn-sm btn-outline btn-wide mt-2 mx-auto" href={baseUrl+"/amendments/"+act_id}>回上頁</a></div>
+  <div class="mt-4 grid">
+    <a
+      class="btn btn-sm btn-outline btn-wide mx-auto mt-2"
+      href={baseUrl + "/amendments/" + act_id}>回上頁</a
+    >
+  </div>
 </MainLayout>

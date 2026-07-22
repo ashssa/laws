@@ -4,20 +4,37 @@
 const { url } = Astro.props;
 
 // 設定按鈕預設網址
-const defaultUrl = "https://sites.google.com/a/stu.nknush.kh.edu.tw/ashs_sp/laws/修法歷程";
+const defaultUrl =
+  "https://sites.google.com/a/stu.nknush.kh.edu.tw/ashs_sp/laws/修法歷程";
 
 // 決定最終使用的網址：如果有傳入就用傳入的，沒有就用預設的
 const finalUrl = url || defaultUrl;
 
 // 取得網站根目錄 (對接 astro.config.mjs 的 base 設定)
-const baseUrl = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_URL;
+const baseUrl =
+  import.meta.env.BASE_URL === "/" ? "/" : import.meta.env.BASE_URL;
 ---
-<nav class="grid grid-flow-col-3 min-[397px]:grid-flow-col gap-5 md:mx-2 print:hidden my-4">
+
+<nav
+  class="grid-flow-col-3 my-4 grid gap-5 min-[397px]:grid-flow-col md:mx-2 print:hidden"
+>
   <!-- <button class="btn btn-neutral" id="backBtn">回上頁</button> -->
   <a href={baseUrl} class="btn btn-neutral" id="backBtn">回目錄</a>
-  { !finalUrl.includes('amendments') &&  <a href={finalUrl} target="_blank" class="btn btn-neutral">法規沿革</a>}
-  { finalUrl.includes('amendments') &&  <a href={baseUrl+finalUrl} class="btn btn-neutral">法規沿革</a>}
-  <button class="btn btn-neutral " id="copyLinkBtn">複製本頁網址</button>
+  {
+    !finalUrl.includes("amendments") && (
+      <a href={finalUrl} target="_blank" class="btn btn-neutral">
+        法規沿革
+      </a>
+    )
+  }
+  {
+    finalUrl.includes("amendments") && (
+      <a href={baseUrl + finalUrl} class="btn btn-neutral">
+        法規沿革
+      </a>
+    )
+  }
+  <button class="btn btn-neutral" id="copyLinkBtn">複製本頁網址</button>
 </nav>
 
 <script>
@@ -32,53 +49,59 @@ const baseUrl = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_UR
     // }
 
     // 處理複製連結
-    const copyBtn = document.getElementById('copyLinkBtn');
+    const copyBtn = document.getElementById("copyLinkBtn");
     if (copyBtn) {
-        copyBtn.onclick = async () => {
-            try {
-                // 執行複製網址 (包含錨點 #article-xx 也會一併複製)
-                await navigator.clipboard.writeText(window.location.href);
-                
-                // UI 視覺回饋：把按鈕固定為以活化（actived）
-                const originalText = copyBtn.innerText;
-                copyBtn.innerText = '已複製網址　';
-                copyBtn.classList.remove('btn-neutral');
-                copyBtn.classList.add('btn-active', 'text-content'); // DaisyUI 的綠色成功狀態
+      copyBtn.onclick = async () => {
+        try {
+          // 執行複製網址 (包含錨點 #article-xx 也會一併複製)
+          await navigator.clipboard.writeText(window.location.href);
 
-                // 0.9 秒後恢復原狀
-                setTimeout(() => {
-                    copyBtn.innerText = originalText;
-                    copyBtn.classList.remove('btn-active', 'text-content');
-                    copyBtn.classList.add('btn-neutral');
-                }, 900);
+          // UI 視覺回饋：把按鈕固定為以活化（actived）
+          const originalText = copyBtn.innerText;
+          copyBtn.innerText = "已複製網址　";
+          copyBtn.classList.remove("btn-neutral");
+          copyBtn.classList.add("btn-active", "text-content"); // DaisyUI 的綠色成功狀態
 
-            } catch (err) {
-                console.error('複製失敗:', err);
-                alert('複製失敗，請手動複製網頁網址。');
-                const originalText = copyBtn.innerText;
-                copyBtn.innerText = '複製網址失敗';
-                copyBtn.classList.remove('btn-neutral');
-                copyBtn.classList.add('btn-active', 'btn-error', 'text-error-content');
+          // 0.9 秒後恢復原狀
+          setTimeout(() => {
+            copyBtn.innerText = originalText;
+            copyBtn.classList.remove("btn-active", "text-content");
+            copyBtn.classList.add("btn-neutral");
+          }, 900);
+        } catch (err) {
+          console.error("複製失敗:", err);
+          alert("複製失敗，請手動複製網頁網址。");
+          const originalText = copyBtn.innerText;
+          copyBtn.innerText = "複製網址失敗";
+          copyBtn.classList.remove("btn-neutral");
+          copyBtn.classList.add(
+            "btn-active",
+            "btn-error",
+            "text-error-content",
+          );
 
-                setTimeout(() => {
-                  copyBtn.innerText = originalText;
-                  copyBtn.classList.remove('btn-active', 'btn-error', 'text-error-content');
-                  copyBtn.classList.add('btn-neutral');
-                }, 900);
-
-            }
-        };
+          setTimeout(() => {
+            copyBtn.innerText = originalText;
+            copyBtn.classList.remove(
+              "btn-active",
+              "btn-error",
+              "text-error-content",
+            );
+            copyBtn.classList.add("btn-neutral");
+          }, 900);
+        }
+      };
     }
   }
 
   // === 完美對接 Astro 生命週期 ===
-  if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initActionButtons);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initActionButtons);
   } else {
-      initActionButtons();
+    initActionButtons();
   }
-  
-  document.addEventListener('astro:page-load', () => {
-      if (document.readyState !== 'loading') initActionButtons();
+
+  document.addEventListener("astro:page-load", () => {
+    if (document.readyState !== "loading") initActionButtons();
   });
 </script>

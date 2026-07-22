@@ -1,10 +1,14 @@
 ---
 // src/components/PageSearch.astro
 ---
-<div id="searchFieldsetContainer" class="fixed right-4 bottom-24 z-50 print:hidden">
-    <!-- 搜尋功能開關 -->
-    <div id="function-toggles" class="text-right mb-2">
-        <!-- <button id="toggleSearchBtn" class="btn btn-circle btn-primary shadow-lg">
+
+<div
+  id="searchFieldsetContainer"
+  class="fixed right-4 bottom-24 z-50 print:hidden"
+>
+  <!-- 搜尋功能開關 -->
+  <div id="function-toggles" class="mb-2 text-right">
+    <!-- <button id="toggleSearchBtn" class="btn btn-circle btn-primary shadow-lg">
             <svg class="h-[1em] opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g
                     stroke-linejoin="round"
@@ -18,8 +22,8 @@
                 </g>
             </svg>
              -->
-        <button id="toggleSearchBtn" class="btn btn-circle btn-primary shadow-lg">
-            <!-- <svg class="h-[1em] opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <button id="toggleSearchBtn" class="btn btn-circle btn-primary shadow-lg">
+      <!-- <svg class="h-[1em] opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g
                     stroke-linejoin="round"
                     stroke-linecap="round"
@@ -31,187 +35,227 @@
                     <path d="m21 21-4.3-4.3"></path>
                 </g>
             </svg> -->
-            
-            <label id="swapLabel" class="swap swap-rotate">
-                <!-- search icon from Lucide -->
-                <svg
-                    class="h-[1em] swap-off fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                    <g
-                        stroke-linejoin="round"
-                        stroke-linecap="round"
-                        stroke-width="2.5"
-                        fill="none"
-                        stroke="currentColor"
-                    >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                    </g>
-                </svg>
 
-                <!-- close icon from Lucide -->
-                <svg 
-                    class="h-[1em] swap-on fill-curren scale-130"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path d="M18 6 6 18"/>
-                    <path d="m6 6 12 12"/>
-                </svg>
+      <label id="swapLabel" class="swap swap-rotate">
+        <!-- search icon from Lucide -->
+        <svg
+          class="swap-off h-[1em] fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
 
-            </label>
-        </button>
+        <!-- close icon from Lucide -->
+        <svg
+          class="swap-on fill-curren h-[1em] scale-130"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </label>
+    </button>
+  </div>
+
+  <!-- 搜尋面板 -->
+  <fieldset id="searchContainer" class="fieldset hidden">
+    <div class="mb-1 flex items-center justify-between">
+      <span class="text-sm font-medium">搜尋本頁</span>
+      <span id="searchCount" class="text-xs text-gray-500"></span>
     </div>
 
-    <!-- 搜尋面板 -->
-    <fieldset id="searchContainer" class="fieldset hidden">
-        <div class="flex justify-between items-center mb-1">
-            <span class="text-sm font-medium">搜尋本頁</span>
-            <span id="searchCount" class="text-xs text-gray-500"></span>
-        </div>
+    <div class="join w-full">
+      <label
+        class="input input-bordered input-sm join-item flex flex-1 items-center gap-2"
+      >
+        <input
+          type="text"
+          id="searchText"
+          placeholder="關鍵字..."
+          class="h-auto grow"
+        />
+      </label>
+      <div id="matchBtnContainer" class="join join-item mr-1 hidden gap-0">
+        <button
+          id="prevMatchBtn"
+          class="btn btn-sm btn-ghost join-item ml-1 w-8">↑</button
+        >
+        <button
+          id="nextMatchBtn"
+          class="btn btn-sm btn-ghost join-item ml-1 w-8">↓</button
+        >
+      </div>
+      <button id="searchButton" class="btn btn-sm btn-neutral join-item"
+        >Go</button
+      >
+    </div>
 
-        <div class="join w-full"> 
-            <label class="input input-bordered input-sm join-item flex items-center gap-2 flex-1">
-                <input type="text" id="searchText" placeholder="關鍵字..." class="grow h-auto" />
-            </label>
-            <div id="matchBtnContainer" class="join join-item mr-1 gap-0 hidden">
-                <button id="prevMatchBtn" class="btn btn-sm btn-ghost w-8 ml-1 join-item">↑</button>
-                <button id="nextMatchBtn" class="btn btn-sm btn-ghost w-8 ml-1 join-item">↓</button>
-            </div>
-            <button id="searchButton" class="btn btn-sm btn-neutral join-item">Go</button>
-        </div>
-        
-        <!-- <div class="join grid grid-cols-2 mt-2">
+    <!-- <div class="join grid grid-cols-2 mt-2">
             <button id="prevMatchBtn" class="btn btn-xs join-item btn-outline btn-gray-500">上一筆</button>
             <button id="nextMatchBtn" class="btn btn-xs join-item btn-outline btn-gray-500">下一筆</button>
         </div> -->
-    </fieldset>
+  </fieldset>
 </div>
 
 <script>
-    function initSearch() {
-        const toggleBtn = document.getElementById('toggleSearchBtn');
-        const container = document.getElementById('searchContainer');
-        const searchInput = document.getElementById('searchText') as HTMLInputElement;
-        const searchBtn = document.getElementById('searchButton');
-        const prevBtn = document.getElementById('prevMatchBtn');
-        const nextBtn = document.getElementById('nextMatchBtn');
-        const matchBtnContainer = document.getElementById('matchBtnContainer');
-        const searchCount = document.getElementById('searchCount');
-        // 搜尋範圍
-        const contentArea = document.querySelector('.regulation-content') || document.querySelector('.regulation-amendment');
-        const swapLabel = document.getElementById('swapLabel');
+  function initSearch() {
+    const toggleBtn = document.getElementById("toggleSearchBtn");
+    const container = document.getElementById("searchContainer");
+    const searchInput = document.getElementById(
+      "searchText",
+    ) as HTMLInputElement;
+    const searchBtn = document.getElementById("searchButton");
+    const prevBtn = document.getElementById("prevMatchBtn");
+    const nextBtn = document.getElementById("nextMatchBtn");
+    const matchBtnContainer = document.getElementById("matchBtnContainer");
+    const searchCount = document.getElementById("searchCount");
+    // 搜尋範圍
+    const contentArea =
+      document.querySelector(".regulation-content") ||
+      document.querySelector(".regulation-amendment");
+    const swapLabel = document.getElementById("swapLabel");
 
-        let matches = [];
-        let currentIndex = -1;
+    let matches = [];
+    let currentIndex = -1;
 
-        // UI 開關（使用 onclick 賦值避免重複綁定）
-        if (toggleBtn) {
-            toggleBtn.onclick = () => {
-                container?.classList.toggle('hidden');
-                swapLabel?.classList.toggle('swap-active');
-                matchBtnContainer?.classList.add('hidden');
-                matchBtnContainer?.classList.remove('flex');
-                if (!container?.classList.contains('hidden')) searchInput?.focus();
-                else clearSearch();
-            };
-        }
-
-        // 核心：安全地標記文字，避開公式與 HTML 標籤
-        function highlightText(keyword) {
-            clearSearch();
-            if (!keyword.trim() || !contentArea) return;
-
-            const regex = new RegExp(`(${keyword})`, 'gi');
-            const walker = document.createTreeWalker(contentArea, NodeFilter.SHOW_TEXT, null);
-            const textNodes = [];
-
-            let node;
-            while (node = walker.nextNode()) {
-                // 避開公式標籤與已經標記的標籤
-                if (node.parentElement?.closest('.katex') || node.parentElement?.classList.contains('search-mark')) continue;
-                if (node.nodeValue?.match(regex)) textNodes.push(node);
-            }
-
-            textNodes.forEach(textNode => {
-                const span = document.createElement('span');
-                span.innerHTML = textNode.nodeValue?.replace(regex, '<mark class="search-mark">$1</mark>') || '';
-                while (span.firstChild) {
-                    textNode.parentNode?.insertBefore(span.firstChild, textNode);
-                }
-                textNode.parentNode?.removeChild(textNode);
-            });
-
-            matches = Array.from(contentArea.querySelectorAll('.search-mark'));
-            if (matches.length > 0) {
-                if(searchCount) searchCount.textContent = `共 ${matches.length} 筆`;
-                matchBtnContainer?.classList.remove('hidden');
-                matchBtnContainer?.classList.add('flex');
-                navigateToMatch(0);
-            } else {
-                if(searchCount) searchCount.textContent = '無結果';
-            }
-        }
-
-        function clearSearch() {
-            if (!contentArea) return;
-            const marks = contentArea.querySelectorAll('mark.search-mark');
-            marks.forEach(mark => {
-                const parent = mark.parentNode;
-                parent?.replaceChild(document.createTextNode(mark.textContent || ''), mark);
-                parent?.normalize(); // 合併相鄰的文字節點
-            });
-            matches = [];
-            currentIndex = -1;
-            if(searchCount) searchCount.textContent = '';
-        }
-
-        function navigateToMatch(index) {
-            if (matches.length === 0) return;
-            matches.forEach(m => m.classList.remove('search-highlight'));
-            
-            currentIndex = (index + matches.length) % matches.length;
-            const target = matches[currentIndex];
-            
-            // target.classList.add('ring-2', 'ring-primary', 'scale-110', 'transition-all');
-            target.classList.add('search-highlight');
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            if(searchCount) searchCount.textContent = `第 ${currentIndex + 1} / ${matches.length} 筆`;
-        }
-
-        // 使用 onclick 賦值避免重複綁定
-        if (searchBtn) searchBtn.onclick = () => highlightText(searchInput?.value || '');
-        if (searchInput) searchInput.onkeydown = (e) => { if (e.key === 'Enter') highlightText(searchInput.value); };
-        if (nextBtn) nextBtn.onclick = () => navigateToMatch(currentIndex + 1);
-        if (prevBtn) prevBtn.onclick = () => navigateToMatch(currentIndex - 1);
-
-        // Auto-search from URL query
-        const urlParams = new URLSearchParams(window.location.search);
-        const autoSearchQuery = urlParams.get('q');
-        if (autoSearchQuery && searchInput) {
-            searchInput.value = autoSearchQuery;
-            container?.classList.remove('hidden');
-            swapLabel?.classList.add('swap-active');
-            
-            // Wait slightly for DOM to be ready before highlighting and scrolling
-            setTimeout(() => {
-                highlightText(autoSearchQuery);
-            }, 100);
-        }
+    // UI 開關（使用 onclick 賦值避免重複綁定）
+    if (toggleBtn) {
+      toggleBtn.onclick = () => {
+        container?.classList.toggle("hidden");
+        swapLabel?.classList.toggle("swap-active");
+        matchBtnContainer?.classList.add("hidden");
+        matchBtnContainer?.classList.remove("flex");
+        if (!container?.classList.contains("hidden")) searchInput?.focus();
+        else clearSearch();
+      };
     }
 
-    // === 對接 Astro 生命週期（防止重複初始化）===
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initSearch);
-    } else {
-        initSearch();
+    // 核心：安全地標記文字，避開公式與 HTML 標籤
+    function highlightText(keyword) {
+      clearSearch();
+      if (!keyword.trim() || !contentArea) return;
+
+      const regex = new RegExp(`(${keyword})`, "gi");
+      const walker = document.createTreeWalker(
+        contentArea,
+        NodeFilter.SHOW_TEXT,
+        null,
+      );
+      const textNodes = [];
+
+      let node;
+      while ((node = walker.nextNode())) {
+        // 避開公式標籤與已經標記的標籤
+        if (
+          node.parentElement?.closest(".katex") ||
+          node.parentElement?.classList.contains("search-mark")
+        )
+          continue;
+        if (node.nodeValue?.match(regex)) textNodes.push(node);
+      }
+
+      textNodes.forEach((textNode) => {
+        const span = document.createElement("span");
+        span.innerHTML =
+          textNode.nodeValue?.replace(
+            regex,
+            '<mark class="search-mark">$1</mark>',
+          ) || "";
+        while (span.firstChild) {
+          textNode.parentNode?.insertBefore(span.firstChild, textNode);
+        }
+        textNode.parentNode?.removeChild(textNode);
+      });
+
+      matches = Array.from(contentArea.querySelectorAll(".search-mark"));
+      if (matches.length > 0) {
+        if (searchCount) searchCount.textContent = `共 ${matches.length} 筆`;
+        matchBtnContainer?.classList.remove("hidden");
+        matchBtnContainer?.classList.add("flex");
+        navigateToMatch(0);
+      } else {
+        if (searchCount) searchCount.textContent = "無結果";
+      }
     }
-    document.addEventListener('astro:page-load', () => {
-        if (document.readyState !== 'loading') initSearch();
-    });
+
+    function clearSearch() {
+      if (!contentArea) return;
+      const marks = contentArea.querySelectorAll("mark.search-mark");
+      marks.forEach((mark) => {
+        const parent = mark.parentNode;
+        parent?.replaceChild(
+          document.createTextNode(mark.textContent || ""),
+          mark,
+        );
+        parent?.normalize(); // 合併相鄰的文字節點
+      });
+      matches = [];
+      currentIndex = -1;
+      if (searchCount) searchCount.textContent = "";
+    }
+
+    function navigateToMatch(index) {
+      if (matches.length === 0) return;
+      matches.forEach((m) => m.classList.remove("search-highlight"));
+
+      currentIndex = (index + matches.length) % matches.length;
+      const target = matches[currentIndex];
+
+      // target.classList.add('ring-2', 'ring-primary', 'scale-110', 'transition-all');
+      target.classList.add("search-highlight");
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (searchCount)
+        searchCount.textContent = `第 ${currentIndex + 1} / ${matches.length} 筆`;
+    }
+
+    // 使用 onclick 賦值避免重複綁定
+    if (searchBtn)
+      searchBtn.onclick = () => highlightText(searchInput?.value || "");
+    if (searchInput)
+      searchInput.onkeydown = (e) => {
+        if (e.key === "Enter") highlightText(searchInput.value);
+      };
+    if (nextBtn) nextBtn.onclick = () => navigateToMatch(currentIndex + 1);
+    if (prevBtn) prevBtn.onclick = () => navigateToMatch(currentIndex - 1);
+
+    // Auto-search from URL query
+    const urlParams = new URLSearchParams(window.location.search);
+    const autoSearchQuery = urlParams.get("q");
+    if (autoSearchQuery && searchInput) {
+      searchInput.value = autoSearchQuery;
+      container?.classList.remove("hidden");
+      swapLabel?.classList.add("swap-active");
+
+      // Wait slightly for DOM to be ready before highlighting and scrolling
+      setTimeout(() => {
+        highlightText(autoSearchQuery);
+      }, 100);
+    }
+  }
+
+  // === 對接 Astro 生命週期（防止重複初始化）===
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSearch);
+  } else {
+    initSearch();
+  }
+  document.addEventListener("astro:page-load", () => {
+    if (document.readyState !== "loading") initSearch();
+  });
 </script>

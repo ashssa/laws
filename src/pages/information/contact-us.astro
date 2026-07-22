@@ -1,107 +1,113 @@
 ---
 // src/pages/information/contact-us.astro
-import MainLayout from '../../layouts/MainLayout.astro';
-const title  = "聯絡我們";
+import MainLayout from "../../layouts/MainLayout.astro";
+const title = "聯絡我們";
 // const description = "彙編高師大附中學生會所有自治法規的展示網站。";
 ---
 
 <MainLayout title={title}>
-
-    <h2 class="page-title">聯絡我們</h2>
-    <div class="form-container">
-        <p>如有任何問題或建議，請填寫<a class="link link-primary link-hover" href="https://forms.gle/pDARKCbsx5ug3hSz7" target="_blank">以下表單</a>與我們聯繫：</p>
-        <div class="flex mx-8 flex-col gap-4" id="loading-message" height="100%">
-                <div class="skeleton h-32 w-full"></div>
-                <div class="skeleton h-4 w-2/5"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-2/5"></div>
-                <div class="skeleton h-4 w-3/5"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-3/5"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-3/5"></div>
-                <div class="skeleton h-4 w-3/5"></div>
-                <div class="skeleton h-4 w-2/5"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-2/5"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-full"></div>
-        </div>
-        <iframe
-            id="form"
-            style="display: none;"
-            class="mx-8"
-            src="https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform?embedded=true" 
-            width="100%" 
-            height="100%" 
-            frameborder="0" 
-            marginheight="0" 
-            marginwidth="0"
-            allowtransparency="true">
-        </iframe>
+  <h2 class="page-title">聯絡我們</h2>
+  <div class="form-container">
+    <p>
+      如有任何問題或建議，請填寫<a
+        class="link link-primary link-hover"
+        href="https://forms.gle/pDARKCbsx5ug3hSz7"
+        target="_blank">以下表單</a
+      >與我們聯繫：
+    </p>
+    <div class="mx-8 flex flex-col gap-4" id="loading-message" height="100%">
+      <div class="skeleton h-32 w-full"></div>
+      <div class="skeleton h-4 w-2/5"></div>
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-2/5"></div>
+      <div class="skeleton h-4 w-3/5"></div>
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-3/5"></div>
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-3/5"></div>
+      <div class="skeleton h-4 w-3/5"></div>
+      <div class="skeleton h-4 w-2/5"></div>
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-2/5"></div>
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-full"></div>
     </div>
-
+    <iframe
+      id="form"
+      style="display: none;"
+      class="mx-8"
+      src="https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform?embedded=true"
+      width="100%"
+      height="100%"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      allowtransparency="true"
+    >
+    </iframe>
+  </div>
 </MainLayout>
 
 <style>
-.form-container {
-    height: 75vh; 
-    display: flex; 
+  .form-container {
+    height: 75vh;
+    display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
-}
+  }
 
-.form-container iframe {
+  .form-container iframe {
     width: 100%;
-    height: 100%; 
+    height: 100%;
     border: none;
-}
+  }
 
-.form-container p {
-    margin:auto 2rem;
-}
+  .form-container p {
+    margin: auto 2rem;
+  }
 
-@media screen and (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     .form-container {
-        height: 80vh; 
+      height: 80vh;
     }
-}
+  }
 
-@media screen and (max-width: 576px) {
+  @media screen and (max-width: 576px) {
     .form-container {
-        height: 85vh; 
+      height: 85vh;
     }
-}
+  }
 </style>
 <script>
-    const iframe = document.getElementById('form');
-    const loadingMessage = document.getElementById('loading-message');
+  const iframe = document.getElementById("form");
+  const loadingMessage = document.getElementById("loading-message");
 
-    // 讀取 URL 查詢參數，用於從「回報問題按鈕」導入時預填表單
-    const urlParams = new URLSearchParams(window.location.search);
-    const reportText = urlParams.get('report');
+  // 讀取 URL 查詢參數，用於從「回報問題按鈕」導入時預填表單
+  const urlParams = new URLSearchParams(window.location.search);
+  const reportText = urlParams.get("report");
 
-    if (reportText && iframe) {
-        // 有回報參數時，動態組合帶有預填值的 Google Form URL
-        const formBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform';
-        const formParams = new URLSearchParams({
-            'embedded': 'true',
-            'entry.1897332589': '法規文本錯誤回報',
-            'entry.580713109': reportText,
-            'entry.1890015696': '法規系統使用者○○○',
-            'entry.1509752132': 'no@thank.you',
-        });
-        iframe.src = `${formBaseUrl}?${formParams.toString()}`;
-    }
+  if (reportText && iframe) {
+    // 有回報參數時，動態組合帶有預填值的 Google Form URL
+    const formBaseUrl =
+      "https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform";
+    const formParams = new URLSearchParams({
+      embedded: "true",
+      "entry.1897332589": "法規文本錯誤回報",
+      "entry.580713109": reportText,
+      "entry.1890015696": "法規系統使用者○○○",
+      "entry.1509752132": "no@thank.you",
+    });
+    iframe.src = `${formBaseUrl}?${formParams.toString()}`;
+  }
 
-    // 當 iframe 載入完成時
-    iframe.onload = function() {
-        // 隱藏載入訊息
-        loadingMessage.style.display = 'none';
-        // 顯示 iframe
-        iframe.style.display = 'block';
-    };
+  // 當 iframe 載入完成時
+  iframe.onload = function () {
+    // 隱藏載入訊息
+    loadingMessage.style.display = "none";
+    // 顯示 iframe
+    iframe.style.display = "block";
+  };
 </script>
 <!-- https://docs.google.com/forms/d/e/1FAIpQLSdzD5iWMhkP-sneCuMYsv3IG_gMWhuNAfSPg123u6wpotxC4A/viewform?usp=pp_url&entry.1897332589=%E6%B3%95%E8%A6%8F%E6%96%87%E6%9C%AC%E9%8C%AF%E8%AA%A4%E5%9B%9E%E5%A0%B1&entry.580713109={ASHSSSSS-01}&entry.1890015696={ASHSSSSS-02}&entry.1509752132={ASHSSSSS-03} -->

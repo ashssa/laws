@@ -12,35 +12,41 @@ export interface Props {
   pinned: boolean;
 }
 
-const { slug, title, pubDate, modDate, description, tags, pinned } = Astro.props;
+const { slug, title, pubDate, modDate, description, tags, pinned } =
+  Astro.props;
 const base = import.meta.env.BASE_URL;
 const displayDate = modDate || pubDate;
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString('zh-TW', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  return date.toLocaleDateString("zh-TW", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 }
 ---
 
-<a href={`${base}/blog/${slug}`} class="blog-post-card card bg-base-100 shadow-md no-underline">
+<a
+  href={`${base}/blog/${slug}`}
+  class="blog-post-card card bg-base-100 no-underline shadow-md"
+>
   <div class="card-body">
-    <div class="flex items-center gap-2 flex-wrap">
-      {pinned && (
-        <span class="badge badge-ghost badge-sm">置頂</span>
-      )}
+    <div class="flex flex-wrap items-center gap-2">
+      {pinned && <span class="badge badge-ghost badge-sm">置頂</span>}
       <time class="text-sm opacity-60" datetime={displayDate.toISOString()}>
         {formatDate(displayDate)}
       </time>
     </div>
     <h3 class="card-title text-base-content">{title}</h3>
     <p class="text-base-content/70 text-sm">{description}</p>
-    <div class="card-actions mt-2 mx-2">
-      {tags.map((tag) => (
-        <span class="text-sm text-base-content/80 font-semibold">＃{tag}</span>
-      ))}
+    <div class="card-actions mx-2 mt-2">
+      {
+        tags.map((tag) => (
+          <span class="text-base-content/80 text-sm font-semibold">
+            ＃{tag}
+          </span>
+        ))
+      }
     </div>
   </div>
 </a>
@@ -49,7 +55,7 @@ function formatDate(date: Date): string {
   @reference "../styles/global.css";
 
   .blog-post-card {
-    @apply transition-shadow duration-300 cursor-pointer;
+    @apply cursor-pointer transition-shadow duration-300;
   }
   .blog-post-card:hover {
     @apply shadow-lg;

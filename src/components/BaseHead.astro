@@ -1,8 +1,8 @@
 ---
 // src/components/BaseHead.astro
-import '@styles/global.css'; // 確保您的全域 CSS 在這裡引入
-import { pwaInfo } from 'virtual:pwa-info'; // 引入PWA資訊
-import { ClientRouter } from 'astro:transitions';
+import "@styles/global.css"; // 確保您的全域 CSS 在這裡引入
+import { pwaInfo } from "virtual:pwa-info"; // 引入PWA資訊
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -10,10 +10,10 @@ interface Props {
   image?: string;
 }
 
-const { 
-  title, 
-  description = "高師大附中自治法規共用系統，彙編高師大附中學生會所有自治法規的展示網站。", 
-  image = "/laws/img/Preview 3.png" 
+const {
+  title,
+  description = "高師大附中自治法規共用系統，彙編高師大附中學生會所有自治法規的展示網站。",
+  image = "/laws/img/Preview 3.png",
 } = Astro.props;
 
 const siteName = "高師大附中學生會自治法規共用系統";
@@ -40,58 +40,88 @@ const fullTitle = title === siteName ? title : `${title} - ${siteName}`; // 邏�
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-<link rel="shortcut icon" href={`${import.meta.env.BASE_URL}/img/icon.ico`} type="image/x-icon" />
-{ pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
+<link
+  rel="shortcut icon"
+  href={`${import.meta.env.BASE_URL}/img/icon.ico`}
+  type="image/x-icon"
+/>
+{pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
 <!-- 通知欄色彩 -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#282a36" media="(prefers-color-scheme: dark)">
+<meta
+  name="theme-color"
+  content="#ffffff"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#282a36"
+  media="(prefers-color-scheme: dark)"
+/>
 
 <!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  rel="stylesheet"
+/>
 
 <style>
-    /* Material Icons 的全域設定 */
-    .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 20;
-        font-size: inherit;
-    }
+  /* Material Icons 的全域設定 */
+  .material-symbols-outlined {
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 350,
+      "GRAD" 0,
+      "opsz" 20;
+    font-size: inherit;
+  }
 </style>
 
 <!-- Google Tag Manager -->
 <script>
-(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5DK9JSPT');
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", "GTM-5DK9JSPT");
 </script>
 <!-- End Google Tag Manager -->
 
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7QWD5QMLB"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7QWD5QMLB"
+></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
 
-  gtag('config', 'G-R7QWD5QMLB');
+  gtag("config", "G-R7QWD5QMLB");
 </script>
 <!-- End Google tag (gtag.js) -->
 
 <!-- PWA 註冊-->
 <script>
   // 網頁載入後，自動註冊離線快取服務器 (Service Worker)
-  window.addEventListener('load', async () => {
-    if ('serviceWorker' in navigator) {
+  window.addEventListener("load", async () => {
+    if ("serviceWorker" in navigator) {
       try {
-        const { registerSW } = await import('virtual:pwa-register');
+        const { registerSW } = await import("virtual:pwa-register");
         registerSW({ immediate: true });
-        console.log('[PWA] Service Worker 註冊成功');
+        console.log("[PWA] Service Worker 註冊成功");
       } catch (err) {
-        console.error('[PWA] Service Worker 註冊失敗:', err);
+        console.error("[PWA] Service Worker 註冊失敗:", err);
       }
     }
   });
