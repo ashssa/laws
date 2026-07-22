@@ -50,4 +50,5 @@ description:
 
 ## 相關連結
 
+- [其他功能教學](/laws/blog/guide)
 - [聯絡我們頁面](/laws/information/contact-us)
