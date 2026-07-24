@@ -1,0 +1,11 @@
+import { makeHandler } from '@keystatic/astro/api';
+import keystaticConfig from '../../../../keystatic.config';
+
+// 手動將 Vercel 的執行期環境變數 (process.env) 強制注入給 Keystatic，
+// 以繞過 Astro 5 在編譯期遺失環境變數的 Bug。
+export const ALL = makeHandler({
+  config: keystaticConfig,
+  secret: process.env.KEYSTATIC_SECRET,
+  clientId: process.env.KEYSTATIC_GITHUB_CLIENT_ID,
+  clientSecret: process.env.KEYSTATIC_GITHUB_CLIENT_SECRET,
+});
