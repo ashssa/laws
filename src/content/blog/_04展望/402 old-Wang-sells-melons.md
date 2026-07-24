@@ -3,7 +3,7 @@ title: 「知」的權利 ── 各校學生會自治規定 你會查嗎？
 author: 學生議員潘祈瑋
 pubDate: 2026-03-15
 modDate:
-slug: future
+slug: old-Wang-sells-melons
 showInHomePage: false
 pinned: false
 draft: true
