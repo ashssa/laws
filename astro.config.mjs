@@ -36,6 +36,7 @@ export default defineConfig({
     AstroPWA({
       registerType: "autoUpdate", // 當有新版本時自動更新快取
       workbox: {
+        maximumFileSizeToCacheInBytes: 5000000, // 增加到 5MB，避免 Keystatic 超大檔案導致錯誤
         // 自動捕捉 dist 目錄下所有的資源進行離線快取
         globDirectory: "dist",
         globPatterns: ["**/*.{html,js,css,ico,png,svg,woff,woff2,ttf,pdf}"],
