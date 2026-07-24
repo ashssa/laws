@@ -1,5 +1,5 @@
 diff --git a/dist/keystatic-astro-api.js b/dist/keystatic-astro-api.js
-index 80131fee419d290a8d6c992d5bfcc355b9d39871..b5c49e819010efa3c6b8ab9fbae5cb3d4f1e61ca 100644
+index 80131fee419d290a8d6c992d5bfcc355b9d39871..5be277fe058ce6425d1312bc63ad4636c5480d9f 100644
 --- a/dist/keystatic-astro-api.js
 +++ b/dist/keystatic-astro-api.js
 @@ -5,25 +5,35 @@ function makeHandler(_config) {
@@ -60,7 +60,7 @@ index 80131fee419d290a8d6c992d5bfcc355b9d39871..b5c49e819010efa3c6b8ab9fbae5cb3d
 +        status,
 +        headers: [...headersInADifferentStructure.entries()].flatMap(([key, val]) => val.map(x => [key, x]))
 +      });
-+    } catch (err: any) {
++    } catch (err) {
 +      console.error("FATAL ERROR IN INJECTED ROUTE:", err);
 +      return new Response("Keystatic API Error: " + (err.stack || err.message), { status: 500 });
 +    }
