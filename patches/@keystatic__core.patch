@@ -1,0 +1,42 @@
+diff --git a/dist/keystatic-core-api-generic.js b/dist/keystatic-core-api-generic.js
+index aabdb1a49688d48a681ca4e06fb68ee7ca1e0869..068adb461c6f2987445dcb7582a1b481cd7559d7 100644
+--- a/dist/keystatic-core-api-generic.js
++++ b/dist/keystatic-core-api-generic.js
+@@ -225,6 +225,8 @@ async function githubOauthCallback(req, config) {
+     }
+   });
+   if (!tokenRes.ok) {
++    const errorText = await tokenRes.text();
++    console.error("GITHUB TOKEN EXCHANGE ERROR (!ok):", errorText);
+     return {
+       status: 401,
+       body: 'Authorization failed'
+@@ -235,6 +237,7 @@ async function githubOauthCallback(req, config) {
+   try {
+     tokenData = tokenDataResultType.create(_tokenData);
+   } catch {
++    console.error("GITHUB TOKEN EXCHANGE ERROR:", _tokenData);
+     return {
+       status: 401,
+       body: 'Authorization failed'
+diff --git a/dist/keystatic-core-api-generic.node.js b/dist/keystatic-core-api-generic.node.js
+index b4c82e2d82fcb7fb3fa05835047d92a88866a608..9ae35a28ef6efe968b1154ecf5ae0d60c349c437 100644
+--- a/dist/keystatic-core-api-generic.node.js
++++ b/dist/keystatic-core-api-generic.node.js
+@@ -428,6 +428,8 @@ async function githubOauthCallback(req, config) {
+     }
+   });
+   if (!tokenRes.ok) {
++    const errorText = await tokenRes.text();
++    console.error("GITHUB TOKEN EXCHANGE ERROR (!ok):", errorText);
+     return {
+       status: 401,
+       body: 'Authorization failed'
+@@ -438,6 +440,7 @@ async function githubOauthCallback(req, config) {
+   try {
+     tokenData = tokenDataResultType.create(_tokenData);
+   } catch {
++    console.error("GITHUB TOKEN EXCHANGE ERROR:", _tokenData);
+     return {
+       status: 401,
+       body: 'Authorization failed'

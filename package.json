@@ -42,6 +42,9 @@
   "pnpm": {
     "overrides": {
       "vite": "^6.4.1"
+    },
+    "patchedDependencies": {
+      "@keystatic/core": "patches/@keystatic__core.patch"
     }
   }
 }
