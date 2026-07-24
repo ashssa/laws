@@ -19,6 +19,9 @@ export default defineConfig({
   adapter: isVercel ? vercel() : undefined,
   vite: {
     plugins: [tailwindcss()],
+    define: {
+      "process.env.VERCEL": JSON.stringify(process.env.VERCEL || ""),
+    },
   },
   markdown: {
     // 註冊套件至 Markdown 編譯流程
