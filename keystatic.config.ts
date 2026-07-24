@@ -1,9 +1,16 @@
 import { config, fields, collection } from '@keystatic/core';
 
+const isVercel = process.env.VERCEL === "1";
+
 export default config({
-  storage: {
-    kind: 'local',
-  },
+  storage: isVercel
+    ? {
+        kind: 'github',
+        repo: 'ashssa/laws', // 填寫您專案的 GitHub Repo 路徑
+      }
+    : {
+        kind: 'local',
+      },
   collections: {
     act: collection({
       label: '法規 (Act)',

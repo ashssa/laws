@@ -6,13 +6,17 @@ import remarkAmendment from "./src/plugins/remark-amendment.js";
 import rehypeExternalLinks from "rehype-external-links";
 import react from "@astrojs/react";
 import keystatic from "@keystatic/astro";
+import vercel from "@astrojs/vercel/serverless";
+
+const isVercel = process.env.VERCEL === "1";
 
 // https://astro.build/config
 export default defineConfig({
   // 設定 GitHub Pages 網址
-  site: "https://ashssa.github.io",
-  // base: "/laws",
-  base: process.env.NODE_ENV === "production" ? "/laws" : "/",
+  site: isVercel ? process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://ashssa-laws-admin.vercel.app" : "https://ashssa.github.io",
+  base: isVercel ? "/" : (process.env.NODE_ENV === "production" ? "/laws" : "/"),
+  output: isVercel ? "server" : "static",
+  adapter: isVercel ? vercel() : undefined,
   vite: {
     plugins: [tailwindcss()],
   },
