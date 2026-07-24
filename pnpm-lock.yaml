@@ -9,7 +9,7 @@ overrides:
 
 patchedDependencies:
   '@keystatic/core':
-    hash: iof3jtkjtepchpfx3o4fztt3nq
+    hash: 75ja3tz5w3bfz5bhbxr47ujvm4
     path: patches/@keystatic__core.patch
 
 importers:
@@ -27,10 +27,10 @@ importers:
         version: 0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@keystatic/astro':
         specifier: ^5.2.0
-        version: 5.2.0(@keystatic/core@0.6.0(patch_hash=iof3jtkjtepchpfx3o4fztt3nq)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(astro@5.18.2(@vercel/functions@3.7.5)(idb-keyval@6.3.0)(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.2)(terser@5.49.0)(typescript@5.9.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 5.2.0(@keystatic/core@0.6.0(patch_hash=75ja3tz5w3bfz5bhbxr47ujvm4)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(astro@5.18.2(@vercel/functions@3.7.5)(idb-keyval@6.3.0)(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.2)(terser@5.49.0)(typescript@5.9.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@keystatic/core':
         specifier: ^0.6.0
-        version: 0.6.0(patch_hash=iof3jtkjtepchpfx3o4fztt3nq)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
+        version: 0.6.0(patch_hash=75ja3tz5w3bfz5bhbxr47ujvm4)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.3.3(vite@6.4.3(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.49.0))
@@ -5843,17 +5843,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@keystatic/astro@5.2.0(@keystatic/core@0.6.0(patch_hash=iof3jtkjtepchpfx3o4fztt3nq)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(astro@5.18.2(@vercel/functions@3.7.5)(idb-keyval@6.3.0)(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.2)(terser@5.49.0)(typescript@5.9.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@keystatic/astro@5.2.0(@keystatic/core@0.6.0(patch_hash=75ja3tz5w3bfz5bhbxr47ujvm4)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(astro@5.18.2(@vercel/functions@3.7.5)(idb-keyval@6.3.0)(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.2)(terser@5.49.0)(typescript@5.9.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@keystatic/core': 0.6.0(patch_hash=iof3jtkjtepchpfx3o4fztt3nq)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
+      '@keystatic/core': 0.6.0(patch_hash=75ja3tz5w3bfz5bhbxr47ujvm4)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)
       '@types/react': 19.2.17
       astro: 5.18.2(@vercel/functions@3.7.5)(idb-keyval@6.3.0)(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.2)(terser@5.49.0)(typescript@5.9.3)
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       set-cookie-parser: 2.7.2
 
-  '@keystatic/core@0.6.0(patch_hash=iof3jtkjtepchpfx3o4fztt3nq)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
+  '@keystatic/core@0.6.0(patch_hash=75ja3tz5w3bfz5bhbxr47ujvm4)(@keystar/ui@0.8.0(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8))(react-aria@3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react-stately@3.48.0(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@braintree/sanitize-url': 6.0.4
