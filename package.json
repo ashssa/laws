@@ -44,7 +44,8 @@
       "vite": "^6.4.1"
     },
     "patchedDependencies": {
-      "@keystatic/core": "patches/@keystatic__core.patch"
+      "@keystatic/core": "patches/@keystatic__core.patch",
+      "@keystatic/astro": "patches/@keystatic__astro.patch"
     }
   }
 }

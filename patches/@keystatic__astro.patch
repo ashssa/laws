@@ -1,0 +1,69 @@
+diff --git a/dist/keystatic-astro-api.js b/dist/keystatic-astro-api.js
+index 80131fee419d290a8d6c992d5bfcc355b9d39871..b5c49e819010efa3c6b8ab9fbae5cb3d4f1e61ca 100644
+--- a/dist/keystatic-astro-api.js
++++ b/dist/keystatic-astro-api.js
+@@ -5,25 +5,35 @@ function makeHandler(_config) {
+   return async function keystaticAPIRoute(context) {
+     var _context$locals, _ref, _config$clientId, _ref2, _config$clientSecret, _ref3, _config$secret;
+     const envVarsForCf = (_context$locals = context.locals) === null || _context$locals === void 0 || (_context$locals = _context$locals.runtime) === null || _context$locals === void 0 ? void 0 : _context$locals.env;
++    const finalSecret = (_ref3 = (_config$secret = _config.secret) !== null && _config$secret !== void 0 ? _config$secret : envVarsForCf === null || envVarsForCf === void 0 ? void 0 : envVarsForCf.KEYSTATIC_SECRET) !== null && _ref3 !== void 0 ? _ref3 : tryOrUndefined(() => {
++        return import.meta.env.KEYSTATIC_SECRET;
++      }) ?? tryOrUndefined(() => { return process.env.KEYSTATIC_SECRET; });
++    
++    console.log("=== KEYSTATIC INJECTED API ROUTE ===");
++    console.log("Has secret:", !!finalSecret);
++    console.log("Secret length:", finalSecret?.length);
++    console.log("Client ID:", !!tryOrUndefined(() => import.meta.env.KEYSTATIC_GITHUB_CLIENT_ID) || !!tryOrUndefined(() => process.env.KEYSTATIC_GITHUB_CLIENT_ID));
++    console.log("====================================");
++
+     const handler = makeGenericAPIRouteHandler({
+       ..._config,
+       clientId: (_ref = (_config$clientId = _config.clientId) !== null && _config$clientId !== void 0 ? _config$clientId : envVarsForCf === null || envVarsForCf === void 0 ? void 0 : envVarsForCf.KEYSTATIC_GITHUB_CLIENT_ID) !== null && _ref !== void 0 ? _ref : tryOrUndefined(() => {
+         return import.meta.env.KEYSTATIC_GITHUB_CLIENT_ID;
+-      }),
++      }) ?? tryOrUndefined(() => { return process.env.KEYSTATIC_GITHUB_CLIENT_ID; }),
+       clientSecret: (_ref2 = (_config$clientSecret = _config.clientSecret) !== null && _config$clientSecret !== void 0 ? _config$clientSecret : envVarsForCf === null || envVarsForCf === void 0 ? void 0 : envVarsForCf.KEYSTATIC_GITHUB_CLIENT_SECRET) !== null && _ref2 !== void 0 ? _ref2 : tryOrUndefined(() => {
+         return import.meta.env.KEYSTATIC_GITHUB_CLIENT_SECRET;
+-      }),
+-      secret: (_ref3 = (_config$secret = _config.secret) !== null && _config$secret !== void 0 ? _config$secret : envVarsForCf === null || envVarsForCf === void 0 ? void 0 : envVarsForCf.KEYSTATIC_SECRET) !== null && _ref3 !== void 0 ? _ref3 : tryOrUndefined(() => {
+-        return import.meta.env.KEYSTATIC_SECRET;
+-      })
++      }) ?? tryOrUndefined(() => { return process.env.KEYSTATIC_GITHUB_CLIENT_SECRET; }),
++      secret: finalSecret
+     }, {
+       slugEnvName: 'PUBLIC_KEYSTATIC_GITHUB_APP_SLUG'
+     });
+-    const {
+-      body,
+-      headers,
+-      status
+-    } = await handler(context.request);
++    
++    try {
++      const {
++        body,
++        headers,
++        status
++      } = await handler(context.request);
+     // all this stuff should be able to go away when astro is using a version of undici with getSetCookie
+     let headersInADifferentStructure = new Map();
+     if (headers) {
+@@ -71,10 +81,14 @@ function makeHandler(_config) {
+         });
+       }
+     }
+-    return new Response(body, {
+-      status,
+-      headers: [...headersInADifferentStructure.entries()].flatMap(([key, val]) => val.map(x => [key, x]))
+-    });
++      return new Response(body, {
++        status,
++        headers: [...headersInADifferentStructure.entries()].flatMap(([key, val]) => val.map(x => [key, x]))
++      });
++    } catch (err: any) {
++      console.error("FATAL ERROR IN INJECTED ROUTE:", err);
++      return new Response("Keystatic API Error: " + (err.stack || err.message), { status: 500 });
++    }
+   };
+ }
+ function tryOrUndefined(fn) {

@@ -14,9 +14,19 @@ if (!process.env.KEYSTATIC_SECRET) {
   throw new Error("CRITICAL ERROR: process.env.KEYSTATIC_SECRET is MISSING in Vercel Environment Variables! Please go to Vercel -> Settings -> Environment Variables and ensure KEYSTATIC_SECRET is set for the Production environment.");
 }
 
-export const ALL = makeHandler({
+const keystaticHandler = makeHandler({
   config: keystaticConfig,
   secret: process.env.KEYSTATIC_SECRET,
   clientId: process.env.KEYSTATIC_GITHUB_CLIENT_ID,
   clientSecret: process.env.KEYSTATIC_GITHUB_CLIENT_SECRET,
 });
+
+export const ALL = async (context: any) => {
+  try {
+    const res = await keystaticHandler(context);
+    return res;
+  } catch (err: any) {
+    console.error("ASTRO ENDPOINT CRASHED:", err);
+    return new Response("Astro Endpoint Crashed: " + (err.stack || err.message), { status: 500 });
+  }
+};
