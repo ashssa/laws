@@ -16,9 +16,13 @@ export const ALL = async (context: any) => {
     url.protocol = forwardedProto;
     url.port = "";
 
+    const newHeaders = new Headers(request.headers);
+    newHeaders.set('host', forwardedHost);
+    newHeaders.set('x-forwarded-host', forwardedHost);
+
     const init: RequestInit = {
       method: request.method,
-      headers: request.headers,
+      headers: newHeaders,
     };
     if (request.method !== 'GET' && request.method !== 'HEAD') {
       init.body = request.body;
