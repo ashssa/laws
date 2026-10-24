@@ -1,0 +1,210 @@
+# Pages CMS 設定檔
+# 官方文件：https://pagescms.org/docs/configuration
+# 專案：高師大附中學生會自治法規共用系統 (SA Laws)
+
+# 檔案與媒體上傳設定（支援文件與圖片分流）
+media:
+  - name: docs
+    label: 法規附件 (PDF)
+    input: public/appendix
+    output: /appendix
+    categories: [document]
+    extensions: [pdf]
+
+  - name: images
+    label: 圖形與相片
+    input: public/img
+    output: /img
+    categories: [image]
+    extensions: [png, jpg, jpeg, svg, webp]
+
+content:
+  # ─────────────────────────────────────────────
+  # 1. 現行法規 (Act)
+  # ─────────────────────────────────────────────
+  - name: act
+    label: 📜 現行法規
+    type: collection
+    path: src/content/act
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.md"
+      field: create
+    view:
+      primary: title
+      fields: [title, abbr, url]
+    fields:
+      - name: title
+        label: 法規全名 (Title)
+        type: string
+        required: true
+        description: "例如：國立高雄師範大學附屬高級中學學生會組織章程"
+
+      - name: abbr
+        label: 簡稱 (Abbr)
+        type: string
+        description: "用於分頁標籤顯示，例如：組織章程"
+
+      - name: url
+        label: 沿革連結 (URL)
+        type: string
+        description: "本站內部路徑（例如 /amendments/act01）或外部雲端連結"
+
+      - name: body
+        label: 法規全文 (Markdown)
+        type: rich-text
+        description: >
+          【格式規範（解析器嚴格匹配，請務必遵循）】：
+          1. 修法歷程區塊：必須以「## 修法歷程」開頭，下方每行以民國日期開頭，如「114.02.27 學生議會修正通過」。
+          2. 法規內容區塊：必須以「## 法規內容」開頭。章以「第一章 總則」格式；條文以「第1條（名稱）」或「第1條 （名稱）」格式；一般款項換行輸入「1 內容」或「(1) 內容」。
+          3. 附件區塊：必須以「## 本法附件」開頭，格式為「附件1 [說明文字](/appendix/檔名.pdf)」。
+
+  # ─────────────────────────────────────────────
+  # 2. 修法歷程 (Amendments)
+  # ─────────────────────────────────────────────
+  - name: amendments
+    label: 📋 修法歷程
+    type: collection
+    path: src/content/amendments
+    subfolders: true
+    format: yaml-frontmatter
+    filename:
+      template: "{fields.target_act}-{fields.version}.md"
+      field: create
+    view:
+      primary: title
+      fields: [title, target_act, date, version, term]
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: 修法案標題
+        type: string
+        required: true
+        description: "例如：制定經費法、修正第3條及第5條條文"
+
+      - name: target_act
+        label: 目標法規代號 (Target Act)
+        type: string
+        required: true
+        description: "對應現行法規檔名代號，例如 act01、act06"
+
+      - name: date
+        label: 通過日期 (Date)
+        type: string
+        required: true
+        description: "民國年點記格式，例如 114.03.10"
+
+      - name: version
+        label: 版本識別碼 (Version)
+        type: string
+        required: true
+        description: "次級路由代號，例如 v01、v02"
+
+      - name: term
+        label: 學生議會屆次 (Term)
+        type: number
+        description: "例如 5（代表第五屆，若為自治幹部會議時期填 0 或留空）"
+
+      - name: description
+        label: 修法簡述 (Description)
+        type: text
+        description: "例如：制定 §§ 1~16、修正 §§ 3, 5"
+
+      - name: body
+        label: 修法對照表內容 (Markdown)
+        type: rich-text
+        description: >
+          【格式規範】：
+          1. 總說明：在第一個「### 」條文標題之前的所有內文，會自動解析為總說明。
+          2. 各條對照：每個條目必須以「### 條號/章節」（例如 ### 第3條）開頭。
+          3. 對照標籤：在條號下方，依序填寫【修正條文】、【現行條文】、【說明】三段，每段下方放置相應條文內容。
+          4. 預設佔位文字：若條文為新增或刪除，可使用「（無）」、「（本條新增）」、「（刪除）」等標準字樣。
+
+  # ─────────────────────────────────────────────
+  # 3. 部落格 / 最新訊息 (Blog)
+  # ─────────────────────────────────────────────
+  - name: blog
+    label: 📝 最新訊息與文章
+    type: collection
+    path: src/content/blog
+    subfolders: true
+    format: yaml-frontmatter
+    filename:
+      template: "{fields.slug}.md"
+      field: create
+    view:
+      primary: title
+      fields: [title, pubDate, tags, draft]
+      sort: pubDate
+      order: desc
+    fields:
+      - name: title
+        label: 文章標題
+        type: string
+        required: true
+
+      - name: author
+        label: 作者
+        type: string
+        required: true
+        description: "內部記錄使用，前台不會公開此欄位"
+
+      - name: pubDate
+        label: 發布日期
+        type: date
+        required: true
+
+      - name: modDate
+        label: 最後修訂日期
+        type: date
+
+      - name: slug
+        label: 自訂網址路由 (Slug)
+        type: string
+        required: true
+        description: "英數字與連字號組成，例如 new-update-1150315"
+
+      - name: showInHomePage
+        label: 顯示於首頁精選輪播
+        type: boolean
+        default: false
+
+      - name: pinned
+        label: 列表置頂顯示
+        type: boolean
+        default: false
+
+      - name: draft
+        label: 草稿模式（勾選後前台不渲染）
+        type: boolean
+        default: false
+
+      - name: tags
+        label: 文章標籤
+        type: string
+        list: true
+        description: "標籤清單（建議使用：使用說明、待辦清單、更新、行政公告、設計理念）"
+
+      - name: description
+        label: 摘要導讀 (Description)
+        type: text
+        required: true
+        description: "顯示於文章卡片與 SEO 預覽"
+
+      - name: body
+        label: 文章本文 (Markdown)
+        type: rich-text
+        description: "文章內文標題請自二級標題（##）開始使用"
+
+  # ─────────────────────────────────────────────
+  # 4. 首頁法規清單設定檔 (laws.js)
+  # ─────────────────────────────────────────────
+  - name: law-menu
+    label: 🏠 首頁法規選單 (laws.js)
+    type: file
+    path: src/laws.js
+    format: raw
+    description: >
+      此檔案控制首頁法規分類列表與連結。
+      若新增了法規或校務章則，請在此檔案中加入對應項目。
