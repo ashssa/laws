@@ -1,15 +1,14 @@
 ---
-title: 國立高雄師範大學附屬高級中學學生會組織章程
+title: 【法規範本】國立高雄師範大學附屬高級中學學生會組織章程
 abbr: 組織章程
 url: https://drive.google.com/drive/folders/1dLnSiUy6dEjEAUtmF4_ztQg4FQqZRa9i
 ---
-
 ## 修法歷程
 
 112.05.18 學生議會制定
 113.12.31 學生議會修正通過
 
-##　法規內容
+## 法規內容
 
 第一章 總則
 第1條 （依據及名稱）
