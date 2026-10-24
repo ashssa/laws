@@ -19,7 +19,7 @@ export const lawSections = [
     items: [
       { name: "本校會議旁聽要點", path: "/laws/direction/direction01" },
       // { name: "教育部高級中等以下學校校園行動載具使用原則", path: "/laws/direction/direction02" },
-      // 未來若有其他校規，直接在這裡加一行即可，編號會自動產生
+      // 未來若有其他校務章則選入，直接在這裡加一行即可，編號會自動產生
     ],
   },
   {
