@@ -46,11 +46,13 @@ export default defineConfig({
             src: "/laws/img/icon-194.png",
             sizes: "194x194",
             type: "image/png",
+            purpose: "maskable",
           },
           {
             src: "/laws/img/icon-512.png",
             sizes: "512x512",
             type: "image/png",
+            purpose: "maskable",
           },
         ],
         // shortcuts: [
