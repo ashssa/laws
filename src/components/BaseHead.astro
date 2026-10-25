@@ -18,6 +18,7 @@ const {
 
 const siteName = "高師大附中學生會自治法規共用系統";
 const fullTitle = title === siteName ? title : `${title} - ${siteName}`; // 邏輯：如果是首頁標題就不用重複
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <meta charset="UTF-8" />
@@ -42,9 +43,37 @@ const fullTitle = title === siteName ? title : `${title} - ${siteName}`; // 邏�
 
 <link
   rel="shortcut icon"
-  href={`${import.meta.env.BASE_URL}/img/icon.ico`}
+  href={`${baseUrl}/favicon.ico`}
   type="image/x-icon"
 />
+<link
+  rel="icon"
+  type="image/x-icon"
+  href={`${baseUrl}/favicon.ico`}
+/>
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href={`${baseUrl}/favicon.svg`}
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href={`${baseUrl}/apple-touch-icon.png`}
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href={`${baseUrl}/favicon-32x32.png`}
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href={`${baseUrl}/favicon-16x16.png`}
+/>
+<link rel="manifest" href={`${baseUrl}/site.webmanifest`} />
 {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
 <!-- 通知欄色彩 -->
 <meta
