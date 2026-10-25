@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:affinity="https://www.affinity.studio/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="new-style-safe-zone" transform="matrix(0.71875,0,0,0.71875,72,72)">
+        <g transform="matrix(0.896529,0,0,1,12.284731,0)">
+            <rect x="118.727" y="0" width="199.659" height="237.453" style="fill:url(#_Linear1);"/>
+        </g>
+        <g transform="matrix(1,0,0,1.010669,0,-0.893341)">
+            <clipPath id="_clip2">
+                <path d="M345.622,83.734L512,507.479L179.245,507.479L345.622,83.734Z"/>
+            </clipPath>
+            <g clip-path="url(#_clip2)">
+                <g transform="matrix(1.391304,-0,-0,1.376618,-100.173913,-98.232555)">
+                    <use xlink:href="#_Image3" x="200.832" y="132.184" width="240px" height="308px"/>
+                </g>
+            </g>
+        </g>
+        <g transform="matrix(0.864475,0,0,1,-75.577235,193.250009)">
+            <rect x="118.727" y="0" width="199.659" height="237.453" style="fill:url(#_Linear4);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,80.932292,193.250009)">
+            <circle cx="118.727" cy="118.727" r="118.727" style="fill:rgb(97,115,141);"/>
+        </g>
+        <circle cx="118.727" cy="118.727" r="118.727" style="fill:rgb(0,130,206);"/>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-199.658859,0,-0,-199.658859,318.385427,118.726567)"><stop offset="0" style="stop-color:rgb(0,130,206);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(0,72,114);stop-opacity:1"/></linearGradient>
+        <image id="_Image3" width="240px" height="308px" xlink:href="data:image/jpeg;base64,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SSsEUUrRDBDRStEUQtFKwRRC0UrRFELBTRCwXSre7iCiFgpohaIWiKKVhCWgsJK0UrRailYIohaKWCGilaIowLRSsEUQtFK0RRCwU0QtFKwXTXu4gWCmiFohaIopWEKaC0krRStFqKVgiiFopYIopWiKIWilYIohopWiKIWCmiFopWC1F0q3s4iaLNJK00KKVhCmgtJK0UrRailYIohaKWCKKVoiiFopWCKIWilaIohYKaIWCFoiilaLpW9nEZpJWmhRStIQ0FpJWilaLUUrBFELRSsEUUrRFELRSsEUQtFK0YKIWCmiFghaIopWiFoumb2cNK00KIWEmWgsJK0UtFqKVgiiFopWCKIWimiFopWCKIWilaIohYKaIYIWiKKVohopgumW93EFELCTLQWElaIWiKKVgiiFopWCKIWimiFopWCKIWilaIohYKaIWiFgiilaIaKYIWi6a93ECwkstBhJWiFoiilaIghaKVgiiFopohaKVgiiFopWiKIWCmiFohYMFFK0Q0UwQtFLRdOt7OGlkhYKVohaIopWiIIWilYIohaKaIWilYIohopWiKIWCmiFohYIopWiGimCFopWi0F0rfQ4YWClaIWiKKVoiCFopWCKIWimiFopWCGiGilaIohYKaIWiFgiilaIaKYIWilaLQUrSdM3u4gaKWjBRDRTZIZKWDBRDRTRZopYpiWiKIaKaIYMS0maaSwoKaDRiWklhoNKBoiDEtEU0//Z"/>
+        <linearGradient id="_Linear4" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(318.385427,0,0,318.385427,118.726567,118.726567)"><stop offset="0" style="stop-color:rgb(97,115,141);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(39,64,100);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>
