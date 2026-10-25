@@ -73,7 +73,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   sizes="16x16"
   href={`${baseUrl}/favicon-16x16.png`}
 />
-<link rel="manifest" href={`${baseUrl}/site.webmanifest`} />
 {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
 <!-- 通知欄色彩 -->
 <meta

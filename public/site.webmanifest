@@ -1,16 +1,32 @@
 {
   "name": "高師大附中學生會自治法規共用系統",
   "short_name": "SA Law",
+  "description": "高師大附中自治法規共用系統，彙編高師大附中學生會所有自治法規的展示網站。",
+  "start_url": "/laws/",
   "icons": [
+    {
+      "src": "/laws/img/icon-194.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/laws/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/laws/android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/laws/android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "theme_color": "#ffffff",

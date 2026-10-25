@@ -44,12 +44,24 @@ export default defineConfig({
         icons: [
           {
             src: "/laws/img/icon-194.png",
-            sizes: "194x194",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any",
+          },
+          {
+            src: "/laws/img/icon-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any",
+          },
+          {
+            src: "/laws/android-chrome-192x192.png",
+            sizes: "192x192",
             type: "image/png",
             purpose: "maskable",
           },
           {
-            src: "/laws/img/icon-512.png",
+            src: "/laws/android-chrome-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",
